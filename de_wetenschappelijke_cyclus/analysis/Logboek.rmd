@@ -1,0 +1,28 @@
+---
+title: "Logboek: Publieke Opinie"
+author: "Iris Ineke, Jasper Jonker, Floris Menninga"
+date: "2024-04-22"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Placeholder tekst......
+
+Ruimte om dingen te typen.....
+
+```{r iris}
+summary(iris)
+```
+
+## Grafiekjes:
+
+blablablalalkdfalksdfjkl
+
+```{r, echo=FALSE}
+plot(iris)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
