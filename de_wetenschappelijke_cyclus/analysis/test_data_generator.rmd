@@ -1,0 +1,21 @@
+---
+title: "TestData_Publieke_Opinie"
+author: "Floris Menninga"
+date: "2024-04-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r cars}
+
+persoon_nummer <- c(1:50)
+#gelovig <- c()
+r_sample_logical(n, prob = NULL, name = "Logical")
+cat(test1)
+
+```
