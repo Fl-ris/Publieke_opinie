@@ -9,12 +9,92 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Placeholder tekst......
+## **De enquete** ##
 
-Ruimte om dingen te typen.....
+Om de meningen van het publiek te peilen met betrekking tot hun etische normen en waarden is er een vragenlijst opgesteld 
+die de volgende vragen en stellingen bevat:
 
-```{r iris}
-summary(iris)
+<hr>
+#### Persoonlijke vragen: ####
+
+Wat is uw geslacht? 
+
+Man, Vrouw, Anders, Zeg ik liever niet. 
+
+Wat is uw leeftijd? (Jaar) 
+
+
+Bent u gelovig? (Ja/nee) 
+
+Zo ja welke geloof? 
+	Christendom, Islam, Hindoeïsme, Boeddhisme, jodendom, anders: ___ 
+
+Waar bent u geboren? (Land) 
+
+
+In Nederland? --> welke provincie? 
+
+		 
+<hr>
+#### Inhoudelijke vragen: #### 
+
+1. Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil? 
+
+1.5 Zo nee, zijn er situaties waarin dit wel het geval moet zijn? 
+
+2. Moet een kind (onder 18) de keuze hebben om een abortus te krijgen? 
+
+2.5 Moeten ouders zeggenschap hebben over of hun kind wel of niet abortus mogen plegen. 
+
+https://fiom.nl/ongewenst-zwanger/abortus/wet-regelgeving-abortus  
+
+ 
+3.  Is adoptie een alternatief voor abortus?                 
+
+4. Moet de bedenktijd terugkomen? 
+
+ 5.. Vindt u dat er abortus gepleegd mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen? 
+
+6. Vindt u dat er abortus gepleegd mag worden als de zwangerschap een gevolg is van verkrachting? 
+
+7. Moet het wettelijk verplicht voor vrouwen die een abortus willen om een echo van de foetus te zien voor een abortus toegestaan is? 
+
+8. Moet de vader zeggenschap hebben over de beslissing om een abortus te induceren? 
+
+ 
+
+Hoe goed kan u uzelf vinden in de volgende stellingen (op een schaal van 0 tot 10) 
+
+Een abortus is wenselijk wanneer: 
+
+    Het leven van de vrouw in gevaar is: (0 tot 10) 
+
+    Het kind met een geestelijke handicap (zoals het syndroom van Down) geboren zou worden. (0 tot 10) 
+
+    Het kind met een levensbedreigende ziekte geboren zou worden. (0 tot 10) 
+
+    De zwangerschap veroorzaakt was door verkrachting. (0 tot 10) 
+
+    De vrouw het kind niet wil hebben voor niet gespecificeerde redenen.  
+    
+Enkele vragen hiervan zijn afgeleid van het volgende document: https://news.gallup.com/poll/1576/abortion.aspx
+
+De enquête is vervolgens in Microsoft Forms gemaakt met de bovenstaande vragen. 
+ 
+
+## **Automatisch gegenereerde testdata** ##
+
+Voordat de data van de enquete verzameld was hebben we testdata gemaakt met behulp van R.
+Dit heeft als doel om te oefenen met de gebruikte statistische analyse methoden die ook gebruikt gaan worden voor echte data. 
+
+
+<hr>
+
+
+
+```{r }
+# test
+getwd()
 ```
 
 ## Grafiekjes:
@@ -22,7 +102,9 @@ summary(iris)
 blablablalalkdfalksdfjkl
 
 ```{r, echo=FALSE}
-plot(iris)
+# test 2
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+<hr>
