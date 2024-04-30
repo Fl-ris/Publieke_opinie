@@ -12,7 +12,7 @@
 
 ## **Onderzoeksvraag** ##
 Met behulp van R wordt de volgende onderzoeksvraag beantwoord: <br />
-Is er een statistisch significant verschil tussen de politieke meningen van mensen van andere leeftijden, geslachten en geloof?
+Is er een verschil tussen de ethische meningen van mensen van andere leeftijden, geslachten en geloof?
 
 
 ## **Referenties:** ##
