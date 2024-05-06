@@ -10,7 +10,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## **De enquete** ##
-### **(Hieronder staat alles wat te maken heeft met de enquete)**##
 
 Om de meningen van het publiek te peilen met betrekking tot hun etische normen en waarden is er een vragenlijst opgesteld 
 die de volgende vragen en stellingen bevat:
@@ -80,12 +79,7 @@ Een abortus is wenselijk wanneer:
     
 Enkele vragen hiervan zijn afgeleid van het volgende document: https://news.gallup.com/poll/1576/abortion.aspx
 
-De enquête is vervolgens in Microsoft Forms gemaakt met de bovenstaande vragen.
-
-De enquête is vervolgens op een controlle groep getest en daar kwamen de volgende dingen naar voeren:
- 1.
-
-Deze zijn vervolgens aangepsat en opgelost.
+De enquête is vervolgens in Microsoft Forms gemaakt met de bovenstaande vragen. 
  
 
 ## **Automatisch gegenereerde testdata** ##
@@ -103,9 +97,10 @@ Dit heeft als doel om te oefenen met de gebruikte statistische analyse methoden 
 getwd()
 ```
 
-## Grafiekjes:
+## Testdata:
 
-blablablalalkdfalksdfjkl
+Testdata levensverwachting:
+
 
 ```{r, echo=FALSE}
 # test 2
