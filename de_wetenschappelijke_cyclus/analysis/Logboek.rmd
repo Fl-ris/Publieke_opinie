@@ -79,7 +79,12 @@ Een abortus is wenselijk wanneer:
     
 Enkele vragen hiervan zijn afgeleid van het volgende document: https://news.gallup.com/poll/1576/abortion.aspx
 
-De enquête is vervolgens in Microsoft Forms gemaakt met de bovenstaande vragen. 
+De enquête is vervolgens in Microsoft Forms gemaakt met de bovenstaande vragen.
+
+De enquête is vervolgens op een controlle groep getest en daar kwamen de volgende dingen naar voeren:
+ 1.
+
+Deze zijn vervolgens aangepsat en opgelost.
  
 
 ## **Automatisch gegenereerde testdata** ##
