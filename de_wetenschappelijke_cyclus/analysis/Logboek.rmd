@@ -10,6 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## **De enquete** ##
+### **(Hieronder staat alles wat te maken heeft met de enquete)**##
 
 Om de meningen van het publiek te peilen met betrekking tot hun etische normen en waarden is er een vragenlijst opgesteld 
 die de volgende vragen en stellingen bevat:
