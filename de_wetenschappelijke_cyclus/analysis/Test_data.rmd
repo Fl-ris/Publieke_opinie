@@ -1,0 +1,46 @@
+---
+title: "Test_data"
+author: "Floris Menninga"
+date: "2024-05-06"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Testdata levensvewachting:
+
+**In logboek:**
+- ideeen over opdracht
+- is er al data bekend
+- Datum noteren
+Ik gebruik de rnorm functie om testdata te genereren.
+
+
+```{r }
+aantal_inwoners <- 100
+landen = c("Japan", "Nederland", "Amerika")
+cat(landen)
+set.seed(76543)
+leeftijden <- rnorm(1000 ,mean = 80, sd =8)
+
+leeftijden2 <- rnorm(1000,mean = 80, sd =8)
+#rnorm(lengtes)
+#hist(rnorm(lengtes))
+hist(leeftijden)
+hist(leeftijden2)
+
+```
+
+`r aantal_inwoners`
+
+```{r}
+df <- data.frame(1:10)
+means <- c("Japan" = 5, "Nederland" =  0, "Amerika" = -3)
+for (land in landen)
+    df[land] <- rnorm(n = 10, means[land] + 80, sd = 8)
+print(df)
+
+```
+
