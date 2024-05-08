@@ -91,19 +91,64 @@ Dit heeft als doel om te oefenen met de gebruikte statistische analyse methoden 
 <hr>
 
 
+De data verwerken:
 
 ```{r }
-# test
-getwd()
+abortus <- read.csv("/home/floris/Documenten/git_repo/Publieke_opinie/de_wetenschappelijke_cyclus/raw_data/abortus.csv",
+                    na.strings = "NA")
+abortus
 ```
 
-## Testdata:
+```{r}
+summary(abortus)
+head(abortus)
+str(abortus)
+```
 
-Testdata levensverwachting:
+
+## Omzetten naar factoren
 
 
-```{r, echo=FALSE}
-# test 2
+
+```{r}
+library(ggplot2)
+#table(abortus$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil., useNA = "always")
+
+
+
+# voor de vraag: Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?
+abortus$eigen_keuze_abortus <- factor(x = abortus$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil.,  
+                           levels = c("Ja", "Nee"),
+                           labels = c("Wel abortus toestaan", "Geen abortus toestaan"))
+# Voor de vraag: Wat is uw religieuze overtuiging?
+
+abortus$geloof <- factor(x = abortus$Wat.is.uw.religieuze.overtuiging.., 
+                           levels = c("Christendom", "Islam", "Hindoeïsme", "Boeddhisme", "Niet gelovig", "Anders"),
+                           labels = c("Christendom", "Islam", "Hind", "Boed", "Niet", "Anders"))
+
+
+
+
+
+table(abortus$eigen_keuze_abortus, useNA = "always") # voor de vraag: Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?
+plot(abortus$eigen_keuze_abortus)
+
+
+cat(abortus$geloof)
+ 
+#ggplot(abortus$geloof, aes(x=test, y=test2)) +
+ # geom_bar(stat="identity", width=0.2)
+  
+
+
+```
+```{r}
+
+
+y <- c(0,0,0,0,1,0,1,0,1,0,1,0,1,1)
+
+p <- sum(y) / length(y)
+# is p > PI (50%)
 
 ```
 
