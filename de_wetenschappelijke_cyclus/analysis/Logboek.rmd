@@ -92,16 +92,16 @@ Dit heeft als doel om te oefenen met de gebruikte statistische analyse methoden 
 
 
 De data verwerken:
+Huidige working directory: `r getwd()`
 
 ```{r }
-abortus <- read.csv("/home/floris/Documenten/git_repo/Publieke_opinie/de_wetenschappelijke_cyclus/raw_data/abortus.csv",
+abortus <- read.csv("abortus_dataset.csv",
                     na.strings = "NA")
-abortus
+head(abortus)
 ```
 
 ```{r}
 summary(abortus)
-head(abortus)
 str(abortus)
 ```
 
@@ -125,23 +125,76 @@ abortus$eigen_keuze_abortus <- factor(x = abortus$Vindt.u.dat.iemand.zelf.moet.k
 abortus$geloof <- factor(x = abortus$Wat.is.uw.religieuze.overtuiging.., 
                            levels = c("Christendom", "Islam", "Hindoeïsme", "Boeddhisme", "Niet gelovig", "Anders"),
                            labels = c("Christendom", "Islam", "Hind", "Boed", "Niet", "Anders"))
-
+abortus.test <- data.frame(abortus$geloof)
 
 
 
 
 table(abortus$eigen_keuze_abortus, useNA = "always") # voor de vraag: Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?
-plot(abortus$eigen_keuze_abortus)
 
 
-cat(abortus$geloof)
- 
-#ggplot(abortus$geloof, aes(x=test, y=test2)) +
- # geom_bar(stat="identity", width=0.2)
-  
+df <- data.frame(abortus$Wat.is.uw.leeftijd.) 
 
+# verdeling van de leeftijden:
+ggplot(df, aes(x= abortus$Wat.is.uw.leeftijd.)) +
+  geom_density()
+
+
+df2 <- data.frame(abortus) # test
+
+# Grafiek met de verschillende geloven en de leeftijdverdeling die er bij hoort. 
+ggplot(df, aes(y=abortus$Wat.is.uw.religieuze.overtuiging..,
+               x= abortus$Wat.is.uw.leeftijd.)) +
+  geom_boxplot(color = "black", fill = "springgreen") +
+    xlab("Leeftijd (Jaren") +
+    ylab(" ") # namen van de geloven staan er al.... geen label nodig.
+
+# Grafiek met leeftijden uit verschillende provincies.
+ggplot(df, aes(y=abortus$In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht.,
+               x= abortus$Wat.is.uw.leeftijd.)) +
+  geom_boxplot(color = "black", fill = "springgreen") +
+    xlab("Leeftijd (Jaren") +
+    ylab(" ") # namen van de geloven staan er al.... geen label nodig.
+
+
+begin_tijd <- as.POSIXlt(c(abortus$Begintijd)) # startpunt van invullen per persoon.
+eind_tijd <- as.POSIXlt(c(abortus$Tijd.van.voltooien)) # eindpunt  van invullen per persoon.
+
+
+tijd_vector <- c()
+# Om de totale tijd uit te rekenen die de mensen nodig hadden om het formulier in te vullen. 
+for (x in seq_along(abortus$Begintijd))
+ # print(paste0("Begin tijd: ", begin_tijd[x]))
+ # print(paste0("eind tijd: ", eind_tijd[x]))
+  print(eind_tijd[x] - begin_tijd[x])
+  tijd_vector[x] <- c(tijd_vector, eind_tijd[x] - begin_tijd[x])
+
+
+
+ggplot(df, aes(y=abortus$Tijd.van.voltooien,
+               x= abortus$Wat.is.uw.leeftijd.)) +
+  geom_boxplot(color = "black", fill = "springgreen") +
+    xlab("Leeftijd (Jaren") +
+    ylab(" ") # namen van de geloven staan er al.... geen label nodig.
+
+
+
+
+#ggplot(df, aes(x=, y=abortus$Wat.is.uw.leeftijd.)) +
+ # geom_bar(stat="identity", color="blue", fill="white")
 
 ```
+
+
+
+```{r iris}
+summaryzzz
+```
+
+
+
+
+
 ```{r}
 
 

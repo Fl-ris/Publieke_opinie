@@ -417,6 +417,8 @@ De zwangerschap veroorzaakt was door verkrachting. (0 tot 10)
 
 De vrouw het kind niet wil hebben voor niet gespecificeerde redenen.  </code></pre>
 <p>Enkele vragen hiervan zijn afgeleid van het volgende document: <a href="https://news.gallup.com/poll/1576/abortion.aspx" class="uri">https://news.gallup.com/poll/1576/abortion.aspx</a></p>
+<p>De enquête is vervolgens in Microsoft Forms gemaakt met de
+bovenstaande vragen.</p>
 </div>
 </div>
 <div id="automatisch-gegenereerde-testdata" class="section level2">
@@ -426,13 +428,541 @@ gemaakt met behulp van R. Dit heeft als doel om te oefenen met de
 gebruikte statistische analyse methoden die ook gebruikt gaan worden
 voor echte data.</p>
 <hr>
-<pre class="r"><code># test
-getwd()</code></pre>
-<pre><code>## [1] &quot;/home/floris/Documenten/Github/Publieke_opinie/de_wetenschappelijke_cyclus/analysis&quot;</code></pre>
+<p>De data verwerken: Huidige working directory:
+/home/floris/Documenten/Github/Publieke_opinie/de_wetenschappelijke_cyclus/analysis</p>
+<pre class="r"><code>abortus &lt;- read.csv(&quot;abortus_dataset.csv&quot;,
+                    na.strings = &quot;NA&quot;)
+head(abortus)</code></pre>
+<pre><code>##   ID       Begintijd Tijd.van.voltooien    E.mail Naam
+## 1  1  5-8-24 8:49:29     5-8-24 8:51:35 anonymous   NA
+## 2  2  5-8-24 8:49:07     5-8-24 8:52:43 anonymous   NA
+## 3  3  5-8-24 8:50:36     5-8-24 8:53:12 anonymous   NA
+## 4  4  5-8-24 9:09:33     5-8-24 9:11:26 anonymous   NA
+## 5  5 5-8-24 10:01:09    5-8-24 10:03:33 anonymous   NA
+## 6  6 5-8-24 10:07:21    5-8-24 10:10:00 anonymous   NA
+##   Tijd.van.laatste.wijziging Wat.is.uw.geslacht..
+## 1                         NA                  Man
+## 2                         NA                  Man
+## 3                         NA                Vrouw
+## 4                         NA                  Man
+## 5                         NA                Vrouw
+## 6                         NA                Vrouw
+##   Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond. Wat.is.uw.leeftijd.
+## 1                                                      MBO                  22
+## 2                                        Middelbare school                  20
+## 3                                                      MBO                  21
+## 4                                        Middelbare school                  20
+## 5                                        Middelbare school                  18
+## 6                                                      MBO                  30
+##   Wat.is.uw.religieuze.overtuiging..
+## 1                       Niet gelovig
+## 2                       Niet gelovig
+## 3                             Anders
+## 4                       Christendom 
+## 5                       Niet gelovig
+## 6                       Niet gelovig
+##   In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht.
+## 1                                                               Groningen
+## 2                                                               Groningen
+## 3                                                               Groningen
+## 4                                                               Friesland
+## 5                                                                 Drenthe
+## 6                                                               Friesland
+##   Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil.
+## 1                                                                 Ja
+## 2                                                                 Ja
+## 3                                                                 Ja
+## 4                                                                 Ja
+## 5                                                                 Ja
+## 6                                                                 Ja
+##   Indien.u.bij.de.vorige.vraag..Nee..heeft.ingevuld...Vindt.u.dat.er.uitzonderingen.zijn.waarin.iemand.dit.wel.zelf.moet.kunnen.kiezen.....
+## 1                                                                                                                      Niet van toepassing 
+## 2                                                                                                                      Niet van toepassing 
+## 3                                                                                                                      Niet van toepassing 
+## 4                                                                                                                                          
+## 5                                                                                                                                          
+## 6                                                                                                                      Niet van toepassing 
+##   Vindt.u.dat.er.voor.abortus.gekozen.mag.worden.als.de.gezondheid.van.de.vrouw.door.de.zwangerschap.in.gevaar.kan.komen.
+## 1                                                                                                                      Ja
+## 2                                                                                                                      Ja
+## 3                                                                                                                      Ja
+## 4                                                                                                                      Ja
+## 5                                                                                                                      Ja
+## 6                                                                                                                      Ja
+##   Vindt.u.dat.iemand.een.abortus.mag.als.de.zwangerschap.een.gevolg.is.van.verkrachting.
+## 1                                                                                     Ja
+## 2                                                                                     Ja
+## 3                                                                                     Ja
+## 4                                                                                     Ja
+## 5                                                                                     Ja
+## 6                                                                                     Ja
+##   Vindt.u.dat.een.minderjarig.kind.de.keuze.moet.hebben.om.voor.een.abortus.te.kiezen.....
+## 1                                                                                       Ja
+## 2                                                                                       Ja
+## 3                                                                                       Ja
+## 4                                                                                       Ja
+## 5                                                                                       Ja
+## 6                                                                                       Ja
+##   Vindt.u.dat.de.ouders.zeggenschap.moeten.hebben.over.of.hun.minderjarige.kind.wel.of.niet.voor.abortus.mag.kiezen...
+## 1                                                                                                         Weet ik niet
+## 2                                                                                                                  Nee
+## 3                                                                                                                  Nee
+## 4                                                                                                                   Ja
+## 5                                                                                                                  Nee
+## 6                                                                                                         Weet ik niet
+##   Moet.het.wettelijk.verplicht.worden.voor.vrouwen.die.een.abortus.willen.om.een.echo.van.de.foetus.te.zien.voordat.een.abortus.toegestaan.is.
+## 1                                                                                                                                          Nee
+## 2                                                                                                                                          Nee
+## 3                                                                                                                                          Nee
+## 4                                                                                                                                          Nee
+## 5                                                                                                                                          Nee
+## 6                                                                                                                                          Nee
+##   Vindt.u.dat.de.wettelijke.bedenktijd.moet.terugkomen.
+## 1                                          Weet ik niet
+## 2                                                    Ja
+## 3                                                    Ja
+## 4                                                    Ja
+## 5                                                   Nee
+## 6                                                   Nee
+##   Vindt.u.dat.adoptie.een.alternatief.is.voor.abortus.
+## 1                                                   Ja
+## 2                                                  Nee
+## 3                                                  Nee
+## 4                                                  Nee
+## 5                                                  Nee
+## 6                                                  Nee
+##   Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.
+## 1                                                                                Ja
+## 2                                                                               Nee
+## 3                                                                               Nee
+## 4                                                                               Nee
+## 5                                                                               Nee
+## 6                                                                                Ja
+##   Het.leven.van.de.vrouw.in.gevaar.is
+## 1                                eens
+## 2                                eens
+## 3                           zeer eens
+## 4                                eens
+## 5                           zeer eens
+## 6                                eens
+##   Het.kind.met.een.geestelijke.handicap.geboren.kan.worden
+## 1                                              beetje eens
+## 2                                                     eens
+## 3                                                   oneens
+## 4                                                 neutraal
+## 5                                                 neutraal
+## 6                                              beetje eens
+##   Het.kind.met.een.levensbedreigende.ziekte.geboren.kan.worden
+## 1                                                  beetje eens
+## 2                                                         eens
+## 3                                                       oneens
+## 4                                                  beetje eens
+## 5                                                         eens
+## 6                                                  beetje eens
+##   De.zwangerschap.veroorzaakt.is.door.verkrachting
+## 1                                             eens
+## 2                                             eens
+## 3                                        zeer eens
+## 4                                             eens
+## 5                                        zeer eens
+## 6                                        zeer eens
+##   De.vrouw.het.kind.niet.wil.houden.om.niet.gespecificeerde.redenen
+## 1                                                              eens
+## 2                                                       beetje eens
+## 3                                                         zeer eens
+## 4                                                            oneens
+## 5                                                         zeer eens
+## 6                                                     beetje oneens
+##   De.vrouw.niet.in.staat.is.voor.het.kind.te.zorgen.vanwege.financiële.beperkingen
+## 1                                                                      beetje eens
+## 2                                                                             eens
+## 3                                                                        zeer eens
+## 4                                                                         neutraal
+## 5                                                                      beetje eens
+## 6                                                                      beetje eens
+##                                                              Wil.je.nog.iets.kwijt.over.de.vragen.of.iets.toevoegen.
+## 1                                                                                                                Hoi
+## 2                                                                                                                   
+## 3                                                                                                                   
+## 4                                                                                                                   
+## 5                                                                                                                   
+## 6 Bij vraag 11 een toelichting. Ouders moeten zeggenschap hebben mits er sprake is van incest/mishandeling in huis.</code></pre>
+<pre class="r"><code>summary(abortus)</code></pre>
+<pre><code>##        ID          Begintijd         Tijd.van.voltooien    E.mail         
+##  Min.   :  1.00   Length:104         Length:104         Length:104        
+##  1st Qu.: 26.75   Class :character   Class :character   Class :character  
+##  Median : 52.50   Mode  :character   Mode  :character   Mode  :character  
+##  Mean   : 52.50                                                           
+##  3rd Qu.: 78.25                                                           
+##  Max.   :104.00                                                           
+##    Naam         Tijd.van.laatste.wijziging Wat.is.uw.geslacht..
+##  Mode:logical   Mode:logical               Length:104          
+##  NA&#39;s:104       NA&#39;s:104                   Class :character    
+##                                            Mode  :character    
+##                                                                
+##                                                                
+##                                                                
+##  Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond. Wat.is.uw.leeftijd.
+##  Length:104                                               Min.   :15.00      
+##  Class :character                                         1st Qu.:22.75      
+##  Mode  :character                                         Median :48.00      
+##                                                           Mean   :42.13      
+##                                                           3rd Qu.:55.00      
+##                                                           Max.   :80.00      
+##  Wat.is.uw.religieuze.overtuiging..
+##  Length:104                        
+##  Class :character                  
+##  Mode  :character                  
+##                                    
+##                                    
+##                                    
+##  In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht.
+##  Length:104                                                             
+##  Class :character                                                       
+##  Mode  :character                                                       
+##                                                                         
+##                                                                         
+##                                                                         
+##  Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil.
+##  Length:104                                                        
+##  Class :character                                                  
+##  Mode  :character                                                  
+##                                                                    
+##                                                                    
+##                                                                    
+##  Indien.u.bij.de.vorige.vraag..Nee..heeft.ingevuld...Vindt.u.dat.er.uitzonderingen.zijn.waarin.iemand.dit.wel.zelf.moet.kunnen.kiezen.....
+##  Length:104                                                                                                                               
+##  Class :character                                                                                                                         
+##  Mode  :character                                                                                                                         
+##                                                                                                                                           
+##                                                                                                                                           
+##                                                                                                                                           
+##  Vindt.u.dat.er.voor.abortus.gekozen.mag.worden.als.de.gezondheid.van.de.vrouw.door.de.zwangerschap.in.gevaar.kan.komen.
+##  Length:104                                                                                                             
+##  Class :character                                                                                                       
+##  Mode  :character                                                                                                       
+##                                                                                                                         
+##                                                                                                                         
+##                                                                                                                         
+##  Vindt.u.dat.iemand.een.abortus.mag.als.de.zwangerschap.een.gevolg.is.van.verkrachting.
+##  Length:104                                                                            
+##  Class :character                                                                      
+##  Mode  :character                                                                      
+##                                                                                        
+##                                                                                        
+##                                                                                        
+##  Vindt.u.dat.een.minderjarig.kind.de.keuze.moet.hebben.om.voor.een.abortus.te.kiezen.....
+##  Length:104                                                                              
+##  Class :character                                                                        
+##  Mode  :character                                                                        
+##                                                                                          
+##                                                                                          
+##                                                                                          
+##  Vindt.u.dat.de.ouders.zeggenschap.moeten.hebben.over.of.hun.minderjarige.kind.wel.of.niet.voor.abortus.mag.kiezen...
+##  Length:104                                                                                                          
+##  Class :character                                                                                                    
+##  Mode  :character                                                                                                    
+##                                                                                                                      
+##                                                                                                                      
+##                                                                                                                      
+##  Moet.het.wettelijk.verplicht.worden.voor.vrouwen.die.een.abortus.willen.om.een.echo.van.de.foetus.te.zien.voordat.een.abortus.toegestaan.is.
+##  Length:104                                                                                                                                  
+##  Class :character                                                                                                                            
+##  Mode  :character                                                                                                                            
+##                                                                                                                                              
+##                                                                                                                                              
+##                                                                                                                                              
+##  Vindt.u.dat.de.wettelijke.bedenktijd.moet.terugkomen.
+##  Length:104                                           
+##  Class :character                                     
+##  Mode  :character                                     
+##                                                       
+##                                                       
+##                                                       
+##  Vindt.u.dat.adoptie.een.alternatief.is.voor.abortus.
+##  Length:104                                          
+##  Class :character                                    
+##  Mode  :character                                    
+##                                                      
+##                                                      
+##                                                      
+##  Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.
+##  Length:104                                                                       
+##  Class :character                                                                 
+##  Mode  :character                                                                 
+##                                                                                   
+##                                                                                   
+##                                                                                   
+##  Het.leven.van.de.vrouw.in.gevaar.is
+##  Length:104                         
+##  Class :character                   
+##  Mode  :character                   
+##                                     
+##                                     
+##                                     
+##  Het.kind.met.een.geestelijke.handicap.geboren.kan.worden
+##  Length:104                                              
+##  Class :character                                        
+##  Mode  :character                                        
+##                                                          
+##                                                          
+##                                                          
+##  Het.kind.met.een.levensbedreigende.ziekte.geboren.kan.worden
+##  Length:104                                                  
+##  Class :character                                            
+##  Mode  :character                                            
+##                                                              
+##                                                              
+##                                                              
+##  De.zwangerschap.veroorzaakt.is.door.verkrachting
+##  Length:104                                      
+##  Class :character                                
+##  Mode  :character                                
+##                                                  
+##                                                  
+##                                                  
+##  De.vrouw.het.kind.niet.wil.houden.om.niet.gespecificeerde.redenen
+##  Length:104                                                       
+##  Class :character                                                 
+##  Mode  :character                                                 
+##                                                                   
+##                                                                   
+##                                                                   
+##  De.vrouw.niet.in.staat.is.voor.het.kind.te.zorgen.vanwege.financiële.beperkingen
+##  Length:104                                                                      
+##  Class :character                                                                
+##  Mode  :character                                                                
+##                                                                                  
+##                                                                                  
+##                                                                                  
+##  Wil.je.nog.iets.kwijt.over.de.vragen.of.iets.toevoegen.
+##  Length:104                                             
+##  Class :character                                       
+##  Mode  :character                                       
+##                                                         
+##                                                         
+## </code></pre>
+<pre class="r"><code>head(abortus)</code></pre>
+<pre><code>##   ID       Begintijd Tijd.van.voltooien    E.mail Naam
+## 1  1  5-8-24 8:49:29     5-8-24 8:51:35 anonymous   NA
+## 2  2  5-8-24 8:49:07     5-8-24 8:52:43 anonymous   NA
+## 3  3  5-8-24 8:50:36     5-8-24 8:53:12 anonymous   NA
+## 4  4  5-8-24 9:09:33     5-8-24 9:11:26 anonymous   NA
+## 5  5 5-8-24 10:01:09    5-8-24 10:03:33 anonymous   NA
+## 6  6 5-8-24 10:07:21    5-8-24 10:10:00 anonymous   NA
+##   Tijd.van.laatste.wijziging Wat.is.uw.geslacht..
+## 1                         NA                  Man
+## 2                         NA                  Man
+## 3                         NA                Vrouw
+## 4                         NA                  Man
+## 5                         NA                Vrouw
+## 6                         NA                Vrouw
+##   Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond. Wat.is.uw.leeftijd.
+## 1                                                      MBO                  22
+## 2                                        Middelbare school                  20
+## 3                                                      MBO                  21
+## 4                                        Middelbare school                  20
+## 5                                        Middelbare school                  18
+## 6                                                      MBO                  30
+##   Wat.is.uw.religieuze.overtuiging..
+## 1                       Niet gelovig
+## 2                       Niet gelovig
+## 3                             Anders
+## 4                       Christendom 
+## 5                       Niet gelovig
+## 6                       Niet gelovig
+##   In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht.
+## 1                                                               Groningen
+## 2                                                               Groningen
+## 3                                                               Groningen
+## 4                                                               Friesland
+## 5                                                                 Drenthe
+## 6                                                               Friesland
+##   Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil.
+## 1                                                                 Ja
+## 2                                                                 Ja
+## 3                                                                 Ja
+## 4                                                                 Ja
+## 5                                                                 Ja
+## 6                                                                 Ja
+##   Indien.u.bij.de.vorige.vraag..Nee..heeft.ingevuld...Vindt.u.dat.er.uitzonderingen.zijn.waarin.iemand.dit.wel.zelf.moet.kunnen.kiezen.....
+## 1                                                                                                                      Niet van toepassing 
+## 2                                                                                                                      Niet van toepassing 
+## 3                                                                                                                      Niet van toepassing 
+## 4                                                                                                                                          
+## 5                                                                                                                                          
+## 6                                                                                                                      Niet van toepassing 
+##   Vindt.u.dat.er.voor.abortus.gekozen.mag.worden.als.de.gezondheid.van.de.vrouw.door.de.zwangerschap.in.gevaar.kan.komen.
+## 1                                                                                                                      Ja
+## 2                                                                                                                      Ja
+## 3                                                                                                                      Ja
+## 4                                                                                                                      Ja
+## 5                                                                                                                      Ja
+## 6                                                                                                                      Ja
+##   Vindt.u.dat.iemand.een.abortus.mag.als.de.zwangerschap.een.gevolg.is.van.verkrachting.
+## 1                                                                                     Ja
+## 2                                                                                     Ja
+## 3                                                                                     Ja
+## 4                                                                                     Ja
+## 5                                                                                     Ja
+## 6                                                                                     Ja
+##   Vindt.u.dat.een.minderjarig.kind.de.keuze.moet.hebben.om.voor.een.abortus.te.kiezen.....
+## 1                                                                                       Ja
+## 2                                                                                       Ja
+## 3                                                                                       Ja
+## 4                                                                                       Ja
+## 5                                                                                       Ja
+## 6                                                                                       Ja
+##   Vindt.u.dat.de.ouders.zeggenschap.moeten.hebben.over.of.hun.minderjarige.kind.wel.of.niet.voor.abortus.mag.kiezen...
+## 1                                                                                                         Weet ik niet
+## 2                                                                                                                  Nee
+## 3                                                                                                                  Nee
+## 4                                                                                                                   Ja
+## 5                                                                                                                  Nee
+## 6                                                                                                         Weet ik niet
+##   Moet.het.wettelijk.verplicht.worden.voor.vrouwen.die.een.abortus.willen.om.een.echo.van.de.foetus.te.zien.voordat.een.abortus.toegestaan.is.
+## 1                                                                                                                                          Nee
+## 2                                                                                                                                          Nee
+## 3                                                                                                                                          Nee
+## 4                                                                                                                                          Nee
+## 5                                                                                                                                          Nee
+## 6                                                                                                                                          Nee
+##   Vindt.u.dat.de.wettelijke.bedenktijd.moet.terugkomen.
+## 1                                          Weet ik niet
+## 2                                                    Ja
+## 3                                                    Ja
+## 4                                                    Ja
+## 5                                                   Nee
+## 6                                                   Nee
+##   Vindt.u.dat.adoptie.een.alternatief.is.voor.abortus.
+## 1                                                   Ja
+## 2                                                  Nee
+## 3                                                  Nee
+## 4                                                  Nee
+## 5                                                  Nee
+## 6                                                  Nee
+##   Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.
+## 1                                                                                Ja
+## 2                                                                               Nee
+## 3                                                                               Nee
+## 4                                                                               Nee
+## 5                                                                               Nee
+## 6                                                                                Ja
+##   Het.leven.van.de.vrouw.in.gevaar.is
+## 1                                eens
+## 2                                eens
+## 3                           zeer eens
+## 4                                eens
+## 5                           zeer eens
+## 6                                eens
+##   Het.kind.met.een.geestelijke.handicap.geboren.kan.worden
+## 1                                              beetje eens
+## 2                                                     eens
+## 3                                                   oneens
+## 4                                                 neutraal
+## 5                                                 neutraal
+## 6                                              beetje eens
+##   Het.kind.met.een.levensbedreigende.ziekte.geboren.kan.worden
+## 1                                                  beetje eens
+## 2                                                         eens
+## 3                                                       oneens
+## 4                                                  beetje eens
+## 5                                                         eens
+## 6                                                  beetje eens
+##   De.zwangerschap.veroorzaakt.is.door.verkrachting
+## 1                                             eens
+## 2                                             eens
+## 3                                        zeer eens
+## 4                                             eens
+## 5                                        zeer eens
+## 6                                        zeer eens
+##   De.vrouw.het.kind.niet.wil.houden.om.niet.gespecificeerde.redenen
+## 1                                                              eens
+## 2                                                       beetje eens
+## 3                                                         zeer eens
+## 4                                                            oneens
+## 5                                                         zeer eens
+## 6                                                     beetje oneens
+##   De.vrouw.niet.in.staat.is.voor.het.kind.te.zorgen.vanwege.financiële.beperkingen
+## 1                                                                      beetje eens
+## 2                                                                             eens
+## 3                                                                        zeer eens
+## 4                                                                         neutraal
+## 5                                                                      beetje eens
+## 6                                                                      beetje eens
+##                                                              Wil.je.nog.iets.kwijt.over.de.vragen.of.iets.toevoegen.
+## 1                                                                                                                Hoi
+## 2                                                                                                                   
+## 3                                                                                                                   
+## 4                                                                                                                   
+## 5                                                                                                                   
+## 6 Bij vraag 11 een toelichting. Ouders moeten zeggenschap hebben mits er sprake is van incest/mishandeling in huis.</code></pre>
+<pre class="r"><code>str(abortus)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    104 obs. of  28 variables:
+##  $ ID                                                                                                                                          : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ Begintijd                                                                                                                                   : chr  &quot;5-8-24 8:49:29&quot; &quot;5-8-24 8:49:07&quot; &quot;5-8-24 8:50:36&quot; &quot;5-8-24 9:09:33&quot; ...
+##  $ Tijd.van.voltooien                                                                                                                          : chr  &quot;5-8-24 8:51:35&quot; &quot;5-8-24 8:52:43&quot; &quot;5-8-24 8:53:12&quot; &quot;5-8-24 9:11:26&quot; ...
+##  $ E.mail                                                                                                                                      : chr  &quot;anonymous&quot; &quot;anonymous&quot; &quot;anonymous&quot; &quot;anonymous&quot; ...
+##  $ Naam                                                                                                                                        : logi  NA NA NA NA NA NA ...
+##  $ Tijd.van.laatste.wijziging                                                                                                                  : logi  NA NA NA NA NA NA ...
+##  $ Wat.is.uw.geslacht..                                                                                                                        : chr  &quot;Man&quot; &quot;Man&quot; &quot;Vrouw&quot; &quot;Man&quot; ...
+##  $ Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond.                                                                                    : chr  &quot;MBO&quot; &quot;Middelbare school&quot; &quot;MBO&quot; &quot;Middelbare school&quot; ...
+##  $ Wat.is.uw.leeftijd.                                                                                                                         : int  22 20 21 20 18 30 23 21 24 20 ...
+##  $ Wat.is.uw.religieuze.overtuiging..                                                                                                          : chr  &quot;Niet gelovig&quot; &quot;Niet gelovig&quot; &quot;Anders&quot; &quot;Christendom &quot; ...
+##  $ In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht.                                                                     : chr  &quot;Groningen&quot; &quot;Groningen&quot; &quot;Groningen&quot; &quot;Friesland&quot; ...
+##  $ Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil.                                                                          : chr  &quot;Ja&quot; &quot;Ja&quot; &quot;Ja&quot; &quot;Ja&quot; ...
+##  $ Indien.u.bij.de.vorige.vraag..Nee..heeft.ingevuld...Vindt.u.dat.er.uitzonderingen.zijn.waarin.iemand.dit.wel.zelf.moet.kunnen.kiezen.....   : chr  &quot;Niet van toepassing &quot; &quot;Niet van toepassing &quot; &quot;Niet van toepassing &quot; &quot;&quot; ...
+##  $ Vindt.u.dat.er.voor.abortus.gekozen.mag.worden.als.de.gezondheid.van.de.vrouw.door.de.zwangerschap.in.gevaar.kan.komen.                     : chr  &quot;Ja&quot; &quot;Ja&quot; &quot;Ja&quot; &quot;Ja&quot; ...
+##  $ Vindt.u.dat.iemand.een.abortus.mag.als.de.zwangerschap.een.gevolg.is.van.verkrachting.                                                      : chr  &quot;Ja&quot; &quot;Ja&quot; &quot;Ja&quot; &quot;Ja&quot; ...
+##  $ Vindt.u.dat.een.minderjarig.kind.de.keuze.moet.hebben.om.voor.een.abortus.te.kiezen.....                                                    : chr  &quot;Ja&quot; &quot;Ja&quot; &quot;Ja&quot; &quot;Ja&quot; ...
+##  $ Vindt.u.dat.de.ouders.zeggenschap.moeten.hebben.over.of.hun.minderjarige.kind.wel.of.niet.voor.abortus.mag.kiezen...                        : chr  &quot;Weet ik niet&quot; &quot;Nee&quot; &quot;Nee&quot; &quot;Ja&quot; ...
+##  $ Moet.het.wettelijk.verplicht.worden.voor.vrouwen.die.een.abortus.willen.om.een.echo.van.de.foetus.te.zien.voordat.een.abortus.toegestaan.is.: chr  &quot;Nee&quot; &quot;Nee&quot; &quot;Nee&quot; &quot;Nee&quot; ...
+##  $ Vindt.u.dat.de.wettelijke.bedenktijd.moet.terugkomen.                                                                                       : chr  &quot;Weet ik niet&quot; &quot;Ja&quot; &quot;Ja&quot; &quot;Ja&quot; ...
+##  $ Vindt.u.dat.adoptie.een.alternatief.is.voor.abortus.                                                                                        : chr  &quot;Ja&quot; &quot;Nee&quot; &quot;Nee&quot; &quot;Nee&quot; ...
+##  $ Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.                                                           : chr  &quot;Ja&quot; &quot;Nee&quot; &quot;Nee&quot; &quot;Nee&quot; ...
+##  $ Het.leven.van.de.vrouw.in.gevaar.is                                                                                                         : chr  &quot;eens&quot; &quot;eens&quot; &quot;zeer eens&quot; &quot;eens&quot; ...
+##  $ Het.kind.met.een.geestelijke.handicap.geboren.kan.worden                                                                                    : chr  &quot;beetje eens&quot; &quot;eens&quot; &quot;oneens&quot; &quot;neutraal&quot; ...
+##  $ Het.kind.met.een.levensbedreigende.ziekte.geboren.kan.worden                                                                                : chr  &quot;beetje eens&quot; &quot;eens&quot; &quot;oneens&quot; &quot;beetje eens&quot; ...
+##  $ De.zwangerschap.veroorzaakt.is.door.verkrachting                                                                                            : chr  &quot;eens&quot; &quot;eens&quot; &quot;zeer eens&quot; &quot;eens&quot; ...
+##  $ De.vrouw.het.kind.niet.wil.houden.om.niet.gespecificeerde.redenen                                                                           : chr  &quot;eens&quot; &quot;beetje eens&quot; &quot;zeer eens&quot; &quot;oneens&quot; ...
+##  $ De.vrouw.niet.in.staat.is.voor.het.kind.te.zorgen.vanwege.financiële.beperkingen                                                            : chr  &quot;beetje eens&quot; &quot;eens&quot; &quot;zeer eens&quot; &quot;neutraal&quot; ...
+##  $ Wil.je.nog.iets.kwijt.over.de.vragen.of.iets.toevoegen.                                                                                     : chr  &quot;Hoi&quot; &quot;&quot; &quot;&quot; &quot;&quot; ...</code></pre>
 </div>
-<div id="grafiekjes" class="section level2">
-<h2>Grafiekjes:</h2>
-<p>blablablalalkdfalksdfjkl</p>
+<div id="omzetten-naar-factoren" class="section level2">
+<h2>Omzetten naar factoren</h2>
+<pre class="r"><code>library(ggplot2)
+#table(abortus$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil., useNA = &quot;always&quot;)
+
+
+
+# voor de vraag: Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?
+abortus$eigen_keuze_abortus &lt;- factor(x = abortus$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil.,  
+                           levels = c(&quot;Ja&quot;, &quot;Nee&quot;),
+                           labels = c(&quot;Wel abortus toestaan&quot;, &quot;Geen abortus toestaan&quot;))
+# Voor de vraag: Wat is uw religieuze overtuiging?
+
+abortus$geloof &lt;- factor(x = abortus$Wat.is.uw.religieuze.overtuiging.., 
+                           levels = c(&quot;Christendom&quot;, &quot;Islam&quot;, &quot;Hindoeïsme&quot;, &quot;Boeddhisme&quot;, &quot;Niet gelovig&quot;, &quot;Anders&quot;),
+                           labels = c(&quot;Christendom&quot;, &quot;Islam&quot;, &quot;Hind&quot;, &quot;Boed&quot;, &quot;Niet&quot;, &quot;Anders&quot;))
+
+
+
+
+
+table(abortus$eigen_keuze_abortus, useNA = &quot;always&quot;) # voor de vraag: Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?</code></pre>
+<pre><code>## 
+##  Wel abortus toestaan Geen abortus toestaan                  &lt;NA&gt; 
+##                   100                     4                     0</code></pre>
+<pre class="r"><code>plot(abortus$eigen_keuze_abortus)</code></pre>
+<p><img src="data:image/png;base64,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+l8/m04WAgpQSEABCgkoQCEBBSgkoACFBBSgkIACFBJQgEICClBIQAEKCShAIQEFKCSgAIUEFKCQgAIUElCAQgIKUEhAAQoJKEAhAQUoJKAAhQQUoJCAAhQSUIBCAgpQSEABCgkoQCEBBSgkoACFBBSgkIACFBJQgEICClBIQAEKCShAIQEFKCSgAIUEFKCQgAIUElCAQgIKUEhAAQoJKEAhAQUoJKAAhQQUoJCAAhQSUIBCAgpQSEABCgkoQCEBBSgkoACFBBSgkIACFBJQgEICClBIQAEKCShAIQEFKCSgAIUEFKCQgAIUElCAQgIKUEhAAQoJKEAhAQUoJKAAhQQUoJCAAhQSUIBCAgpQSEABCgkoQCEBBSgkoACFBBSgkIACFBJQgEICClBIQAEKCShAIQEFKCSgAIUEFKCQgAIUElCAQgIKUEhAAQoJKEAhAQUoJKAAhQQUoJCAAhQSUIBCAgpQSEABCgkoQCEBBSgkoACFBBSgkIACFBJQgEICClBIQAEKCShAIQEFKCSgAIUEFKCQgAIUElCAQgIKUEhAAQoJKEAhAQUoJKAAhQQUoJCAAhQSUIBCAgpQSEABCgkoQCEBBSgkoACFBBSg0P8HGElz2yhmcF4AAAAASUVORK5CYII=" width="672" /></p>
+<pre class="r"><code>cat(abortus$geloof)</code></pre>
+<pre><code>## 5 5 6 NA 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 NA 6 5 5 5 5 2 5 5 5 NA NA 5 5 NA 5 5 5 5 5 6 5 5 5 5 5 5 2 5 5 5 NA NA 5 NA 5 5 5 5 5 5 5 5 5 NA 5 6 5 5 5 5 5 NA 5 5 5 5 5 5 5 NA 5 5 5 5 6 5 5 5 5 5 5 5 5 5 5 5 6 5 5 6 5</code></pre>
+<pre class="r"><code>#ggplot(abortus$geloof, aes(x=test, y=test2)) +
+ # geom_bar(stat=&quot;identity&quot;, width=0.2)</code></pre>
+<pre class="r"><code>y &lt;- c(0,0,0,0,1,0,1,0,1,0,1,0,1,1)
+
+p &lt;- sum(y) / length(y)
+# is p &gt; PI (50%)</code></pre>
 <hr>
 </div>
 
