@@ -1,6 +1,6 @@
 ---
 title: "Logboek: Publieke Opinie"
-author: "Iris Ineke, Jasper Jonker, Floris Menninga"
+author: "Floris Menninga"
 date: "2024-04-22"
 output: html_document
 ---
@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## **De enquete** ##
 
-Om de meningen van het publiek te peilen met betrekking tot hun etische normen en waarden is er een vragenlijst opgesteld 
+Om de meningen van het publiek te peilen met betrekking tot hun ethische normen en waarden is er een vragenlijst opgesteld 
 die de volgende vragen en stellingen bevat:
 
 <hr>
@@ -102,12 +102,24 @@ head(abortus)
 
 ```{r}
 summary(abortus)
-str(abortus)
+#str(abortus)
 ```
 
+```{r echo=FALSE}
+library(ggplot2)
+
+df <- data.frame(abortus$Wat.is.uw.leeftijd.) 
+
+# verdeling van de leeftijden:
+ggplot(df, aes(x= abortus$Wat.is.uw.leeftijd.)) +
+  geom_density() +
+  xlab("Leeftijd (Jaren)") 
+
+
+```
 
 ## Omzetten naar factoren
-
+In het onderstaande blok code worden factoren gemaakt van de meerkeuze vragen.
 
 
 ```{r}
@@ -120,11 +132,12 @@ library(ggplot2)
 abortus$eigen_keuze_abortus <- factor(x = abortus$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil.,  
                            levels = c("Ja", "Nee"),
                            labels = c("Wel abortus toestaan", "Geen abortus toestaan"))
-# Voor de vraag: Wat is uw religieuze overtuiging?
 
+# Voor de vraag: Wat is uw religieuze overtuiging?
 abortus$geloof <- factor(x = abortus$Wat.is.uw.religieuze.overtuiging.., 
                            levels = c("Christendom", "Islam", "Hindoeïsme", "Boeddhisme", "Niet gelovig", "Anders"),
                            labels = c("Christendom", "Islam", "Hind", "Boed", "Niet", "Anders"))
+
 abortus.test <- data.frame(abortus$geloof)
 
 
@@ -133,21 +146,29 @@ abortus.test <- data.frame(abortus$geloof)
 table(abortus$eigen_keuze_abortus, useNA = "always") # voor de vraag: Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?
 
 
-df <- data.frame(abortus$Wat.is.uw.leeftijd.) 
-
-# verdeling van de leeftijden:
-ggplot(df, aes(x= abortus$Wat.is.uw.leeftijd.)) +
-  geom_density()
 
 
-df2 <- data.frame(abortus) # test
 
+
+#ggplot(df, aes(x=, y=abortus$Wat.is.uw.leeftijd.)) +
+ # geom_bar(stat="identity", color="blue", fill="white")
+
+```
+```{r echo=TRUE}
+library(ggplot2)
 # Grafiek met de verschillende geloven en de leeftijdverdeling die er bij hoort. 
 ggplot(df, aes(y=abortus$Wat.is.uw.religieuze.overtuiging..,
                x= abortus$Wat.is.uw.leeftijd.)) +
   geom_boxplot(color = "black", fill = "springgreen") +
     xlab("Leeftijd (Jaren") +
     ylab(" ") # namen van de geloven staan er al.... geen label nodig.
+
+```
+
+```{r}
+library(ggplot2)
+
+
 
 # Grafiek met leeftijden uit verschillende provincies.
 ggplot(df, aes(y=abortus$In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht.,
@@ -157,40 +178,46 @@ ggplot(df, aes(y=abortus$In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeu
     ylab(" ") # namen van de geloven staan er al.... geen label nodig.
 
 
-begin_tijd <- as.POSIXlt(c(abortus$Begintijd)) # startpunt van invullen per persoon.
-eind_tijd <- as.POSIXlt(c(abortus$Tijd.van.voltooien)) # eindpunt  van invullen per persoon.
+
+```
 
 
+
+```{r}
+library(ggplot2)
+
+# De invultijd per leeftijd:
+
+begin_tijd <- as.POSIXct(c(abortus$Begintijd)) # startpunt van invullen per persoon.
+eind_tijd <- as.POSIXct(c(abortus$Tijd.van.voltooien)) # eindpunt  van invullen per persoon.
+
+test <- c()
 tijd_vector <- c()
-# Om de totale tijd uit te rekenen die de mensen nodig hadden om het formulier in te vullen. 
-for (x in seq_along(abortus$Begintijd))
- # print(paste0("Begin tijd: ", begin_tijd[x]))
- # print(paste0("eind tijd: ", eind_tijd[x]))
-  print(eind_tijd[x] - begin_tijd[x])
-  tijd_vector[x] <- c(tijd_vector, eind_tijd[x] - begin_tijd[x])
+# Om de totale tijd uit te rekenen die de mensen nodig hadden om het formulier in te vullen.
+# Het verschil tussen de eindtijd en de begintijd. 
+for (x in seq_along(abortus$Begintijd)) {
+  #print(paste0("Begin tijd: ", begin_tijd[x]))
+  #print(paste0("eind tijd: ", eind_tijd[x])) 
+  tijd_vector[x] <- as.numeric((eind_tijd[x] - begin_tijd[x]))
+}
 
+```
+Op 11 mei 2024 grafiek gemaakt van leeftijd / tijd nodig om de enquete in te vullen. 
+```{r}
+library(ggplot2)
+tijd_vector <- data.frame(tijd_vector)
+df3 <- data.frame(abortus$Wat.is.uw.leeftijd.) # test 
 
-
-ggplot(df, aes(y=abortus$Tijd.van.voltooien,
-               x= abortus$Wat.is.uw.leeftijd.)) +
+ggplot(tijd_vector, aes(y=abortus$Wat.is.uw.leeftijd.,
+                        x= tijd_vector)) +
   geom_boxplot(color = "black", fill = "springgreen") +
-    xlab("Leeftijd (Jaren") +
-    ylab(" ") # namen van de geloven staan er al.... geen label nodig.
+    xlab("TEST") +
+    ylab(" ") +
+    coord_flip()
 
-
-
-
-#ggplot(df, aes(x=, y=abortus$Wat.is.uw.leeftijd.)) +
- # geom_bar(stat="identity", color="blue", fill="white")
-
+summary(tijd_vector)
+head(tijd_vector)
 ```
-
-
-
-```{r iris}
-summaryzzz
-```
-
 
 
 
