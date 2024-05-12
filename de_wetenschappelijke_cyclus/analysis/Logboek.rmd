@@ -136,7 +136,14 @@ abortus$eigen_keuze_abortus <- factor(x = abortus$Vindt.u.dat.iemand.zelf.moet.k
 # Voor de vraag: Wat is uw religieuze overtuiging?
 abortus$geloof <- factor(x = abortus$Wat.is.uw.religieuze.overtuiging.., 
                            levels = c("Christendom", "Islam", "Hindoeïsme", "Boeddhisme", "Niet gelovig", "Anders"),
-                           labels = c("Christendom", "Islam", "Hind", "Boed", "Niet", "Anders"))
+                           labels = c("Christendom", "Islam", "Hindoeïsme", "Boeddhisme", "Niet gelovig", "Anders"))
+
+
+abortus$geslacht <- factor(x = abortus$Wat.is.uw.geslacht..,
+                           levels = c("Man", "Vrouw"),
+                           labels = c("Man", "Vrouw"))
+
+
 
 abortus.test <- data.frame(abortus$geloof)
 
@@ -203,24 +210,29 @@ for (x in seq_along(abortus$Begintijd)) {
 
 ```
 Op 11 mei 2024 grafiek gemaakt van leeftijd / tijd nodig om de enquete in te vullen. 
+12-05-2024: Met facet_wrap() onderscheid gemaakt tussen mannen en vrouwen. (twee plots)
 ```{r}
 library(ggplot2)
 tijd_vector <- data.frame(tijd_vector)
 df3 <- data.frame(abortus$Wat.is.uw.leeftijd.) # test 
 
-ggplot(tijd_vector, aes(y=abortus$Wat.is.uw.leeftijd.,
-                        x= tijd_vector)) +
-  geom_boxplot(color = "black", fill = "springgreen") +
-    xlab("TEST") +
-    ylab(" ") +
+ggplot(tijd_vector, aes(y=tijd_vector,
+                        x= abortus$Wat.is.uw.leeftijd.)) +
+  geom_boxplot(aes(color = abortus$geslacht)) +
+  facet_wrap(~abortus$geslacht) +
+    xlab("Leeftijd (Jaren)") +
+    ylab("Tijd om formulier in te vullen (minuten)") +
     coord_flip()
 
 summary(tijd_vector)
 head(tijd_vector)
 ```
+```{r}
+
+```
 
 
-
+## 
 
 ```{r}
 
