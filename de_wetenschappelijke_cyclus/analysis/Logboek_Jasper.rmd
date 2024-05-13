@@ -1,30 +1,33 @@
 ---
-title: "Logboek_Iris"
-author: "Iris Ineke"
-date: "2024-05-06"
+title: "Logboek_Jasper"
+author: "Jasper"
+date: "2024-05-13"
 output: html_document
 ---
+# inleiding
+Dit is het logboek van de volgende onder zoeksvraag: 
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+*Is er een verschil tussen de ethische meningen van mensen van andere leeftijden, geslachten en geloof?* <br>
+Dit gaan we doen met behulp van een enqute en een  verwerking in R studio. <br>
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+# Logboek
+## 22 april tot 26 april
+In deze periode hebben we vooral gekeken naar wat we wouden onderzoeken en wat. <br>
+We hebben uiteindelijk gekozen voor arbortus. <br>
+Omdat dit een etische kwetsie is, maar niet zo zwaar ligt als bijvoorbeeld vluchtelingen.<br>
+Ook is het al vaak in het nieuws geweest.<br>
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## 27 april tot 6 mei <br>
+In deze periode hebben we de informatie gezocht over het onderwerp en maakte we ookeen enqute die we hebben laten zien aan andere personen. <br>
+Het laaste deden we door onafhanelijke persoen zodat we fouten er uit konden krijgen. 
+Fouten zoals een te sturende vraag of een onduidelijke vraag. <br>
+De verbeter punten waren: <br>
 
-```{r cars}
-summary(cars)
-```
+## 7 mei
+Begonnen we met de enqute na alle goedkeureingen.
+## 8 mei 
+Meerdere mensen gevraagd om het in te vullen.
 
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## 9 mei tot ......
+enqute open laten staan en allemaal meet waarden binnen krijgen en bedeken waar het nog meer hebben kunnen uit delen
