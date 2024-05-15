@@ -28,3 +28,62 @@ plot(pressure)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+Vrijdag 26 april,
+Protocol geschreven en introductie voor vraag over bedenktijd:
+"vindt u dat de wettelijke bedenktijd moet terugkomen?"
+
+Protocol:
+Materiaal: 
+Een werkende R installatie 
+Een enquête over het door ons gekozen ethische probleem: Abortus.  
+ 
+Methode: 
+Maak een enquête die vragen bevat over de gekozen kwestie: ‘Abortus’. Deze vragenlijst bestaat uit een persoonlijk deel met vragen over onder andere; leeftijd, sekse en geloof. Verder heeft de enquête nog een deel met inhoudelijke vragen over de gekozen ethische kwestie. Deze vragen zullen ons een indicatie geven over hoe de mensen denken over het ethische onderwerp. Zodra deze enquête gemaakt is, zullen we deze laten testen. Dit doen we door familieleden te vragen om de enquête te maken en hun feedback hierna te delen. Waar nodig zullen we vervolgens de vragenlijst verbeteren. 
+Vervolgens gaan we zoveel mogelijk mensen vragen de vragenlijst in te vullen. Met de data die uit deze vragenlijst komt kunnen we vervolgens door middel van R verder onderzoek doen. In R gaan we door middel van grafieken maken onderzoeken of er inderdaad een correlatie is tussen de gevraagde variabele en de mening over abortus. 
+
+Achtergrond informatie:
+Sinds 1 januari 2023 is de verplichte minimale bedenktijd van 5 dagen vervallen. Voorheen moesten er minimaal 5 dagen zitten tussen het gesprek met een arts en de abortus zelf. Op dit moment geldt een flexibele bedenktijd die wordt bepaalt door een gesprek tussen de vrouw die abortus wil en een arts. De arts bepaalt nu op basis van dit gesprek hoelang de bedenktijd moet zijn voor de vrouw. Dit kan 0 dagen zijn, maar ook 10.
+
+
+Zaterdag 4 mei:
+Feedback formulier gemaakt voor de enquête vragen.
+Vragen:
+- Hoe zou u de algehele ervaring van het invullen van deze enquête beoordelen?
+    Slecht, matig, voldoende, goed, uitstekend
+- Welke aspecten van de enquête vond u het meest waardevol en waarom?
+- Zijn er specifieke vragen in de enquête die u verwarrend vond of waarvan u denkt dat ze verbeterd kunnen worden? Zo ja, kunt u ons vertellen welke vragen en eventuele suggesties voor verbetering?
+- Hoe zou u de lengte van de enquête beoordelen?
+    te kort, precies goed, te lang
+- Heeft u nog andere opmerkingen of suggesties voor ons?
+(Zie document Feedback_enquête.docx)
+
+
+Zondag 5 mei,
+Feedback laten invullen door twee mensen en resultaten besproken.
+Conclusie:
+De volgorde van de vragen veranderd. Na de vraag over of er uitzonderingen zijn, de vragen met uitzonderingen geplaatst.Verder nog de vraagstelling van sommige vragen aangepast. En de introductie herschreven.
+
+
+Woensdag 8 mei,
+Vragenlijst rondgestuurd. Logboek individueel geschreven.
+
+Maandag 13 mei,
+Inlezen radar chart voor presentatie (met uit welke provinvie mensen komen).
+input: 
+- kolom: quantitative variable(hoeveelheden)
+- eerste 2 regels: min/max per variable
+- Library 'fmsb' is nodig, nog installeren!!
+Je kan het extra customizen, zie r-graph-gallery.com
+(voor gegevens enquête verwerken gebruiken: 'grouped and stacked barplot')
+
+
+Dinsdag 14 mei:
+Omdat een ander groepje al de radar chart gaat doen, hebben we besloten om een andere visualizatie te kiezen. Dus we gaan nu de circular packing uitzoeken. 
+Dit kan met de 'ggraph' package. 
+
+
+Woensdag 15 mei:
+
+
