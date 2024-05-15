@@ -82,29 +82,8 @@ Je kan het extra customizen, zie r-graph-gallery.com
 Dinsdag 14 mei:
 Omdat een ander groepje al de radar chart gaat doen, hebben we besloten om een andere visualizatie te kiezen. Dus we gaan nu de circular packing uitzoeken. 
 Dit kan met de 'ggraph' package. 
-Voorbeeld van de site:
 
-```{r}
-# Libraries
-library(ggraph)
-library(igraph)
-library(tidyverse)
- 
-# We need a data frame giving a hierarchical structure. Let's consider the flare dataset:
-edges <- flare$edges
- 
-# Usually we associate another dataset that give information about each node of the dataset:
-vertices <- flare$vertices
- 
-# Then we have to make a 'graph' object using the igraph library:
-mygraph <- graph_from_data_frame( edges, vertices=vertices )
- 
-# Make the plot
-ggraph(mygraph, layout = 'circlepack') + 
-  geom_node_circle() +
-  theme_void()
-```
 
-? (Je moet een edge list maken met de plaatsen van de factoren)
+Woensdag 15 mei:
 
 
