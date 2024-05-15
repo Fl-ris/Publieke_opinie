@@ -35,28 +35,114 @@ enqute open laten staan en allemaal meet waarden binnen krijgen en bedeken waar 
 ## 14 mei
 Ik moet laten zien wat de gemiddelde leeftijd is van onze meetwaarde. 
 ```{r}
+
+library(ggplot2)
 abortus <- read.csv("abortus_dataset.csv",
                     na.strings = "NA")
 head(abortus)
+#table(abortus$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil., useNA = "always")
+
+
+
+# voor de vraag: Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?
+abortus$eigen_keuze_abortus <- factor(x = abortus$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil.,  
+                           levels = c("Ja", "Nee"),
+                           labels = c("Wel abortus toestaan", "Geen abortus toestaan"))
+
+# Voor de vraag: Wat is uw religieuze overtuiging?
+abortus$geloof <- factor(x = abortus$Wat.is.uw.religieuze.overtuiging.., 
+                           levels = c("Christendom", "Islam", "Hindoeïsme", "Boeddhisme", "Niet gelovig", "Anders"),
+                           labels = c("Christendom", "Islam", "Hindoeïsme", "Boeddhisme", "Niet gelovig", "Anders"))
+
+
+abortus$geslacht <- factor(x = abortus$Wat.is.uw.geslacht..,
+                           levels = c("Man", "Vrouw"),
+                           labels = c("Man", "Vrouw"))
+# Voor de vraag: Wat is uw religieuze overtuiging?
+
+abortus$afkomst <- factor(x = abortus$In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht., 
+                           levels = c("Drenthe", "Flevoland", "Friesland", "Gelderland", "Groningen", "Limburg", "Noord-Brabant", "Noord-Holland", "Overijssel", "Utrecht", "Zeeland", "Zuid-Holland", "Ik ben niet in Nederland opgegroeid"),
+                           labels = c("Drenthe", "Flevoland", "Friesland", "Gelderland", "Groningen", "Limburg", "Noord-Brabant", "Noord-Holland", "Overijssel", "Utrecht", "Zeeland", "Zuid-Holland", "Buitenland"))
+
+
+
+abortus.test <- data.frame(abortus$geloof)
+
+
+
+
+table(abortus$eigen_keuze_abortus, useNA = "always") # voor de vraag: Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?
+
+
+
+
+
+
+#ggplot(df, aes(x=, y=abortus$Wat.is.uw.leeftijd.)) +
+ # geom_bar(stat="identity", color="blue", fill="white")
+
 ```
+
 
 ```{r}
 library(tidyverse)
 summary(abortus$Wat.is.uw.leeftijd.)
+
 ```
+
 ```{r}
+
+leeftijd <- data.frame(abortus$Wat.is.uw.leeftijd.)
+
 ggplot(leeftijd, aes(x=abortus$Wat.is.uw.leeftijd.)) + geom_histogram(aes(y =..density..), color = "black")+geom_density(alpha = .2, fill= "red")
 ```
+
+/n
 Hier zie dat het niet hellemaal normaal verdeelt is maar kunnen wel een test doen
+
 ```{r}
 shapiro.test(abortus$Wat.is.uw.leeftijd.)
+?s
 ```
+
 Hier zie zeker dat het niet normaal verdeelt is.
 
-## 15 mei.
-Ik ga de provincies aen zien in een Donut chart zodat je het makkelijk te zien is.
-```{r}
-summary(abortus$In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht.)
 
+## 15 mei.
+Ik laat zien waar onze invullers vandaan komen in een donut chart.
+
+```{r}
+
+# Create Data
+x <- table(abortus$afkomst)
+
+(city_count <- data.frame(x))
+
+# Compute percentages
+city_count$fraction = city_count$Freq / sum(city_count$Freq)
+city_count$percentage = round(city_count$fraction *100, digits =1)
+city_count$ymax = cumsum(city_count$fraction)
+city_count$ymin = c(0, head(city_count$ymax, n=-1))
+city_count$labelp = (city_count$ymax+city_count$ymin)/2
+city_count$label = (paste0(city_count$percentage, "%"))
+renamed_city_count <- city_count %>%
+    rename(
+        Provincies = Var1
+    )
+
+# Make the plot
+ggplot(renamed_city_count, aes(ymax=ymax, ymin=ymin, xmax=13, xmin=3, fill=Provincies)) +
+     geom_rect() +
+     geom_label( x = 13, aes(y=labelp, label= label), size=3)+
+     
+     coord_polar(theta="y") + 
+     xlim(c(-13, 13)) 
 ```
 
+Hier kan je zien dat de meeste mensen uit de noordelijke regios komen. \n
+Dus uit Drenthe, Friesland en Groningen \n
+
+Ook een boxplot gemaakt over de verdeling van de leeftijd
+```{r}
+ggplot(leeftijd, aes(x = abortus$Wat.is.uw.leeftijd.)) + geom_boxplot()
+```
