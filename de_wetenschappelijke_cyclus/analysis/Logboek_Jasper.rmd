@@ -45,8 +45,6 @@ library(tidyverse)
 summary(abortus$Wat.is.uw.leeftijd.)
 ```
 ```{r}
-leeftijd <- data.frame(abortus$Wat.is.uw.leeftijd.)
-
 ggplot(leeftijd, aes(x=abortus$Wat.is.uw.leeftijd.)) + geom_histogram(aes(y =..density..), color = "black")+geom_density(alpha = .2, fill= "red")
 ```
 Hier zie dat het niet hellemaal normaal verdeelt is maar kunnen wel een test doen
@@ -54,3 +52,11 @@ Hier zie dat het niet hellemaal normaal verdeelt is maar kunnen wel een test doe
 shapiro.test(abortus$Wat.is.uw.leeftijd.)
 ```
 Hier zie zeker dat het niet normaal verdeelt is.
+
+## 15 mei.
+Ik ga de provincies aen zien in een Donut chart zodat je het makkelijk te zien is.
+```{r}
+summary(abortus$In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht.)
+
+```
+
