@@ -191,7 +191,7 @@ ggplot(df, aes(y=abortus$Wat.is.uw.religieuze.overtuiging..,
     ylab(" ") # namen van de geloven staan er al.... geen label nodig.
 
 ```
-
+Verdeling van de leeftijd van de mensen die de enquete hebben ingevuld en hun ideologie. 
 
 
 ```{r}
@@ -209,7 +209,8 @@ ggplot(df, aes(y=abortus$In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeu
 
 
 ```
-
+De verdeling van de leeftijden en de provincies waar deze menensen vandaan komen wordt weergegeven op deze grafiek. 
+Niet elke provincie heeft genoeg datapunten om een boxplot van te maken. 
 
 
 ```{r}
@@ -253,6 +254,9 @@ ggplot(tijd_vector, aes(y=tijd_vector,
 summary(tijd_vector)
 head(tijd_vector)
 ```
+Bovenstaande grafiek laat de relatie tussen leeftijd en tijdnodig om het formulier in te vullen zien. 
+Dit wordt voor mannen en vrouwen gedaan. (links mannen en rechts vrouwen)
+
 # Circulair Packing test 1: 
 ```{r eval=FALSE}
 # Libraries
@@ -389,12 +393,17 @@ df_1 <- data.frame(abortus$vader)
 
 ggplot(df_1, aes(x= c(1:104), y = abortus$vader)) +
   geom_point(aes(color = abortus$geslacht, size = abortus$Wat.is.uw.leeftijd.)) +
+  scale_color_manual(name = "Cylinders", "ak;ldj") +
   xlab(" ") +
-  ylab("Keuze:")
+  ylab(" ") +
+
   
 
 ```
+15-05-2024:
 Bovenstaande grafiek: Moet de vader zeggenschap hebben over de abortus: Ja, Nee of geen mening.
+Het geslacht van het persoon wordt met de twee kleuren blauw en rood aangegeven en de leeftijd met de grootte van het bolletje. (zie legenda voor schaalverdeling)
+
 
 ## Cirkel packing grafiek test
 
@@ -404,11 +413,13 @@ library(ggraph)
 library(igraph)
 library(tidyverse)
 library(rgexf)
+
+
 edges <- data.frame(c("test", "test.test2", "test.test2.test3", "test0"))
 vertices <- data.frame(c("1", "2", "3"), c("1", "2", "3"))
 
  
-edgelist <- matrix(c("1","2","3"),
+edgelist <- matrix(list(c("1","2","3"), c("1","2","3")),
                     byrow=TRUE, ncol=2)
 
 edge.list(edgelist)
@@ -427,6 +438,26 @@ ggraph(mygraph, layout = 'circlepack') +
   theme_test()
 ```
 
+```{r}
+library(ggraph)
+library(igraph)
+library(tidyverse)
+ 
+# We need a data frame giving a hierarchical structure. Let's consider the flare dataset:
+edges <- flare$edges
+#edges <- 
+ 
+# Usually we associate another dataset that give information about each node of the dataset:
+vertices <- flare$vertices
+ 
+# Then we have to make a 'graph' object using the igraph library:
+mygraph <- graph_from_data_frame( edges, vertices=vertices )
+ 
+# Make the plot
+ggraph(mygraph, layout = 'circlepack') + 
+  geom_node_circle() +
+  theme_void()
+```
 
 ```{r}
 
