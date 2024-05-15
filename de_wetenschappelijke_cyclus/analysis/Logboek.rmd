@@ -150,6 +150,21 @@ abortus$afkomst <- factor(x = abortus$In.welke.provincie.heeft.u.het.grootste.de
 
 
 
+abortus$onderwijsniveau <- factor(x =
+                                abortus$Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond.,
+                                  levels = c("Geen diploma", "Middelbare school", "MBO", "HBO", "Universiteit","Overige"),
+                                  labels = c("Geen diploma", "Middelbare school", "MBO", "HBO", "Universiteit","Overige"))
+
+
+abortus$vader <- factor(x = 
+                          abortus$Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.,
+                            levels = c("Ja", "Nee"),
+                            labels = c("Ja", "Nee"))
+
+abortus$als_nee <- factor(x = 
+                            abortus$Indien.u.bij.de.vorige.vraag..Nee..heeft.ingevuld...Vindt.u.dat.er.uitzonderingen.zijn.waarin.iemand.dit.wel.zelf.moet.kunnen.kiezen.....,
+                          levels = c(""))
+
 abortus.test <- data.frame(abortus$geloof)
 
 
@@ -216,8 +231,12 @@ for (x in seq_along(abortus$Begintijd)) {
 }
 
 ```
+
+
 Op 11 mei 2024 grafiek gemaakt van leeftijd / tijd nodig om de enquete in te vullen. 
 12-05-2024: Met facet_wrap() onderscheid gemaakt tussen mannen en vrouwen. (twee plots)
+
+
 ```{r}
 library(ggplot2)
 tijd_vector <- data.frame(tijd_vector)
@@ -234,8 +253,8 @@ ggplot(tijd_vector, aes(y=tijd_vector,
 summary(tijd_vector)
 head(tijd_vector)
 ```
-# Circulair Packing test: 
-```{r}
+# Circulair Packing test 1: 
+```{r eval=FALSE}
 # Libraries
 library(data.tree)
 library(ggraph)
@@ -279,11 +298,12 @@ population
 
 
 
-graph <- tbl_graph(flare$vertices, flare$edges)
+#graph <- tbl_graph(flare$vertices, flare$edges)
 set.seed(1)
 ggraph(graph, 'circlepack', weight = size) + 
   geom_node_circle(aes(fill = depth), size = 0.25, n = 50) + 
   coord_fixed()
+
 ```
 15-05-2024:
 Om te achterhalen of de leeftijden van de mensen die de enquete ingevuld hebben normaal verdeeld zijn 
@@ -303,7 +323,7 @@ dat betekend dat er wel een significant verschil is tussen een nomale verdeling 
 
 ```{r}
 
-pwr.t.test(n = n, d = d, sig.level = alpha, type = "one.sample", alternative = "less")
+#pwr.t.test(n = n, d = d, sig.level = alpha, type = "one.sample", alternative = "less")
 
 ```
 # PIE CHART
@@ -327,7 +347,15 @@ ggplot(data, aes(x="", y=value, fill=group)) +
 
 
 ```
-```{r}
+```{r eval=FALSE}
+
+
+# Load ggplot2
+library(ggplot2)
+library(dplyr)
+
+
+
 
 
 # Load ggplot2
@@ -341,26 +369,8 @@ data <- data.frame(
 )
 
 
-
-
-# Load ggplot2
-library(ggplot2)
-library(dplyr)
-
-# Create Data
-data <- data.frame(
-  group=LETTERS[1:5],
-  value=c(13,7,9,21,2)
-)
-
-# Compute the position of labels
-data <- data %>% 
-  arrange(desc(group)) %>%
-  mutate(prop = value / sum(data$value) *100) %>%
-  mutate(ypos = cumsum(prop)- 0.5*prop )
-
 # Basic piechart
-ggplot(data, aes(x="", y=prop, fill=group)) +
+ggplot(data, aes(x="", y=abortus$afkomst, fill=group)) +
   geom_bar(stat="identity", width=1, color="white") +
   coord_polar("y", start=0) +
   theme_void() + 
@@ -373,8 +383,50 @@ ggplot(data, aes(x="", y=prop, fill=group)) +
 
 
 ```
+```{r}
+library(ggplot2)
+df_1 <- data.frame(abortus$vader)
 
-## 
+ggplot(df_1, aes(x= c(1:104), y = abortus$vader)) +
+  geom_point(aes(color = abortus$geslacht, size = abortus$Wat.is.uw.leeftijd.)) +
+  xlab(" ") +
+  ylab("Keuze:")
+  
+
+```
+Bovenstaande grafiek: Moet de vader zeggenschap hebben over de abortus: Ja, Nee of geen mening.
+
+## Cirkel packing grafiek test
+
+```{r}
+# Test 2:
+library(ggraph)
+library(igraph)
+library(tidyverse)
+library(rgexf)
+edges <- data.frame(c("test", "test.test2", "test.test2.test3", "test0"))
+vertices <- data.frame(c("1", "2", "3"), c("1", "2", "3"))
+
+ 
+edgelist <- matrix(c("1","2","3"),
+                    byrow=TRUE, ncol=2)
+
+edge.list(edgelist)
+
+# We need a data frame giving a hierarchical structure. Let's consider the flare dataset:
+#edges <- flare$edges
+# Usually we associate another dataset that give information about each node of the dataset:
+#vertices <- flare$vertices
+
+# Then we have to make a 'graph' object using the igraph library:
+mygraph <- graph_from_data_frame(edgelist)
+
+# Make the plot
+ggraph(mygraph, layout = 'circlepack') + 
+  geom_node_circle() +
+  theme_test()
+```
+
 
 ```{r}
 
