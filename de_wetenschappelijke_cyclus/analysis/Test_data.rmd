@@ -18,6 +18,33 @@ knitr::opts_chunk$set(echo = TRUE)
 Ik gebruik de rnorm functie om testdata te genereren.
 
 
+7-05-2024:
+Genereren van willekeurige true / false waarden als 
+testresultaten van de enquete.
+
+
+
+```{r}
+
+df <- data.frame()
+
+set.seed(500)
+vraag_1 <- as.numeric(rbinom(200, 1, 0.5))  # genereer 200 true/false resultaten
+
+vraag_2 <- as.logical(rbinom(200, 1, 0.5))
+vraag_3 <- as.logical(rbinom(200, 1, 0.5))
+vraag_4 <- as.logical(rbinom(200, 1, 0.5))
+vraag_5 <- as.logical(rbinom(200, 1, 0.5))
+vraag_6 <- as.logical(rbinom(200, 1, 0.5))
+vraag_7 <- as.logical(rbinom(200, 1, 0.5))
+
+
+hist(vraag_1)
+
+
+```
+Deze true / false waarden zijn van het volgende datatype: `r typeof(vraag_1)`
+
 ```{r }
 aantal_inwoners <- 100
 landen = c("Japan", "Nederland", "Amerika")
