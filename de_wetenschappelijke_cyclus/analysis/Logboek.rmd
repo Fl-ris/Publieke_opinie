@@ -156,21 +156,84 @@ abortus$onderwijsniveau <- factor(x =
                                   labels = c("Geen diploma", "Middelbare school", "MBO", "HBO", "Universiteit","Overige"))
 
 
+
+# Voor de vraag: Indien u bij de vorige vraag nee heeft ingevuld...
+abortus$als_nee <- factor(x = 
+                        abortus$Indien.u.bij.de.vorige.vraag..Nee..heeft.ingevuld...Vindt.u.dat.er.uitzonderingen.zijn.waarin.iemand.dit.wel.zelf.moet.kunnen.kiezen.....,
+                          levels = c("Ja", "Nee", "Niet van toepassing"),
+                          labels = c("Ja", "Nee", "Niet van toepassing"))
+
+abortus.test <- data.frame(abortus$geloof)
+
+abortus$gezondheid_vrouw <- factor(x = abortus$Vindt.u.dat.er.voor.abortus.gekozen.mag.worden.als.de.gezondheid.van.de.vrouw.door.de.zwangerschap.in.gevaar.kan.komen.,
+                                   levels = c("Ja", "Nee", "Weet ik niet"),
+                                   labels = c("Ja", "Nee", "Weet ik niet"))
+
+
+abortus$gevolg <- factor(x = abortus$De.zwangerschap.veroorzaakt.is.door.verkrachting,
+                         levels = c("Ja", "Nee"),
+                         labels = c("Ja", "Nee"))
+
+abortus$minderjarig <- factor(x = abortus$Vindt.u.dat.een.minderjarig.kind.de.keuze.moet.hebben.om.voor.een.abortus.te.kiezen.....,
+                              levels = c("Ja", "Nee", "Weet ik niet"),
+                              labels = c("Ja", "Nee", "Weet ik niet"))
+
+abortus$ouders <- factor(x = abortus$Vindt.u.dat.de.ouders.zeggenschap.moeten.hebben.over.of.hun.minderjarige.kind.wel.of.niet.voor.abortus.mag.kiezen...,
+                         levels = c("Ja", "Nee", "Weet ik niet"),
+                         labels = c("Ja", "Nee", "Weet ik niet"))
+
+abortus$echo <- factor(x = abortus$Moet.het.wettelijk.verplicht.worden.voor.vrouwen.die.een.abortus.willen.om.een.echo.van.de.foetus.te.zien.voordat.een.abortus.toegestaan.is.,
+                       levels = c("Ja", "Nee", "Weet ik niet"),
+                       labels = c("Ja", "Nee", "Weet ik niet"))
+
+abortus$bedenktijd <- factor(x = abortus$Vindt.u.dat.de.wettelijke.bedenktijd.moet.terugkomen.,
+                             levels = c("Ja", "Nee", "Weet ik niet"),
+                             labels = c("Ja", "Nee", "Weet ik niet"))
+                             
+abortus$adoptie <- factor(x = abortus$Vindt.u.dat.adoptie.een.alternatief.is.voor.abortus.,
+                          levels = c("Ja", "Nee", "Weet ik niet"),
+                          labels = c("Ja", "Nee", "Weet ik niet"))
+
 abortus$vader <- factor(x = 
                           abortus$Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.,
                             levels = c("Ja", "Nee"),
                             labels = c("Ja", "Nee"))
 
-abortus$als_nee <- factor(x = 
-                            abortus$Indien.u.bij.de.vorige.vraag..Nee..heeft.ingevuld...Vindt.u.dat.er.uitzonderingen.zijn.waarin.iemand.dit.wel.zelf.moet.kunnen.kiezen.....,
-                          levels = c(""))
+# Vragen met een volgorde: 
+# namen van de variabelen eidigen met "_o" om aan te duiden dat er een volgorde in zit (order)
 
-abortus.test <- data.frame(abortus$geloof)
+abortus$levensgevaar_vrouw_o <- factor(x = abortus$Het.leven.van.de.vrouw.in.gevaar.is,
+                                     levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                     labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                     order = TRUE)
+
+abortus$geestelijke_handicap_o <- factor(x = abortus$Het.kind.met.een.geestelijke.handicap.geboren.kan.worden,
+                                         levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                         labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                         order = TRUE)
+abortus$levensbedreigende_ziekte_o <- factor(x = abortus$Het.kind.met.een.levensbedreigende.ziekte.geboren.kan.worden,
+                                             levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                             labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                             order = TRUE)
+
+abortus$veroorzaakt_o <- factor(x = abortus$De.zwangerschap.veroorzaakt.is.door.verkrachting,
+                                levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                order = TRUE)
+
+abortus$niet_gespecificeerd_o <- factor(x = abortus$De.vrouw.het.kind.niet.wil.houden.om.niet.gespecificeerde.redenen,
+                                        levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                        labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                        order = TRUE)
 
 
-
+abortus$financiele_beperkingen <- factor(x = abortus$De.vrouw.niet.in.staat.is.voor.het.kind.te.zorgen.vanwege.financiële.beperkingen,
+                                         levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                         labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                         order =TRUE)
 
 table(abortus$eigen_keuze_abortus, useNA = "always") # voor de vraag: Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?
+
 
 
 
