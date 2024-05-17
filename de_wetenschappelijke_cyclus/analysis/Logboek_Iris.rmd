@@ -85,5 +85,148 @@ Dit kan met de 'ggraph' package.
 
 
 Woensdag 15 mei:
+Data inlezen.
+```{r}
+data <- read.csv('abortus_dataset.csv')
+head(data)
+```
+
+```{r}
+summary("abortus_dataset.csv")
+```
+Kolommen duidelijkere namen gegeven en onnodige kolommen verwijderd.
+(stellingen nog niet veranderd!)
+```{r}
+library(dplyr)
+data_renamed <- data %>%
+    rename(
+        Eindtijd = Tijd.van.voltooien,
+        Gender = Wat.is.uw.geslacht..,
+        Onderwijsniveau = Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond.,
+        Leeftijd = Wat.is.uw.leeftijd.,
+        Religie = Wat.is.uw.religieuze.overtuiging..,
+        Provincie = In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht.,
+        Abortus_keuze = Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil.,
+        Indien_nee_uitzonderingen = Indien.u.bij.de.vorige.vraag..Nee..heeft.ingevuld...Vindt.u.dat.er.uitzonderingen.zijn.waarin.iemand.dit.wel.zelf.moet.kunnen.kiezen.....,
+        Gezondheid_vrouw_gevaar_uitzondering = Vindt.u.dat.er.voor.abortus.gekozen.mag.worden.als.de.gezondheid.van.de.vrouw.door.de.zwangerschap.in.gevaar.kan.komen.,
+        Verkrachting_uitzondering = Vindt.u.dat.iemand.een.abortus.mag.als.de.zwangerschap.een.gevolg.is.van.verkrachting.,
+        minderjarige_keuze_uitzondering = Vindt.u.dat.een.minderjarig.kind.de.keuze.moet.hebben.om.voor.een.abortus.te.kiezen.....,
+        Ouders_zeggenschap_over_minderjarige_uitzondering = Vindt.u.dat.de.ouders.zeggenschap.moeten.hebben.over.of.hun.minderjarige.kind.wel.of.niet.voor.abortus.mag.kiezen...,
+        Echo_verplicht = Moet.het.wettelijk.verplicht.worden.voor.vrouwen.die.een.abortus.willen.om.een.echo.van.de.foetus.te.zien.voordat.een.abortus.toegestaan.is.,
+        Wettelijke_bedenktijd = Vindt.u.dat.de.wettelijke.bedenktijd.moet.terugkomen.,
+        Adoptie_als_alternatief = Vindt.u.dat.adoptie.een.alternatief.is.voor.abortus.,
+        Biologische_vader_zeggenschap = Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.
+    ) %>%
+    select(- c(Tijd.van.laatste.wijziging, E.mail, Naam))
+
+head(data_renamed)
+```
+
+(later "Anders" en "Wil ik liever niet zeggen" toevoegen!)
+factor gender toevoegen.
+```{r}
+library(dplyr)
+data_renamed$Gender <- factor(x = Data$gender, 
+                      levels = c("Vrouw","Man"),
+                      labels = c("female", "male"))
+```
+Vragen bovenste stukje tekst!:
+- waarom gender ineens zonder hoofdletter??
+- is 'x = Data$gender' overbodig??
 
 
+Oefenen: 
+Gemiddelde leeftijd enquêtes berekend en cat():
+```{r}
+(gemiddelde_leeftijd <- mean(data_renamed$Leeftijd))
+cat(sprintf("de gemiddelde leeftijd van de enquête is: %.2f ik ben iris %.3f/n", gemiddelde_leeftijd, gemiddelde_leeftijd))
+```
+In bovenstaande code zie je dat je met mean() het gemiddeld berekent van alle getallen die in de kolom leeftijd staan.
+Verder kun je met 'cat(sprintf())'  een variabele in je tekst zetten. Dmv '%.2f' rond het getal af op 2 decimalen. Hiermee kan je makkelijker variabelen in je tekst plaatsen.
+
+
+Oefenen histogram maken:
+```{r}
+library(ggplot2)
+ggplot(data_renamed, aes(x=Leeftijd, fill = Gender)) + 
+    labs(title = "Aantal per leeftijd") +
+    scale_fill_brewer(palette = "Dark2") +
+    geom_histogram(position = "dodge") +
+    stat_bin(aes(label = ifelse(after_stat(count)>0, after_stat(count),"")),
+             geom = "text", position = "dodge", vjust = -.4)
+             
+
+```
+In het bovenstaande histogram is er weergegeven hoeveel mensen de enquête hebben ingevuld per leeftijd. 
+'x = leeftijd' neemt de leeftijd als de x-as.
+'fill = Gender' zorgt ervoor dat de gender verdeelt wordt in twee balkjes per leeftijd. De man en de vrouw.
+'scale_fill_brewer(palette = "Dark2")' zorgt ervoor dat de kleuren van de balkjes veranderen naar het gekozen palette: 'Dark2'
+'geom_histogram(position = "dodge")' maakt het histogram en de position zorgt ervoor dat de balkjes vrouw en man naast elkaar komen te staan ipv boven elkaar. 
+stat_bin(aes(label = ifelse(after_stat(count)>0, after_stat(count),"")),
+             geom = "text", position = "dodge", vjust = -.4)
+deze regel zorgt ervoor dat als er 0 vrouwen of mannen van een leeftijd zijn, dat er dan niet '0' komt te staan in de plot. En als er meer dan 0 mensen zijn dan komt er een aantal boven het balkje te staan.
+De 'vjust' zorgt ervoor dat het aantal niet overlapt met het balkje. 
+
+
+Donderdag 16 mei:
+kleuren palleten die ook leesbaar is voor mensen die kleurenblind zijn: 
+http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
+
+"Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?"
+Hoeveel van deze antwoorden komen van mannen en hoeveel van vrouwen? Zou het zo zijn dat mannen hier eerder 'Ja' zullen antwoorden dan vrouwen?
+(gebruik kolommen: Gender en Biologische_vader_zeggenschap)
+(Proberen met stacked barplot, y-as: aantal antwoorden, x-as = Mannen, Vrouwen, legenda/kleuren balkjes: Ja, Nee, Weet ik niet)
+
+
+```{r}
+library(ggplot2)
+
+ggplot(data_renamed, aes(fill=Biologische_vader_zeggenschap, x=Gender)) + 
+    geom_bar(position="dodge", stat="identity")
+```
+y invullen! hoe uitzoeken?
+
+
+Vrijdag 17 mei:
+fill is een soort split. Dus de fill moet de antwoorden worden van de vraag: 
+'Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?'
+
+Ronald zei net terecht dat het aantal mannen en vrouwen niet gelijk zijn. Dus de plot zal niet representatief zijn als ik de data zo invul. Ik kan het gemiddelde nemen van de mannen en de vrouwen per antwoord-optie
+(dus mannen die ja hebben ingevuld,
+vrouwen die ja hebben ingevuld,
+mannen die nee hebben ingevuld,
+vrouwen die nee hebben ingevuld,
+mannen die ik weet niet hebben ingevuld
+vrouwen die ik weet niet hebben ingevuld).
+hiermee kun ik volgens mij vervolgens een plot maken zoals ik eerst had bedacht. Dan neem je de y-as als gemiddelde aantal antwoorden in plaats van antwoorden.
+
+
+Maakt een tabel van de vraag(biologische vader zeggenschap) en de gender:
+```{r}
+(tabel <- table(data_renamed$Gender, data_renamed$Biologische_vader_zeggenschap))
+```
+maakt van de tabel hierboven procenten:
+```{r}
+(prop_tabel <- prop.table(table(data_renamed$Gender, data_renamed$Biologische_vader_zeggenschap)))
+```
+De chisq-test is om te kijken of er een significant verschil zit tussen de mannen en vrouwen in antwoorden:
+```{r}
+(chisq.test(tabel))
+```
+De p-value die hieruit komt is '0.01954'. Dit is lager dan 0.05, dus is er een significant verschil aangetoond. 
+```{r}
+library(ggplot2)
+
+
+ggplot(as.data.frame(prop_tabel), aes(x = Var1, y=Freq, fill=Var2)) +
+    labs(title="Barplot verdeling gender over antwoorden",
+         subtitle = "Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?",
+         x = "Gender",
+         fill = "Antwoord",
+         y = "percentage") +
+    geom_bar(stat = "identity", position = "dodge", color="black")+
+    theme_minimal() +
+    scale_fill_brewer(palette = "Dark2")
+
+```
+In de bovenstaande plot zie je weergegeven per gender hoeveel procent er heeft geantwoord wat heeft geantwoord. Je ziet hier dus ook dat er gemiddeld meer vrouwen zijn die nee hebben geantwoord.Ook zie je dat er meer mannen ja hebben geantwoord dan vrouwen. Dit kan komen doordat vrouwen zich waarschijnlijk eerder inleven in de vrouw en mannen eerder in de man. Hierdoor zie je dat mannen eerder zullen zeggen dat zij vinden dat mannen ook inspraak moeten hebben.  
