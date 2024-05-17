@@ -35,11 +35,9 @@ enqute open laten staan en allemaal meet waarden binnen krijgen en bedeken waar 
 ## 14 mei
 Ik moet laten zien wat de gemiddelde leeftijd is van onze meetwaarde. 
 ```{r}
-
-library(ggplot2)
+library(tidyverse)
 abortus <- read.csv("abortus_dataset.csv",
                     na.strings = "NA")
-head(abortus)
 #table(abortus$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil., useNA = "always")
 
 
@@ -65,44 +63,38 @@ abortus$afkomst <- factor(x = abortus$In.welke.provincie.heeft.u.het.grootste.de
                            labels = c("Drenthe", "Flevoland", "Friesland", "Gelderland", "Groningen", "Limburg", "Noord-Brabant", "Noord-Holland", "Overijssel", "Utrecht", "Zeeland", "Zuid-Holland", "Buitenland"))
 
 
-
+abortus <- abortus %>%
+    rename(
+        leeftijd = Wat.is.uw.leeftijd. , 
+        ouderszegenschap = Vindt.u.dat.de.ouders.zeggenschap.moeten.hebben.over.of.hun.minderjarige.kind.wel.of.niet.voor.abortus.mag.kiezen... ,
+        Kindskeuze = Vindt.u.dat.een.minderjarig.kind.de.keuze.moet.hebben.om.voor.een.abortus.te.kiezen.....
+    )
 abortus.test <- data.frame(abortus$geloof)
-
-
-
-
-table(abortus$eigen_keuze_abortus, useNA = "always") # voor de vraag: Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?
-
-
-
-
-
-
-#ggplot(df, aes(x=, y=abortus$Wat.is.uw.leeftijd.)) +
- # geom_bar(stat="identity", color="blue", fill="white")
+head(abortus)
 
 ```
 
 
 ```{r}
-library(tidyverse)
-summary(abortus$Wat.is.uw.leeftijd.)
+
+summary(abortus$leeftijd)
+
 
 ```
 
 ```{r}
 
-leeftijd <- data.frame(abortus$Wat.is.uw.leeftijd.)
+leeftijd <- data.frame(abortus$leeftijd)
 
-ggplot(leeftijd, aes(x=abortus$Wat.is.uw.leeftijd.)) + geom_histogram(aes(y =..density..), color = "black")+geom_density(alpha = .2, fill= "red")
+ggplot(leeftijd, aes(x=abortus$leeftijd)) + geom_histogram(aes(y =after_stat(density)), color = "black")+geom_density(alpha = .2, fill= "red")
 ```
 
 /n
 Hier zie dat het niet hellemaal normaal verdeelt is maar kunnen wel een test doen
 
 ```{r}
-shapiro.test(abortus$Wat.is.uw.leeftijd.)
-?s
+shapiro.test(abortus$leeftijd)
+
 ```
 
 Hier zie zeker dat het niet normaal verdeelt is.
@@ -116,7 +108,7 @@ Ik laat zien waar onze invullers vandaan komen in een donut chart.
 # Create Data
 x <- table(abortus$afkomst)
 
-(city_count <- data.frame(x))
+city_count <- data.frame(x)
 
 # Compute percentages
 city_count$fraction = city_count$Freq / sum(city_count$Freq)
@@ -129,7 +121,7 @@ renamed_city_count <- city_count %>%
     rename(
         Provincies = Var1
     )
-
+city_count
 # Make the plot
 ggplot(renamed_city_count, aes(ymax=ymax, ymin=ymin, xmax=13, xmin=3, fill=Provincies)) +
      geom_rect() +
@@ -144,5 +136,23 @@ Dus uit Drenthe, Friesland en Groningen \n
 
 Ook een boxplot gemaakt over de verdeling van de leeftijd
 ```{r}
-ggplot(leeftijd, aes(x = abortus$Wat.is.uw.leeftijd.)) + geom_boxplot()
+ggplot(leeftijd, aes(x = abortus$leeftijd)) + geom_boxplot()
 ```
+## 16 mei
+Ik ga laten zien het verschil in mening over "Vindt u dat de ouders zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen?" tussen jongeren (21 jaar en jonger want deze personen zijn oficeel nog niet volwassen is) en ouderen (22 jaar en ouder)
+```{r}
+library(dplyr)
+leeftijd_frame  <- data_frame(leeftijd, abortus$ouderszegenschap)
+
+
+
+onder_21 <- table(data_frame(filter(leeftijd_frame, leeftijd <= 21)))
+onder_21
+
+boven_21 <- filter(leeftijd_frame, leeftijd >21)
+
+table_boven_21 <- table(boven_21)
+
+
+```
+
