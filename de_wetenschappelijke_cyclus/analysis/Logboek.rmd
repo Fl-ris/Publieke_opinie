@@ -9,6 +9,24 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+# Libraries
+library(data.tree)
+library(ggraph)
+library(igraph)
+library(tidyverse)
+library(viridis)
+library(ggplot2)
+library(dplyr) 
+library(rgexf)
+
+# Voor statistische analyses:
+library("pwr")
+
+
+
+```
+
 ## **De enquete** ##
 
 Om de meningen van het publiek te peilen met betrekking tot hun ethische normen en waarden is er een vragenlijst opgesteld 
@@ -106,7 +124,6 @@ summary(abortus)
 ```
 
 ```{r echo=FALSE}
-library(ggplot2)
 
 df <- data.frame(abortus$Wat.is.uw.leeftijd.) 
 
@@ -123,7 +140,7 @@ In het onderstaande blok code worden factoren gemaakt van de meerkeuze vragen.
 
 
 ```{r}
-library(ggplot2)
+
 #table(abortus$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil., useNA = "always")
 
 
@@ -140,8 +157,8 @@ abortus$geloof <- factor(x = abortus$Wat.is.uw.religieuze.overtuiging..,
 
 
 abortus$geslacht <- factor(x = abortus$Wat.is.uw.geslacht..,
-                           levels = c("Man", "Vrouw"),
-                           labels = c("Man", "Vrouw"))
+                           levels = c("Man", "Vrouw", "Wil ik niet vertellen"),
+                           labels = c("Man", "Vrouw", "Wil ik niet vertellen"))
 # Voor de vraag: Wat is uw religieuze overtuiging?
 
 abortus$afkomst <- factor(x = abortus$In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht., 
@@ -245,7 +262,7 @@ table(abortus$eigen_keuze_abortus, useNA = "always") # voor de vraag: Vindt u da
 
 ```
 ```{r echo=TRUE}
-library(ggplot2)
+
 # Grafiek met de verschillende geloven en de leeftijdverdeling die er bij hoort. 
 ggplot(df, aes(y=abortus$Wat.is.uw.religieuze.overtuiging..,
                x= abortus$Wat.is.uw.leeftijd.)) +
@@ -258,9 +275,6 @@ Verdeling van de leeftijd van de mensen die de enquete hebben ingevuld en hun id
 
 
 ```{r}
-library(ggplot2)
-
-
 
 # Grafiek met leeftijden uit verschillende provincies.
 ggplot(df, aes(y=abortus$In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht.,
@@ -277,7 +291,6 @@ Niet elke provincie heeft genoeg datapunten om een boxplot van te maken.
 
 
 ```{r}
-library(ggplot2)
 
 # De invultijd per leeftijd:
 
@@ -302,7 +315,7 @@ Op 11 mei 2024 grafiek gemaakt van leeftijd / tijd nodig om de enquete in te vul
 
 
 ```{r}
-library(ggplot2)
+
 tijd_vector <- data.frame(tijd_vector)
 df3 <- data.frame(abortus$Wat.is.uw.leeftijd.) # test 
 
@@ -322,12 +335,7 @@ Dit wordt voor mannen en vrouwen gedaan. (links mannen en rechts vrouwen)
 
 # Circulair Packing test 1: 
 ```{r eval=FALSE}
-# Libraries
-library(data.tree)
-library(ggraph)
-library(igraph)
-library(tidyverse)
-library(viridis)
+
 
 
 # Load dataset from github
@@ -378,7 +386,7 @@ is de Shapiro Wilk test gebruikt.
 # Shapiro Wilk test:
 
 ```{r}
-library("dplyr") 
+
 
 shapiro.test(abortus$Wat.is.uw.leeftijd.)
              
@@ -396,10 +404,6 @@ dat betekend dat er wel een significant verschil is tussen een nomale verdeling 
 # PIE CHART
 ```{r}
 
-
-# Load ggplot2
-library(ggplot2)
-
 # Create Data
 data <- data.frame(
   group=abortus$afkomst,
@@ -415,20 +419,7 @@ ggplot(data, aes(x="", y=value, fill=group)) +
 
 ```
 ```{r eval=FALSE}
-
-
-# Load ggplot2
 library(ggplot2)
-library(dplyr)
-
-
-
-
-
-# Load ggplot2
-library(ggplot2)
-library(dplyr)
-
 # Create Data
 data <- data.frame(
   group=abortus$afkomst,
@@ -441,28 +432,38 @@ ggplot(data, aes(x="", y=abortus$afkomst, fill=group)) +
   geom_bar(stat="identity", width=1, color="white") +
   coord_polar("y", start=0) +
   theme_void() + 
-  theme(legend.position="none") +
-  
-  geom_text(aes(y = ypos, label = group), color = "white", size=6) +
-  scale_fill_brewer(palette="Set1")
+  theme(legend.position="none") 
 
 
 
 
 ```
 ```{r}
-library(ggplot2)
-df_1 <- data.frame(abortus$vader)
+df_1 <- data.frame(abortus)
 
-ggplot(df_1, aes(x= c(1:104), y = abortus$vader)) +
-  geom_point(aes(color = abortus$geslacht, size = abortus$Wat.is.uw.leeftijd.)) +
-  scale_color_manual(name = "Cylinders", "ak;ldj") +
-  xlab(" ") +
-  ylab(" ") +
+ggplot(df_1, aes(x= c(1:104), y = vader)) +
+  geom_point(aes(color = geslacht)) +
+  labs(color = "test") +
+  #scale_color_manual(name = "Cylinders") 
+#  scale_fill_discrete(name = "test") +
+ggtitle("Moet de vader zeggenschap hebben over \nde beslissing om een abortus te induceren? ") +
+  
 
   
 
 ```
+```{r}
+df_2 <- data.frame(abortus)
+
+ggplot(df_1, aes(x= ID, y = onderwijsniveau)) +
+  geom_point(aes(color = geslacht)) +
+  labs(color = "Geslacht") +
+  ggtitle("Moet de vader zeggenschap hebben over \nde beslissing om een abortus te induceren? ")
+
+
+```
+
+
 15-05-2024:
 Bovenstaande grafiek: Moet de vader zeggenschap hebben over de abortus: Ja, Nee of geen mening.
 Het geslacht van het persoon wordt met de twee kleuren blauw en rood aangegeven en de leeftijd met de grootte van het bolletje. (zie legenda voor schaalverdeling)
@@ -472,10 +473,6 @@ Het geslacht van het persoon wordt met de twee kleuren blauw en rood aangegeven 
 
 ```{r}
 # Test 2:
-library(ggraph)
-library(igraph)
-library(tidyverse)
-library(rgexf)
 
 
 edges <- data.frame(c("test", "test.test2", "test.test2.test3", "test0"))
@@ -522,13 +519,32 @@ ggraph(mygraph, layout = 'circlepack') +
   theme_void()
 ```
 
+# Power test: (met leeftijd van de mensen)
+
+17-05-2024:
+Begin gemaakt met t.test en power test
+
 ```{r}
+library(dplyr)
+tabel <- table(abortus$geslacht ,abortus$eigen_keuze_abortus) # tabel met mannen en vrouwen en hun keuze of abortus toegestaan moet worden of niet. 
+
+#prop.table(abortus$Wat.is.uw.geslacht..)
+tabel2 <- prop.table(tabel)
+
+#gem_leeftijd_vrouwen %>%
+# filter(abortus$Wat.is.uw.geslacht.., abortus$geslacht == "Vrouw")
+
+ja_abortus <- sum(ifelse(abortus$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn. 
 
 
-y <- c(0,0,0,0,1,0,1,0,1,0,1,0,1,1)
 
-p <- sum(y) / length(y)
-# is p > PI (50%)
+(res <- t.test(ja_abortus, mu = 52 , alternative = "two.sided") )
+
+
+
+```
+```{r}
+onder21 <- filter(abortus$Wat.is.uw.leeftijd., abortus$Wat.is.uw.leeftijd. < 21)
 
 ```
 
