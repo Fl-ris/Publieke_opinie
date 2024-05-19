@@ -157,8 +157,8 @@ abortus$geloof <- factor(x = abortus$Wat.is.uw.religieuze.overtuiging..,
 
 
 abortus$geslacht <- factor(x = abortus$Wat.is.uw.geslacht..,
-                           levels = c("Man", "Vrouw", "Wil ik niet vertellen"),
-                           labels = c("Man", "Vrouw", "Wil ik niet vertellen"))
+                           levels = c("Man", "Vrouw", "Wil ik liever niet melden"),
+                           labels = c("Man", "Vrouw", "Wil ik liever niet melden"))
 # Voor de vraag: Wat is uw religieuze overtuiging?
 
 abortus$afkomst <- factor(x = abortus$In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht., 
@@ -261,14 +261,17 @@ table(abortus$eigen_keuze_abortus, useNA = "always") # voor de vraag: Vindt u da
  # geom_bar(stat="identity", color="blue", fill="white")
 
 ```
+
+
+
 ```{r echo=TRUE}
 
 # Grafiek met de verschillende geloven en de leeftijdverdeling die er bij hoort. 
-ggplot(df, aes(y=abortus$Wat.is.uw.religieuze.overtuiging..,
+ggplot(df, aes(y=abortus$geloof,
                x= abortus$Wat.is.uw.leeftijd.)) +
-  geom_boxplot(color = "black", fill = "springgreen") +
+  geom_boxplot(color = "black", fill = "gold") +
     xlab("Leeftijd (Jaren") +
-    ylab(" ") # namen van de geloven staan er al.... geen label nodig.
+    ylab("Geloof")
 
 ```
 Verdeling van de leeftijd van de mensen die de enquete hebben ingevuld en hun ideologie. 
@@ -277,16 +280,16 @@ Verdeling van de leeftijd van de mensen die de enquete hebben ingevuld en hun id
 ```{r}
 
 # Grafiek met leeftijden uit verschillende provincies.
-ggplot(df, aes(y=abortus$In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht.,
+ggplot(df, aes(y=abortus$afkomst,
                x= abortus$Wat.is.uw.leeftijd.)) +
-  geom_boxplot(color = "black", fill = "springgreen") +
+  geom_boxplot(color = "black", fill = "gold") +
     xlab("Leeftijd (Jaren") +
-    ylab(" ") # namen van de geloven staan er al.... geen label nodig.
+    ylab("Op gegroeid in de provincie:")
 
 
 
 ```
-De verdeling van de leeftijden en de provincies waar deze menensen vandaan komen wordt weergegeven op deze grafiek. 
+De verdeling van de leeftijden en de provincies waar deze mensen vandaan komen wordt weergegeven op deze grafiek. 
 Niet elke provincie heeft genoeg datapunten om een boxplot van te maken. 
 
 
@@ -294,10 +297,11 @@ Niet elke provincie heeft genoeg datapunten om een boxplot van te maken.
 
 # De invultijd per leeftijd:
 
-begin_tijd <- as.POSIXct(c(abortus$Begintijd)) # startpunt van invullen per persoon.
-eind_tijd <- as.POSIXct(c(abortus$Tijd.van.voltooien)) # eindpunt  van invullen per persoon.
+# Repareren: as.POSIXct functie werkt niet meer voor deze data.
 
-test <- c()
+begin_tijd <- as.POSIXct((c(abortus$Begintijd))) # startpunt van invullen per persoon.
+eind_tijd <- as.POSIXct((c(abortus$Tijd.van.voltooien))) # eindpunt  van invullen per persoon.
+
 tijd_vector <- c()
 # Om de totale tijd uit te rekenen die de mensen nodig hadden om het formulier in te vullen.
 # Het verschil tussen de eindtijd en de begintijd. 
@@ -393,6 +397,7 @@ shapiro.test(abortus$Wat.is.uw.leeftijd.)
 ```
 De p-waarde is: 2.097e-05 
 dat betekend dat er wel een significant verschil is tussen een nomale verdeling en deze leeftijd data. 
+Omdat de data niet normaal verdeeld is zal een niet-parametrische analyse nodig zijn. 
 
 # Power analyse:
 
@@ -441,23 +446,23 @@ ggplot(data, aes(x="", y=abortus$afkomst, fill=group)) +
 ```{r}
 df_1 <- data.frame(abortus)
 
-ggplot(df_1, aes(x= c(1:104), y = vader)) +
+ggplot(df_1, aes(x= c(1:109), y = vader)) +
   geom_point(aes(color = geslacht)) +
   labs(color = "test") +
   #scale_color_manual(name = "Cylinders") 
 #  scale_fill_discrete(name = "test") +
-ggtitle("Moet de vader zeggenschap hebben over \nde beslissing om een abortus te induceren? ") +
-  
+  ggtitle("Moet de vader zeggenschap hebben over \nde beslissing om een abortus te induceren? ") +
 
   
 
 ```
+
 ```{r}
 df_2 <- data.frame(abortus)
 
 ggplot(df_1, aes(x= ID, y = onderwijsniveau)) +
-  geom_point(aes(color = geslacht)) +
-  labs(color = "Geslacht") +
+  geom_point(aes(color = vader, size = abortus$geslacht)) +
+  labs(color = "Keuze") +
   ggtitle("Moet de vader zeggenschap hebben over \nde beslissing om een abortus te induceren? ")
 
 
@@ -492,8 +497,18 @@ edge.list(edgelist)
 # Then we have to make a 'graph' object using the igraph library:
 mygraph <- graph_from_data_frame(edgelist)
 
+
+
+# Test
+hc <- abortus %>%
+  dist %>%
+  hclust
+
+plot(hc)
+
+
 # Make the plot
-ggraph(mygraph, layout = 'circlepack') + 
+ggraph(hc, layout = 'circlepack') + 
   geom_node_circle() +
   theme_test()
 ```
@@ -526,6 +541,7 @@ Begin gemaakt met t.test en power test
 
 ```{r}
 library(dplyr)
+library(pwr)
 tabel <- table(abortus$geslacht ,abortus$eigen_keuze_abortus) # tabel met mannen en vrouwen en hun keuze of abortus toegestaan moet worden of niet. 
 
 #prop.table(abortus$Wat.is.uw.geslacht..)
@@ -534,19 +550,35 @@ tabel2 <- prop.table(tabel)
 #gem_leeftijd_vrouwen %>%
 # filter(abortus$Wat.is.uw.geslacht.., abortus$geslacht == "Vrouw")
 
-ja_abortus <- sum(ifelse(abortus$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn. 
+ja_abortus <- (ifelse(abortus$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn. 
 
 
 
-(res <- t.test(ja_abortus, mu = 52 , alternative = "two.sided") )
+#(res <- t.test(ja_abortus, mu = 52 , alternative = "two.sided") )
 
+power <- pwr.p.test(h = 0.1, sig.level = 0.05, power = 0.8,alternative = "two.sided") # test, andere h uitrekenen.
 
 
 ```
+
+# T-test:
+>H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze over het toestaan van de abortus.
+>H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze over het toestaan van de abortus.
+
 ```{r}
-onder21 <- filter(abortus$Wat.is.uw.leeftijd., abortus$Wat.is.uw.leeftijd. < 21)
+#onder21 <- filter(abortus$Wat.is.uw.leeftijd., abortus$Wat.is.uw.leeftijd. < 21)
 
+#binaire_lijst_keuze_abortus <- 
+
+ja_abortus <- (ifelse(abortus$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn. 
+all(duplicated(abortus$geslacht)[-1L])
+
+ja_nee_abortus <- t.test(ja_abortus, as.numeric(abortus$geslacht), data = abortus, alternative = "two.sided")
+
+ja_nee_abortus
 ```
+H0 is aangenomen omdat 
 
+# Power Test:
 
 <hr>
