@@ -1,8 +1,10 @@
 ---
-title: "Logboek: Publieke Opinie"
+title: 'Logboek: Publieke Opinie'
 author: "Floris Menninga"
 date: "2024-04-22"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -125,10 +127,10 @@ summary(abortus)
 
 ```{r echo=FALSE}
 
-df <- data.frame(abortus$Wat.is.uw.leeftijd.) 
+df_leeftijd <- data.frame(abortus$Wat.is.uw.leeftijd.) 
 
 # verdeling van de leeftijden:
-ggplot(df, aes(x= abortus$Wat.is.uw.leeftijd.)) +
+ggplot(df_leeftijd, aes(x= abortus$Wat.is.uw.leeftijd.)) +
   geom_density() +
   xlab("Leeftijd (Jaren)") 
 
@@ -255,7 +257,7 @@ table(abortus$eigen_keuze_abortus, useNA = "always") # voor de vraag: Vindt u da
 
 
 
-
+df <- data.frame(abortus)
 
 #ggplot(df, aes(x=, y=abortus$Wat.is.uw.leeftijd.)) +
  # geom_bar(stat="identity", color="blue", fill="white")
@@ -299,8 +301,10 @@ Niet elke provincie heeft genoeg datapunten om een boxplot van te maken.
 
 # Repareren: as.POSIXct functie werkt niet meer voor deze data.
 
-begin_tijd <- as.POSIXct((c(abortus$Begintijd))) # startpunt van invullen per persoon.
-eind_tijd <- as.POSIXct((c(abortus$Tijd.van.voltooien))) # eindpunt  van invullen per persoon.
+begin_tijd <- as.POSIXct(x = (c(abortus$Begintijd)), format = "%m-%d-%y %H:%M:%S")  # startpunt van invullen per persoon.
+
+# 
+eind_tijd <- as.POSIXct(x = (c(abortus$Tijd.van.voltooien)), format = "%m-%d-%y %H:%M:%S") # eindpunt  van invullen per persoon.
 
 tijd_vector <- c()
 # Om de totale tijd uit te rekenen die de mensen nodig hadden om het formulier in te vullen.
@@ -321,7 +325,6 @@ Op 11 mei 2024 grafiek gemaakt van leeftijd / tijd nodig om de enquete in te vul
 ```{r}
 
 tijd_vector <- data.frame(tijd_vector)
-df3 <- data.frame(abortus$Wat.is.uw.leeftijd.) # test 
 
 ggplot(tijd_vector, aes(y=tijd_vector,
                         x= abortus$Wat.is.uw.leeftijd.)) +
@@ -331,11 +334,43 @@ ggplot(tijd_vector, aes(y=tijd_vector,
     ylab("Tijd om formulier in te vullen (minuten)") +
     coord_flip()
 
-summary(tijd_vector)
-head(tijd_vector)
+#summary(tijd_vector)
+#head(tijd_vector)
+
+
 ```
 Bovenstaande grafiek laat de relatie tussen leeftijd en tijdnodig om het formulier in te vullen zien. 
-Dit wordt voor mannen en vrouwen gedaan. (links mannen en rechts vrouwen)
+Dit wordt voor mannen en vrouwen gedaan. (links mannen, midden vrouwen en rechts ongespecificeerd.)
+Er was maar een persoon dat ongespecificeerd opgav dus kan daar geen boxplot van gemaakt worden maar wordt dit weergeven met een enkele stip. (links onder in de grafiek)
+
+
+```{r}
+
+data_frame_invultijd <- data.frame(tijd_vector, abortus$geslacht, abortus$Wat.is.uw.leeftijd.)
+
+# Voor de tijd die de mannen er over doen:
+invultijd_mannen <- data_frame_invultijd %>%
+  filter(abortus.geslacht == "Man")
+
+# Voor de tijd die de vrouwen er over doen:
+invultijd_vrouwen <- data_frame_invultijd %>%
+  filter(abortus.geslacht == "Vrouw")
+
+# Voor de tijd die de "ongespecificeerde geslacht" mensen er over doen:
+invultijd_anders <- data_frame_invultijd %>%
+  filter(abortus.geslacht == "Wil ik liever niet melden")
+
+
+
+```
+Gemiddeld doen de mannen er `r mean(invultijd_mannen$tijd_vector)` minuten over om de enquete in te vullen. <br>
+Dit ligt tussen de `r quantile(invultijd_mannen$tijd_vector, 0.25)` (25%) en `r quantile(invultijd_mannen$tijd_vector, 0.75)` (75%)
+
+Gemiddeld doen de vrouwen er `r mean(invultijd_vrouwen$tijd_vector)` minuten over om de enquete in te vullen. <br>
+Dit ligt tussen de `r quantile(invultijd_vrouwen$tijd_vector, 0.25)` (25%) en `r quantile(invultijd_vrouwen$tijd_vector, 0.75)` (75%)
+
+Gemiddeld doen de "Geslacht niet opgegeven mensen" er `r mean(invultijd_anders$tijd_vector)` minuten over om de enquete in te vullen. <br>
+Dit ligt tussen de `r quantile(invultijd_anders$tijd_vector, 0.25)` (25%) en `r quantile(invultijd_anders$tijd_vector, 0.75)` (75%)
 
 # Circulair Packing test 1: 
 ```{r eval=FALSE}
@@ -423,7 +458,7 @@ ggplot(data, aes(x="", y=value, fill=group)) +
 
 
 ```
-```{r eval=FALSE}
+```{r}
 library(ggplot2)
 # Create Data
 data <- data.frame(
@@ -443,7 +478,7 @@ ggplot(data, aes(x="", y=abortus$afkomst, fill=group)) +
 
 
 ```
-```{r}
+```{r eval=FALSE}
 df_1 <- data.frame(abortus)
 
 ggplot(df_1, aes(x= c(1:109), y = vader)) +
@@ -451,16 +486,16 @@ ggplot(df_1, aes(x= c(1:109), y = vader)) +
   labs(color = "test") +
   #scale_color_manual(name = "Cylinders") 
 #  scale_fill_discrete(name = "test") +
-  ggtitle("Moet de vader zeggenschap hebben over \nde beslissing om een abortus te induceren? ") +
+  ggtitle("Moet de vader zeggenschap hebben over \nde beslissing om een abortus te induceren? ") 
 
   
 
 ```
 
 ```{r}
-df_2 <- data.frame(abortus)
 
-ggplot(df_1, aes(x= ID, y = onderwijsniveau)) +
+
+ggplot(df, aes(x= ID, y = onderwijsniveau)) +
   geom_point(aes(color = vader, size = abortus$geslacht)) +
   labs(color = "Keuze") +
   ggtitle("Moet de vader zeggenschap hebben over \nde beslissing om een abortus te induceren? ")
@@ -472,6 +507,37 @@ ggplot(df_1, aes(x= ID, y = onderwijsniveau)) +
 15-05-2024:
 Bovenstaande grafiek: Moet de vader zeggenschap hebben over de abortus: Ja, Nee of geen mening.
 Het geslacht van het persoon wordt met de twee kleuren blauw en rood aangegeven en de leeftijd met de grootte van het bolletje. (zie legenda voor schaalverdeling)
+
+20-05-2024:
+
+```{r}
+# Voor vraag: Als u geen voorstander bent voor de vrijheid om voor een abortus te kiezen, zijn er gevallen waarin dit wel zou mogen?
+
+ggplot(data = df, mapping = aes(x = (ID), y = als_nee)) +
+  geom_bar(stat = "identity") +
+  geom_point()
+
+```
+```{r}
+# Voor de vraag: Vindt u dat er voor abortusgekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen? 
+library(ggridges)
+ggplot(data = df, mapping = aes(x = c(1:109), y = levensgevaar_vrouw_o, fill = geslacht)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = (" "))) +
+  ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
+  xlab("Percentage mensen") + # nog aapassen naar procent.
+  ylab(" ") # Geen ylabel nodig omdat er al een beschrijving bij de waardes staan. 
+  # labels beter maken.
+```
+```{r}
+# Voor de vraag: Mag abortus toegestaan zijn als de zwangerschap resultaat is van verkrachting?
+
+ggplot(data = df, mapping = aes(x = (ID/100), y = veroorzaakt_o, fill = gesla)) + # geeft procent weer. 
+  geom_bar(stat = "identity") +
+  ggtitle("Mag abortus als de zwangerschap resultaat is van verkrachting?") +
+  xlab("Percentage mensen") + # verifiëren of dit wel klopt...
+  ylab(" ")
+```
 
 
 ## Cirkel packing grafiek test
@@ -500,7 +566,7 @@ mygraph <- graph_from_data_frame(edgelist)
 
 
 # Test
-hc <- abortus %>%
+hc <- df %>%
   dist %>%
   hclust
 
@@ -571,14 +637,16 @@ power <- pwr.p.test(h = 0.1, sig.level = 0.05, power = 0.8,alternative = "two.si
 #binaire_lijst_keuze_abortus <- 
 
 ja_abortus <- (ifelse(abortus$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn. 
-all(duplicated(abortus$geslacht)[-1L])
+#all(duplicated(abortus$geslacht)[-1L])
 
 ja_nee_abortus <- t.test(ja_abortus, as.numeric(abortus$geslacht), data = abortus, alternative = "two.sided")
 
 ja_nee_abortus
 ```
-H0 is aangenomen omdat 
+H0 is verworpen en H1 is aangenomen omdat de p-waarde `r ja_nee_abortus$p.value` is. Dit is onder de 0.05 en betekend dat met 95% zekerheid gezegd kan worden dat het geen toeval is dat er een verschil tussen de twee geslachten is en hun keuze om de abortus toe te staan of te verbieden. 
 
 # Power Test:
 
 <hr>
+
+
