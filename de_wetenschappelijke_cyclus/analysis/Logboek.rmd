@@ -496,7 +496,7 @@ ggplot(df_1, aes(x= c(1:109), y = vader)) +
 
 
 ggplot(df, aes(x= ID, y = onderwijsniveau)) +
-  geom_point(aes(color = vader, size = abortus$geslacht)) +
+  geom_point(aes(color = vader, shape = abortus$geslacht)) +
   labs(color = "Keuze") +
   ggtitle("Moet de vader zeggenschap hebben over \nde beslissing om een abortus te induceren? ")
 
@@ -532,11 +532,16 @@ ggplot(data = df, mapping = aes(x = c(1:109), y = levensgevaar_vrouw_o, fill = g
 ```{r}
 # Voor de vraag: Mag abortus toegestaan zijn als de zwangerschap resultaat is van verkrachting?
 
-ggplot(data = df, mapping = aes(x = (ID/100), y = veroorzaakt_o, fill = gesla)) + # geeft procent weer. 
+ggplot(data = df, mapping = aes(x = (ID/100), y = veroorzaakt_o, fill = geslacht)) + # geeft procent weer. 
   geom_bar(stat = "identity") +
   ggtitle("Mag abortus als de zwangerschap resultaat is van verkrachting?") +
   xlab("Percentage mensen") + # verifiëren of dit wel klopt...
   ylab(" ")
+```
+
+```{r}
+#Voor de vraag:  
+#ggplot(data = df, mapping = aes(x = ))
 ```
 
 
@@ -616,16 +621,38 @@ tabel2 <- prop.table(tabel)
 #gem_leeftijd_vrouwen %>%
 # filter(abortus$Wat.is.uw.geslacht.., abortus$geslacht == "Vrouw")
 
-ja_abortus <- (ifelse(abortus$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn. 
 
+
+ja_abortus <- (ifelse(abortus$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn. 
 
 
 #(res <- t.test(ja_abortus, mu = 52 , alternative = "two.sided") )
 
-power <- pwr.p.test(h = 0.1, sig.level = 0.05, power = 0.8,alternative = "two.sided") # test, andere h uitrekenen.
+# Reken de proportie mannen uit die voorstanders van abortus zijn:
+man_ja_abortus <- df %>% 
+  filter(geslacht == "Man")
+prop_man_ja_abortus <- prop.table(table(ifelse(df$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)))
+
+# Bereken het zelfde voor de vrouwen:
+vrouw_ja_abortus <- df %>% 
+  filter(geslacht == "Vrouw")
+prop_vrouw_ja_abortus <- prop.table(table(ifelse(df$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)))
+
+
+
+# effect sterkte h uitrekenen met de twee ja/nee proporties (tussen mannen en vrouwen)
+h <- ES.h(prop_man_ja_abortus[2], prop_man_ja_abortus[1]) # Er werkt iets niet goed...
+
+
+power1 <- pwr.t.test(sig.level = 0.05, power = 0.8, n = 109 ,alternative = "two.sided") # test, andere h uitrekenen.
+power2 <- pwr.t.test(d = 0.5,sig.level = 0.05, power = 0.8, alternative = "two.sided") # test, andere h uitrekenen.
 
 
 ```
+Om met een effect sterkte van 0.5 het verschil tussen de twee geslachten aan te tonen zijn er `r round(power2$n, digits = 0)` mensen nodig (van elke groep).
+En met de 109 mensen die we nu hebben is de effect sterkte: `r round(power1$d, digits = 2)`. Dit is genoeg om een middelgroot verschil waar te nemen. 
+
+
 
 # T-test:
 >H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze over het toestaan van de abortus.
@@ -642,11 +669,32 @@ ja_abortus <- (ifelse(abortus$eigen_keuze_abortus=="Wel abortus toestaan", 1,0))
 ja_nee_abortus <- t.test(ja_abortus, as.numeric(abortus$geslacht), data = abortus, alternative = "two.sided")
 
 ja_nee_abortus
+
+# Resultaat kan bijna niet kloppen.... achterhaal wat er mis is.
 ```
 H0 is verworpen en H1 is aangenomen omdat de p-waarde `r ja_nee_abortus$p.value` is. Dit is onder de 0.05 en betekend dat met 95% zekerheid gezegd kan worden dat het geen toeval is dat er een verschil tussen de twee geslachten is en hun keuze om de abortus toe te staan of te verbieden. 
 
-# Power Test:
+# Two-way chi^2 Test:
+H0: Geslacht is geen bijdragende factor in de keuze of abortus toegestaan mag zijn of niet. 
+H1: Geslacht is een bijdragende factor in de keuze of abortus toegestaan mag zijn of niet.
+
+```{r}
+# Test om te kijken hoe het werkt:
+#test_ja_abortus <- df %>% filter(geslacht == "Man")
+
+#test_ja_abortus <- (ifelse(test_ja_abortus$eigen_keuze_abortus=="Wel abortus toestaan" & #test_ja_abortus$geslacht == "Man", 6,0))
+#chisq.test(df$geslacht, ja_abortus ,correct = F)
+
+# Chi-square test:
+chi_ja_abortus <- chisq.test(df$geslacht, ja_abortus, correct = F)
+
+```
+De p-waarde van de Chi-square test is: `r chi_ja_abortus$p.value` dit is boven de 0.05 dus kan de nul hypothese aangenomen worden, geslacht is geen bijdragende factor in de keuze of abortus toegestaan mag zijn of niet. <br>
+De Chi-squered waarde is: `r chi_ja_abortus$statistic`
+
 
 <hr>
 
+
+# To-do: voor grafieken proporties gebruiken i.p.v. absolute aantallen (om rekening te houden met verschillen en aantal "metingen" tussen mannen en vrouwen.)
 
