@@ -155,4 +155,15 @@ table_boven_21 <- table(boven_21)
 
 
 ```
+Het lukt niet echt hellemaal uit komt nog goed. Ik moet kijken hoe ik het uit een table moet hallen.
+
+
+## 21 Mei
+Ik ga even met iets anders bezig het lukt niet echt. ik ga bezig met de chi-square test 
+
+```{r}
+
+
+```
+
 

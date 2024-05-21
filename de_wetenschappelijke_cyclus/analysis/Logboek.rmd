@@ -150,12 +150,90 @@ abortus$afkomst <- factor(x = abortus$In.welke.provincie.heeft.u.het.grootste.de
 
 
 
+abortus$onderwijsniveau <- factor(x =
+                                abortus$Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond.,
+                                  levels = c("Geen diploma", "Middelbare school", "MBO", "HBO", "Universiteit","Overige"),
+                                  labels = c("Geen diploma", "Middelbare school", "MBO", "HBO", "Universiteit","Overige"))
+
+
+
+# Voor de vraag: Indien u bij de vorige vraag nee heeft ingevuld...
+abortus$als_nee <- factor(x = 
+                        abortus$Indien.u.bij.de.vorige.vraag..Nee..heeft.ingevuld...Vindt.u.dat.er.uitzonderingen.zijn.waarin.iemand.dit.wel.zelf.moet.kunnen.kiezen.....,
+                          levels = c("Ja", "Nee", "Niet van toepassing"),
+                          labels = c("Ja", "Nee", "Niet van toepassing"))
+
 abortus.test <- data.frame(abortus$geloof)
 
+abortus$gezondheid_vrouw <- factor(x = abortus$Vindt.u.dat.er.voor.abortus.gekozen.mag.worden.als.de.gezondheid.van.de.vrouw.door.de.zwangerschap.in.gevaar.kan.komen.,
+                                   levels = c("Ja", "Nee", "Weet ik niet"),
+                                   labels = c("Ja", "Nee", "Weet ik niet"))
 
 
+abortus$gevolg <- factor(x = abortus$De.zwangerschap.veroorzaakt.is.door.verkrachting,
+                         levels = c("Ja", "Nee"),
+                         labels = c("Ja", "Nee"))
+
+abortus$minderjarig <- factor(x = abortus$Vindt.u.dat.een.minderjarig.kind.de.keuze.moet.hebben.om.voor.een.abortus.te.kiezen.....,
+                              levels = c("Ja", "Nee", "Weet ik niet"),
+                              labels = c("Ja", "Nee", "Weet ik niet"))
+
+abortus$ouders <- factor(x = abortus$Vindt.u.dat.de.ouders.zeggenschap.moeten.hebben.over.of.hun.minderjarige.kind.wel.of.niet.voor.abortus.mag.kiezen...,
+                         levels = c("Ja", "Nee", "Weet ik niet"),
+                         labels = c("Ja", "Nee", "Weet ik niet"))
+
+abortus$echo <- factor(x = abortus$Moet.het.wettelijk.verplicht.worden.voor.vrouwen.die.een.abortus.willen.om.een.echo.van.de.foetus.te.zien.voordat.een.abortus.toegestaan.is.,
+                       levels = c("Ja", "Nee", "Weet ik niet"),
+                       labels = c("Ja", "Nee", "Weet ik niet"))
+
+abortus$bedenktijd <- factor(x = abortus$Vindt.u.dat.de.wettelijke.bedenktijd.moet.terugkomen.,
+                             levels = c("Ja", "Nee", "Weet ik niet"),
+                             labels = c("Ja", "Nee", "Weet ik niet"))
+                             
+abortus$adoptie <- factor(x = abortus$Vindt.u.dat.adoptie.een.alternatief.is.voor.abortus.,
+                          levels = c("Ja", "Nee", "Weet ik niet"),
+                          labels = c("Ja", "Nee", "Weet ik niet"))
+
+abortus$vader <- factor(x = 
+                          abortus$Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.,
+                            levels = c("Ja", "Nee"),
+                            labels = c("Ja", "Nee"))
+
+# Vragen met een volgorde: 
+# namen van de variabelen eidigen met "_o" om aan te duiden dat er een volgorde in zit (order)
+
+abortus$levensgevaar_vrouw_o <- factor(x = abortus$Het.leven.van.de.vrouw.in.gevaar.is,
+                                     levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                     labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                     order = TRUE)
+
+abortus$geestelijke_handicap_o <- factor(x = abortus$Het.kind.met.een.geestelijke.handicap.geboren.kan.worden,
+                                         levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                         labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                         order = TRUE)
+abortus$levensbedreigende_ziekte_o <- factor(x = abortus$Het.kind.met.een.levensbedreigende.ziekte.geboren.kan.worden,
+                                             levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                             labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                             order = TRUE)
+
+abortus$veroorzaakt_o <- factor(x = abortus$De.zwangerschap.veroorzaakt.is.door.verkrachting,
+                                levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                order = TRUE)
+
+abortus$niet_gespecificeerd_o <- factor(x = abortus$De.vrouw.het.kind.niet.wil.houden.om.niet.gespecificeerde.redenen,
+                                        levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                        labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                        order = TRUE)
+
+
+abortus$financiele_beperkingen <- factor(x = abortus$De.vrouw.niet.in.staat.is.voor.het.kind.te.zorgen.vanwege.financiële.beperkingen,
+                                         levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                         labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                         order =TRUE)
 
 table(abortus$eigen_keuze_abortus, useNA = "always") # voor de vraag: Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?
+
 
 
 
@@ -176,7 +254,7 @@ ggplot(df, aes(y=abortus$Wat.is.uw.religieuze.overtuiging..,
     ylab(" ") # namen van de geloven staan er al.... geen label nodig.
 
 ```
-
+Verdeling van de leeftijd van de mensen die de enquete hebben ingevuld en hun ideologie. 
 
 
 ```{r}
@@ -194,7 +272,8 @@ ggplot(df, aes(y=abortus$In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeu
 
 
 ```
-
+De verdeling van de leeftijden en de provincies waar deze menensen vandaan komen wordt weergegeven op deze grafiek. 
+Niet elke provincie heeft genoeg datapunten om een boxplot van te maken. 
 
 
 ```{r}
@@ -216,8 +295,12 @@ for (x in seq_along(abortus$Begintijd)) {
 }
 
 ```
+
+
 Op 11 mei 2024 grafiek gemaakt van leeftijd / tijd nodig om de enquete in te vullen. 
 12-05-2024: Met facet_wrap() onderscheid gemaakt tussen mannen en vrouwen. (twee plots)
+
+
 ```{r}
 library(ggplot2)
 tijd_vector <- data.frame(tijd_vector)
@@ -234,8 +317,11 @@ ggplot(tijd_vector, aes(y=tijd_vector,
 summary(tijd_vector)
 head(tijd_vector)
 ```
-# Circulair Packing test: 
-```{r}
+Bovenstaande grafiek laat de relatie tussen leeftijd en tijdnodig om het formulier in te vullen zien. 
+Dit wordt voor mannen en vrouwen gedaan. (links mannen en rechts vrouwen)
+
+# Circulair Packing test 1: 
+```{r eval=FALSE}
 # Libraries
 library(data.tree)
 library(ggraph)
@@ -279,11 +365,12 @@ population
 
 
 
-graph <- tbl_graph(flare$vertices, flare$edges)
+#graph <- tbl_graph(flare$vertices, flare$edges)
 set.seed(1)
 ggraph(graph, 'circlepack', weight = size) + 
   geom_node_circle(aes(fill = depth), size = 0.25, n = 50) + 
   coord_fixed()
+
 ```
 15-05-2024:
 Om te achterhalen of de leeftijden van de mensen die de enquete ingevuld hebben normaal verdeeld zijn 
@@ -303,7 +390,7 @@ dat betekend dat er wel een significant verschil is tussen een nomale verdeling 
 
 ```{r}
 
-pwr.t.test(n = n, d = d, sig.level = alpha, type = "one.sample", alternative = "less")
+#pwr.t.test(n = n, d = d, sig.level = alpha, type = "one.sample", alternative = "less")
 
 ```
 # PIE CHART
@@ -327,7 +414,15 @@ ggplot(data, aes(x="", y=value, fill=group)) +
 
 
 ```
-```{r}
+```{r eval=FALSE}
+
+
+# Load ggplot2
+library(ggplot2)
+library(dplyr)
+
+
+
 
 
 # Load ggplot2
@@ -341,26 +436,8 @@ data <- data.frame(
 )
 
 
-
-
-# Load ggplot2
-library(ggplot2)
-library(dplyr)
-
-# Create Data
-data <- data.frame(
-  group=LETTERS[1:5],
-  value=c(13,7,9,21,2)
-)
-
-# Compute the position of labels
-data <- data %>% 
-  arrange(desc(group)) %>%
-  mutate(prop = value / sum(data$value) *100) %>%
-  mutate(ypos = cumsum(prop)- 0.5*prop )
-
 # Basic piechart
-ggplot(data, aes(x="", y=prop, fill=group)) +
+ggplot(data, aes(x="", y=abortus$afkomst, fill=group)) +
   geom_bar(stat="identity", width=1, color="white") +
   coord_polar("y", start=0) +
   theme_void() + 
@@ -373,8 +450,77 @@ ggplot(data, aes(x="", y=prop, fill=group)) +
 
 
 ```
+```{r}
+library(ggplot2)
+df_1 <- data.frame(abortus$vader)
 
-## 
+ggplot(df_1, aes(x= c(1:104), y = abortus$vader)) +
+  geom_point(aes(color = abortus$geslacht, size = abortus$Wat.is.uw.leeftijd.)) +
+  scale_color_manual(name = "Cylinders", "ak;ldj") +
+  xlab(" ") +
+  ylab(" ") +
+
+  
+
+```
+15-05-2024:
+Bovenstaande grafiek: Moet de vader zeggenschap hebben over de abortus: Ja, Nee of geen mening.
+Het geslacht van het persoon wordt met de twee kleuren blauw en rood aangegeven en de leeftijd met de grootte van het bolletje. (zie legenda voor schaalverdeling)
+
+
+## Cirkel packing grafiek test
+
+```{r}
+# Test 2:
+library(ggraph)
+library(igraph)
+library(tidyverse)
+library(rgexf)
+
+
+edges <- data.frame(c("test", "test.test2", "test.test2.test3", "test0"))
+vertices <- data.frame(c("1", "2", "3"), c("1", "2", "3"))
+
+ 
+edgelist <- matrix(list(c("1","2","3"), c("1","2","3")),
+                    byrow=TRUE, ncol=2)
+
+edge.list(edgelist)
+
+# We need a data frame giving a hierarchical structure. Let's consider the flare dataset:
+#edges <- flare$edges
+# Usually we associate another dataset that give information about each node of the dataset:
+#vertices <- flare$vertices
+
+# Then we have to make a 'graph' object using the igraph library:
+mygraph <- graph_from_data_frame(edgelist)
+
+# Make the plot
+ggraph(mygraph, layout = 'circlepack') + 
+  geom_node_circle() +
+  theme_test()
+```
+
+```{r}
+library(ggraph)
+library(igraph)
+library(tidyverse)
+ 
+# We need a data frame giving a hierarchical structure. Let's consider the flare dataset:
+edges <- flare$edges
+#edges <- 
+ 
+# Usually we associate another dataset that give information about each node of the dataset:
+vertices <- flare$vertices
+ 
+# Then we have to make a 'graph' object using the igraph library:
+mygraph <- graph_from_data_frame( edges, vertices=vertices )
+ 
+# Make the plot
+ggraph(mygraph, layout = 'circlepack') + 
+  geom_node_circle() +
+  theme_void()
+```
 
 ```{r}
 
