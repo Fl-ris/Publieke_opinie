@@ -2,7 +2,9 @@
 title: "Logboek_Jasper"
 author: "Jasper"
 date: "2024-05-13"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 # inleiding
 Dit is het logboek van de volgende onder zoeksvraag: 
@@ -36,6 +38,12 @@ enqute open laten staan en allemaal meet waarden binnen krijgen en bedeken waar 
 Ik moet laten zien wat de gemiddelde leeftijd is van onze meetwaarde. 
 ```{r}
 library(tidyverse)
+library(dplyr)
+
+```
+
+```{r}
+
 abortus <- read.csv("abortus_dataset.csv",
                     na.strings = "NA")
 #table(abortus$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil., useNA = "always")
@@ -81,7 +89,7 @@ summary(abortus$leeftijd)
 
 
 ```
-
+Hier kijken we even wat de q1 en q3 
 ```{r}
 
 leeftijd <- data.frame(abortus$leeftijd)
@@ -90,14 +98,14 @@ ggplot(leeftijd, aes(x=abortus$leeftijd)) + geom_histogram(aes(y =after_stat(den
 ```
 
 /n
-Hier zie dat het niet hellemaal normaal verdeelt is maar kunnen wel een test doen
+Hier zie dat het niet helemaal normaal verdeelt is maar kunnen wel een test doen
 
 ```{r}
 shapiro.test(abortus$leeftijd)
 
 ```
 
-Hier zie zeker dat het niet normaal verdeelt is.
+Hier zie zeker dat de leeftijd van onze invullers niet normaal verdeelt is.
 
 
 ## 15 mei.
@@ -121,7 +129,7 @@ renamed_city_count <- city_count %>%
     rename(
         Provincies = Var1
     )
-city_count
+
 # Make the plot
 ggplot(renamed_city_count, aes(ymax=ymax, ymin=ymin, xmax=13, xmin=3, fill=Provincies)) +
      geom_rect() +
@@ -141,29 +149,32 @@ ggplot(leeftijd, aes(x = abortus$leeftijd)) + geom_boxplot()
 ## 16 mei
 Ik ga laten zien het verschil in mening over "Vindt u dat de ouders zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen?" tussen jongeren (21 jaar en jonger want deze personen zijn oficeel nog niet volwassen is) en ouderen (22 jaar en ouder)
 ```{r}
-library(dplyr)
-leeftijd_frame  <- data_frame(leeftijd, abortus$ouderszegenschap)
 
-
-
-onder_21 <- table(data_frame(filter(leeftijd_frame, leeftijd <= 21)))
-onder_21
-
-boven_21 <- filter(leeftijd_frame, leeftijd >21)
-
-table_boven_21 <- table(boven_21)
+abortus %>%
+    select(leeftijd, ouderszegenschap) %>%
+    mutate(leeftijd_boven_onder_21 = ifelse(leeftijd >= 21, "boven", "onder")) %>%
+    ggplot(mapping = aes(x = ouderszegenschap, fill = leeftijd_boven_onder_21)) +
+    geom_bar(position = "dodge")
 
 
 ```
-Het lukt niet echt hellemaal uit komt nog goed. Ik moet kijken hoe ik het uit een table moet hallen.
+
 
 
 ## 21 Mei
-Ik ga even met iets anders bezig het lukt niet echt. ik ga bezig met de chi-square test 
+Ik ga even met iets anders bezig het lukt niet echt.  
+De keuze dat we hebben gemaakt voor de leeftijd van 21 jaar want over de helle wereld is 21 jaar de laaste leeftijd van de wereld. We hadden ook kunnen kiezen voor 18 jaar. Want in Nederland is dat de grens. Maar als je kijkt naar Amerika is er een onderzoek geweest naar de conectie met de legale leeftijd van drinken en auto ongelukken. Hier is naar voren gekomen dat hoe lager de leeftijd hoe meer auto ongelukken er zijn. Hier kan je beivorbeeld uit cloncluderen dat deze mensen nog niet verantwoordelijk genoeg zijn om met alchol om te gaan,
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6876521/
+## 22 mei 
+Ik ga de tabel van 16 mei om zetten naar precentage. zo dat het wel klopt en niet op aantallen gaat.
 
 ```{r}
-
-
+abortus %>%
+    select(leeftijd, ouderszegenschap) %>%
+    mutate(leeftijd_boven_onder_21 = ifelse(leeftijd >= 21, "boven", "onder")) %>%
+    ggplot(mapping = aes(x = ouderszegenschap, fill = leeftijd_boven_onder_21)) +
+    geom_bar(position = "dodge")
 ```
+
 
 
