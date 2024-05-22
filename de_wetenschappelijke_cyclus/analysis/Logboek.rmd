@@ -3,8 +3,8 @@ title: 'Logboek: Publieke Opinie'
 author: "Floris Menninga"
 date: "2024-04-22"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -29,7 +29,9 @@ library("pwr")
 
 ```
 
-## **De enquete** ##
+## **Inleiding:** ##
+
+Vragen over het abortus beleid zijn polariserende ethische kwesties. In ons onderzoek trachten we correlaties te vinden tussen verschillende variabelen zoals: leeftijd, geslacht, opleidingsniveau, geloof etc. en de ideologische verschillen in mening tussen deze mensen.  
 
 Om de meningen van het publiek te peilen met betrekking tot hun ethische normen en waarden is er een vragenlijst opgesteld 
 die de volgende vragen en stellingen bevat:
@@ -110,6 +112,8 @@ Dit heeft als doel om te oefenen met de gebruikte statistische analyse methoden 
 
 <hr>
 
+## Verspreiden van de enquete ##
+De makers van deze enquete hebben hem naar klasgenoten, familieleden en vrienden gestuurd met de instructie om hem door te sturen naar andere kenissen en vrienden. Op 21-05-2024 zijn er 110 mensen die hem ingevuld hebben met een man vrouw verdeling van: 60/49.
 
 De data verwerken:
 Huidige working directory: `r getwd()`
@@ -166,7 +170,6 @@ abortus$geslacht <- factor(x = abortus$Wat.is.uw.geslacht..,
 abortus$afkomst <- factor(x = abortus$In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht., 
                            levels = c("Drenthe", "Flevoland", "Friesland", "Gelderland", "Groningen", "Limburg", "Noord-Brabant", "Noord-Holland", "Overijssel", "Utrecht", "Zeeland", "Zuid-Holland", "Ik ben niet in Nederland opgegroeid"),
                            labels = c("Drenthe", "Flevoland", "Friesland", "Gelderland", "Groningen", "Limburg", "Noord-Brabant", "Noord-Holland", "Overijssel", "Utrecht", "Zeeland", "Zuid-Holland", "Buitenland"))
-
 
 
 abortus$onderwijsniveau <- factor(x =
@@ -251,7 +254,6 @@ abortus$financiele_beperkingen <- factor(x = abortus$De.vrouw.niet.in.staat.is.v
                                          labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
                                          order =TRUE)
 
-table(abortus$eigen_keuze_abortus, useNA = "always") # voor de vraag: Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?
 
 
 
@@ -264,6 +266,11 @@ df <- data.frame(abortus)
 
 ```
 
+### Overzicht: abortus toestaan of niet:
+```{r}
+table(abortus$eigen_keuze_abortus, useNA = "always") # voor de vraag: Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?
+
+```
 
 
 ```{r echo=TRUE}
@@ -301,7 +308,7 @@ Niet elke provincie heeft genoeg datapunten om een boxplot van te maken.
 
 # Repareren: as.POSIXct functie werkt niet meer voor deze data.
 
-begin_tijd <- as.POSIXct(x = (c(abortus$Begintijd)), format = "%m-%d-%y %H:%M:%S")  # startpunt van invullen per persoon.
+begin_tijd <- as.POSIXct(x = (c(abortus$Begintijd)), format = "%m-%d-%y %H:%M:%S")  # startpunt van invullen per persoon, as.POSIXct met format om de datum en tijd op de juiste manier door te geven. 
 
 # 
 eind_tijd <- as.POSIXct(x = (c(abortus$Tijd.van.voltooien)), format = "%m-%d-%y %H:%M:%S") # eindpunt  van invullen per persoon.
@@ -309,10 +316,10 @@ eind_tijd <- as.POSIXct(x = (c(abortus$Tijd.van.voltooien)), format = "%m-%d-%y 
 tijd_vector <- c()
 # Om de totale tijd uit te rekenen die de mensen nodig hadden om het formulier in te vullen.
 # Het verschil tussen de eindtijd en de begintijd. 
-for (x in seq_along(abortus$Begintijd)) {
+for (x in seq_along(abortus$Begintijd)) { # Loop door de begintijden heen..
   #print(paste0("Begin tijd: ", begin_tijd[x]))
   #print(paste0("eind tijd: ", eind_tijd[x])) 
-  tijd_vector[x] <- as.numeric((eind_tijd[x] - begin_tijd[x]))
+  tijd_vector[x] <- as.numeric((eind_tijd[x] - begin_tijd[x])) # Voeg toe aan tijdsvector: het verschil tussen eind_tijd en begin_tijd om totale invul tijd te krijgen.
 }
 
 ```
@@ -343,7 +350,6 @@ Bovenstaande grafiek laat de relatie tussen leeftijd en tijdnodig om het formuli
 Dit wordt voor mannen en vrouwen gedaan. (links mannen, midden vrouwen en rechts ongespecificeerd.)
 Er was maar een persoon dat ongespecificeerd opgav dus kan daar geen boxplot van gemaakt worden maar wordt dit weergeven met een enkele stip. (links onder in de grafiek)
 
-
 ```{r}
 
 data_frame_invultijd <- data.frame(tijd_vector, abortus$geslacht, abortus$Wat.is.uw.leeftijd.)
@@ -363,6 +369,7 @@ invultijd_anders <- data_frame_invultijd %>%
 
 
 ```
+
 Gemiddeld doen de mannen er `r mean(invultijd_mannen$tijd_vector)` minuten over om de enquete in te vullen. <br>
 Dit ligt tussen de `r quantile(invultijd_mannen$tijd_vector, 0.25)` (25%) en `r quantile(invultijd_mannen$tijd_vector, 0.75)` (75%)
 
@@ -372,7 +379,9 @@ Dit ligt tussen de `r quantile(invultijd_vrouwen$tijd_vector, 0.25)` (25%) en `r
 Gemiddeld doen de "Geslacht niet opgegeven mensen" er `r mean(invultijd_anders$tijd_vector)` minuten over om de enquete in te vullen. <br>
 Dit ligt tussen de `r quantile(invultijd_anders$tijd_vector, 0.25)` (25%) en `r quantile(invultijd_anders$tijd_vector, 0.75)` (75%)
 
+
 # Circulair Packing test 1: 
+Test met data van het internet om het hierachrische data format beter te begrijpen.
 ```{r eval=FALSE}
 
 
@@ -422,26 +431,30 @@ ggraph(graph, 'circlepack', weight = size) +
 15-05-2024:
 Om te achterhalen of de leeftijden van de mensen die de enquete ingevuld hebben normaal verdeeld zijn 
 is de Shapiro Wilk test gebruikt. 
-# Shapiro Wilk test:
 
+### Shapiro Wilk test:
+Deze test wordt uitgevoerd om vast te stellen of leeftijden van de mensen die de enquete ingevuld hebben normaal verdeeld is.
 ```{r}
 
 
-shapiro.test(abortus$Wat.is.uw.leeftijd.)
-             
+shapiro_test <- shapiro.test(abortus$Wat.is.uw.leeftijd.)
+shapiro_test
+
 ```
-De p-waarde is: 2.097e-05 
+De p-waarde is: 2.097e-05 (`r shapiro_test$p.value`)
 dat betekend dat er wel een significant verschil is tussen een nomale verdeling en deze leeftijd data. 
 Omdat de data niet normaal verdeeld is zal een niet-parametrische analyse nodig zijn. 
+Voorbeelden van deze non parametrische zijn: de Kruskal-Wallis test en de Chi-square en de two way z test.
 
-# Power analyse:
+# Power analyse: <br>
 
 ```{r}
 
 #pwr.t.test(n = n, d = d, sig.level = alpha, type = "one.sample", alternative = "less")
 
 ```
-# PIE CHART
+### Pie chart: <br>
+ Niet gebruiken, alleen om te proberen...
 ```{r}
 
 # Create Data
@@ -459,7 +472,8 @@ ggplot(data, aes(x="", y=value, fill=group)) +
 
 ```
 ```{r}
-library(ggplot2)
+# Test pie chart:
+#library(ggplot2)
 # Create Data
 data <- data.frame(
   group=abortus$afkomst,
@@ -528,13 +542,14 @@ ggplot(data = df, mapping = aes(x = c(1:109), y = levensgevaar_vrouw_o, fill = g
   xlab("Percentage mensen") + # nog aapassen naar procent.
   ylab(" ") # Geen ylabel nodig omdat er al een beschrijving bij de waardes staan. 
   # labels beter maken.
+  # To-do: prercentage verbeteren, huidige waarden kloppen nog niet.
 ```
 ```{r}
 # Voor de vraag: Mag abortus toegestaan zijn als de zwangerschap resultaat is van verkrachting?
 
 ggplot(data = df, mapping = aes(x = (ID/100), y = veroorzaakt_o, fill = geslacht)) + # geeft procent weer. 
   geom_bar(stat = "identity") +
-  ggtitle("Mag abortus als de zwangerschap resultaat is van verkrachting?") +
+  ggtitle("Mag abortus als de zwangerschap\nresultaat is van verkrachting?") +
   xlab("Percentage mensen") + # verifiëren of dit wel klopt...
   ylab(" ")
 ```
@@ -542,12 +557,22 @@ ggplot(data = df, mapping = aes(x = (ID/100), y = veroorzaakt_o, fill = geslacht
 ```{r}
 #Voor de vraag:  
 #ggplot(data = df, mapping = aes(x = ))
+
+
+ggplot(data = df, mapping = aes(x = (c(1:109)), y = levensgevaar_vrouw_o)) + # geeft procent weer. 
+  geom_bar(stat = "identity", aes(fill = Wat.is.uw.leeftijd.)) +
+  facet_wrap(~geslacht) +
+  ggtitle("Mag abortus als het leven van de vrouw in gevaar komt tijdens\nde zwangerschap?") +
+  xlab("Percentage mensen") + # verifiëren of dit wel klopt...
+  ylab(" ")
+
+  # To-do: sorteer voorl leeftijd gradient.
 ```
 
 
 ## Cirkel packing grafiek test
 
-```{r}
+```{r eval=F}
 # Test 2:
 
 
@@ -569,17 +594,27 @@ edge.list(edgelist)
 mygraph <- graph_from_data_frame(edgelist)
 
 
+library(data.tree)
+df9 <- data.frame(name = c("land", "water", "air", "car", "bicycle", "boat", "balloon", "airplane", "helicopter", "Ford", "BMW", "Airbus"), 
+                 parent = c("root", "root", "root", "land", "land", "water", "air", "air", "air", "car", "car", "airplane"))
+tree <- FromDataFrameNetwork(df9)
+
+vv <- ToDataFrameTree(tree, 
+                level1 = function(x) x$path[2],
+                level2 = function(x) x$path[3],
+                level3 = function(x) x$path[4],
+                level_number = function(x) x$level - 1)[-1,-1]
 
 # Test
 hc <- df %>%
   dist %>%
   hclust
-
+cc <- tree(c(1:5))
 plot(hc)
 
 
 # Make the plot
-ggraph(hc, layout = 'circlepack') + 
+ggraph(cc, layout = 'circlepack') + 
   geom_node_circle() +
   theme_test()
 ```
@@ -633,6 +668,8 @@ man_ja_abortus <- df %>%
   filter(geslacht == "Man")
 prop_man_ja_abortus <- prop.table(table(ifelse(df$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)))
 
+
+
 # Bereken het zelfde voor de vrouwen:
 vrouw_ja_abortus <- df %>% 
   filter(geslacht == "Vrouw")
@@ -655,6 +692,7 @@ En met de 109 mensen die we nu hebben is de effect sterkte: `r round(power1$d, d
 
 
 # T-test:
+En chi-square test:
 >H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze over het toestaan van de abortus.
 >H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze over het toestaan van de abortus.
 
@@ -663,24 +701,34 @@ En met de 109 mensen die we nu hebben is de effect sterkte: `r round(power1$d, d
 
 #binaire_lijst_keuze_abortus <- 
 
-ja_abortus <- (ifelse(abortus$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn. 
+ja_abortus <- (ifelse(abortus$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
+
+ja_abortus_onder_21_df <-  df %>% 
+  filter(df$Wat.is.uw.leeftijd. <= 21)
+ja_abortus_onder_21 <- (ifelse(ja_abortus_onder_21_df$eigen_keuze_abortus=="Wel abortus toestaan", 1,0))
 #all(duplicated(abortus$geslacht)[-1L])
 
-ja_nee_abortus <- t.test(ja_abortus, as.numeric(abortus$geslacht), data = abortus, alternative = "two.sided")
+ja_nee_abortus_onder_21 <- chisq.test(df$geslacht, ja_abortus, correct = F)
 
-ja_nee_abortus
+
+
+#ja_nee_abortus <- t.test(ja_abortus, as.numeric(abortus$geslacht), data = abortus, alternative = "two.sided")
+
 
 # Resultaat kan bijna niet kloppen.... achterhaal wat er mis is.
 ```
-H0 is verworpen en H1 is aangenomen omdat de p-waarde `r ja_nee_abortus$p.value` is. Dit is onder de 0.05 en betekend dat met 95% zekerheid gezegd kan worden dat het geen toeval is dat er een verschil tussen de twee geslachten is en hun keuze om de abortus toe te staan of te verbieden. 
 
-# Two-way chi^2 Test:
+H0 is verworpen en H1 is aangenomen omdat de p-waarde `"r" ja_nee_abortus$p.value` is. Dit is onder de 0.05 en betekend dat met 95% zekerheid gezegd kan worden dat het geen toeval is dat er een verschil tussen de twee geslachten is en hun keuze om de abortus toe te staan of te verbieden. 
+
+# Two-way chi^2 test:
+De volgende hypothese is opgesteld:
 H0: Geslacht is geen bijdragende factor in de keuze of abortus toegestaan mag zijn of niet. 
 H1: Geslacht is een bijdragende factor in de keuze of abortus toegestaan mag zijn of niet.
 
 ```{r}
 # Test om te kijken hoe het werkt:
 #test_ja_abortus <- df %>% filter(geslacht == "Man")
+
 
 #test_ja_abortus <- (ifelse(test_ja_abortus$eigen_keuze_abortus=="Wel abortus toestaan" & #test_ja_abortus$geslacht == "Man", 6,0))
 #chisq.test(df$geslacht, ja_abortus ,correct = F)
@@ -690,11 +738,38 @@ chi_ja_abortus <- chisq.test(df$geslacht, ja_abortus, correct = F)
 
 ```
 De p-waarde van de Chi-square test is: `r chi_ja_abortus$p.value` dit is boven de 0.05 dus kan de nul hypothese aangenomen worden, geslacht is geen bijdragende factor in de keuze of abortus toegestaan mag zijn of niet. <br>
-De Chi-squered waarde is: `r chi_ja_abortus$statistic`
-
+De Chi-squered waarde is: `r round(chi_ja_abortus$statistic, digits = 2)` <br>
 
 <hr>
 
 
-# To-do: voor grafieken proporties gebruiken i.p.v. absolute aantallen (om rekening te houden met verschillen en aantal "metingen" tussen mannen en vrouwen.)
+### To-do: voor grafieken proporties gebruiken i.p.v. absolute aantallen (om rekening te houden met verschillen en aantal "metingen" tussen mannen en vrouwen.) ###
+
+21-05-2024:
+** Two-way Z-test:**
+Voor het beantwoorden van de vraag: Heeft het geslacht invloed op de keuze.... (afhankelijk van de vraag, herhalen voor alle vragen) 
+```{r}
+library("BSDA")
+#df_z_test <- 
+#z_test_abortus <- z.test(df$geslacht, ja_abortus, sigma.x = sd(df$geslacht))
+```
+
+To-do:
+
+
+### Grafiek leeftijd/keuze:
+Op de onderstaande grafiek wordt het verband tussen leeftijd en keuze bij de vraag: wel of niet abortus toestaan weergeven.
+
+```{r}
+
+ggplot(data = df, mapping = aes(x = Wat.is.uw.leeftijd., y = c(1:109))) +
+  geom_point(aes(color = eigen_keuze_abortus, size = Wat.is.uw.leeftijd.)) +
+  facet_wrap(~geslacht) +
+  xlab("Leeftijd (Jaren)") +
+  ylab("Index nummer (nog aanpassen naar iets anders?)") +
+  ggtitle("")
+
+
+
+```
 
