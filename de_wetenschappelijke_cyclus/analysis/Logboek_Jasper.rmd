@@ -152,7 +152,7 @@ Ik ga laten zien het verschil in mening over "Vindt u dat de ouders zeggenschap 
 
 abortus %>%
     select(leeftijd, ouderszegenschap) %>%
-    mutate(leeftijd_boven_onder_21 = ifelse(leeftijd >= 21, "boven", "onder")) %>%
+    mutate(leeftijd_boven_onder_21 = ifelse(leeftijd > 21, "boven", "onder")) %>%
     ggplot(mapping = aes(x = ouderszegenschap, fill = leeftijd_boven_onder_21)) +
     geom_bar(position = "dodge")
 
@@ -167,14 +167,21 @@ De keuze dat we hebben gemaakt voor de leeftijd van 21 jaar want over de helle w
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6876521/
 ## 22 mei 
 Ik ga de tabel van 16 mei om zetten naar precentage. zo dat het wel klopt en niet op aantallen gaat.
-
+ 
 ```{r}
-abortus %>%
+x <-abortus %>%
     select(leeftijd, ouderszegenschap) %>%
-    mutate(leeftijd_boven_onder_21 = ifelse(leeftijd >= 21, "boven", "onder")) %>%
-    ggplot(mapping = aes(x = ouderszegenschap, fill = leeftijd_boven_onder_21)) +
-    geom_bar(position = "dodge")
-```
+    mutate(leeftijd_boven_onder_21 = ifelse(leeftijd > 21, "boven", "onder"))
+table_1 <- prop.table(table(x$leeftijd_boven_onder_21[x$leeftijd_boven_onder_21 == "boven"], x$ouderszegenschap[x$leeftijd_boven_onder_21 == "boven"]))
+table_2 <- prop.table(table(x$leeftijd_boven_onder_21[x$leeftijd_boven_onder_21 == "onder"], x$ouderszegenschap[x$leeftijd_boven_onder_21 == "onder"]))
+x3 <- rbind(table_1,table_2)
+as.data.frame.table(x3) %>%
+    ggplot(aes(x = Var1,y = Freq,  fill = Var2)) +
+    geom_col(position = "dodge")
 
+    
+```
+Hier zie je dus dat de mennig erg verschild over ouderzeggenschap. 
+jongeren hebben willen nee en ouderen zeggen ja
 
 
