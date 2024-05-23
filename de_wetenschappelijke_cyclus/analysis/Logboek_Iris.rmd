@@ -2,7 +2,9 @@
 title: "Logboek_Iris"
 author: "Iris Ineke"
 date: "2024-05-06"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -30,7 +32,7 @@ plot(pressure)
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
 
-Vrijdag 26 april,
+## Vrijdag 26 april
 Protocol geschreven en introductie voor vraag over bedenktijd:
 "vindt u dat de wettelijke bedenktijd moet terugkomen?"
 
@@ -47,29 +49,30 @@ Achtergrond informatie:
 Sinds 1 januari 2023 is de verplichte minimale bedenktijd van 5 dagen vervallen. Voorheen moesten er minimaal 5 dagen zitten tussen het gesprek met een arts en de abortus zelf. Op dit moment geldt een flexibele bedenktijd die wordt bepaalt door een gesprek tussen de vrouw die abortus wil en een arts. De arts bepaalt nu op basis van dit gesprek hoelang de bedenktijd moet zijn voor de vrouw. Dit kan 0 dagen zijn, maar ook 10.
 
 
-Zaterdag 4 mei:
+## Zaterdag 4 mei
 Feedback formulier gemaakt voor de enquête vragen.
-Vragen:
-- Hoe zou u de algehele ervaring van het invullen van deze enquête beoordelen?
-    Slecht, matig, voldoende, goed, uitstekend
-- Welke aspecten van de enquête vond u het meest waardevol en waarom?
-- Zijn er specifieke vragen in de enquête die u verwarrend vond of waarvan u denkt dat ze verbeterd kunnen worden? Zo ja, kunt u ons vertellen welke vragen en eventuele suggesties voor verbetering?
-- Hoe zou u de lengte van de enquête beoordelen?
-    te kort, precies goed, te lang
-- Heeft u nog andere opmerkingen of suggesties voor ons?
-(Zie document Feedback_enquête.docx)
+Vragen:  
+
+- Hoe zou u de algehele ervaring van het invullen van deze enquête beoordelen?  
+    Slecht, matig, voldoende, goed, uitstekend. 
+- Welke aspecten van de enquête vond u het meest waardevol en waarom?  
+- Zijn er specifieke vragen in de enquête die u verwarrend vond of waarvan u denkt dat ze verbeterd kunnen worden? Zo ja, kunt u ons vertellen welke vragen en eventuele suggesties voor verbetering?  
+- Hoe zou u de lengte van de enquête beoordelen?  
+    te kort, precies goed, te lang. 
+- Heeft u nog andere opmerkingen of suggesties voor ons?  
+(Zie document Feedback_enquête.docx). 
 
 
-Zondag 5 mei,
+## Zondag 5 mei
 Feedback laten invullen door twee mensen en resultaten besproken.
 Conclusie:
 De volgorde van de vragen veranderd. Na de vraag over of er uitzonderingen zijn, de vragen met uitzonderingen geplaatst.Verder nog de vraagstelling van sommige vragen aangepast. En de introductie herschreven.
 
 
-Woensdag 8 mei,
+## Woensdag 8 mei
 Vragenlijst rondgestuurd. Logboek individueel geschreven.
 
-Maandag 13 mei,
+## Maandag 13 mei
 Inlezen radar chart voor presentatie (met uit welke provinvie mensen komen).
 input: 
 - kolom: quantitative variable(hoeveelheden)
@@ -79,12 +82,12 @@ Je kan het extra customizen, zie r-graph-gallery.com
 (voor gegevens enquête verwerken gebruiken: 'grouped and stacked barplot')
 
 
-Dinsdag 14 mei:
+## Dinsdag 14 mei
 Omdat een ander groepje al de radar chart gaat doen, hebben we besloten om een andere visualizatie te kiezen. Dus we gaan nu de circular packing uitzoeken. 
 Dit kan met de 'ggraph' package. 
 
 
-Woensdag 15 mei:
+## Woensdag 15 mei
 Data inlezen.
 ```{r}
 data <- read.csv('abortus_dataset.csv')
@@ -92,7 +95,7 @@ head(data)
 ```
 
 ```{r}
-summary("abortus_dataset.csv")
+summary(data)
 ```
 Kolommen duidelijkere namen gegeven en onnodige kolommen verwijderd.
 (stellingen nog niet veranderd!)
@@ -124,15 +127,16 @@ head(data_renamed)
 
 (later "Anders" en "Wil ik liever niet zeggen" toevoegen!)
 factor gender toevoegen.
-```{r}
+```{r eval=FALSE}
 library(dplyr)
-data_renamed$Gender <- factor(x = Data$gender, 
+data_renamed$Gender <- factor(x = data$gender, 
                       levels = c("Vrouw","Man"),
                       labels = c("female", "male"))
 ```
 Vragen bovenste stukje tekst!:
 - waarom gender ineens zonder hoofdletter??
 - is 'x = Data$gender' overbodig??
+er gaat iets fout.
 
 
 Oefenen: 
@@ -168,7 +172,7 @@ deze regel zorgt ervoor dat als er 0 vrouwen of mannen van een leeftijd zijn, da
 De 'vjust' zorgt ervoor dat het aantal niet overlapt met het balkje. 
 
 
-Donderdag 16 mei:
+## Donderdag 16 mei
 kleuren palleten die ook leesbaar is voor mensen die kleurenblind zijn: 
 http://www.cookbook-r.com/Graphs/Colors_(ggplot2)/
 
@@ -181,13 +185,14 @@ Hoeveel van deze antwoorden komen van mannen en hoeveel van vrouwen? Zou het zo 
 ```{r}
 library(ggplot2)
 
-ggplot(data_renamed, aes(fill=Biologische_vader_zeggenschap, x=Gender)) + 
+ggplot(data_renamed, aes(fill=Biologische_vader_zeggenschap, x=Gender, y= ID)) + 
     geom_bar(position="dodge", stat="identity")
 ```
 y invullen! hoe uitzoeken?
+Deze plot is nog niet logisch. id op de y-as aanpassen.
 
 
-Vrijdag 17 mei:
+## Vrijdag 17 mei
 fill is een soort split. Dus de fill moet de antwoorden worden van de vraag: 
 'Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?'
 
@@ -230,3 +235,103 @@ ggplot(as.data.frame(prop_tabel), aes(x = Var1, y=Freq, fill=Var2)) +
 
 ```
 In de bovenstaande plot zie je weergegeven per gender hoeveel procent er heeft geantwoord wat heeft geantwoord. Je ziet hier dus ook dat er gemiddeld meer vrouwen zijn die nee hebben geantwoord.Ook zie je dat er meer mannen ja hebben geantwoord dan vrouwen. Dit kan komen doordat vrouwen zich waarschijnlijk eerder inleven in de vrouw en mannen eerder in de man. Hierdoor zie je dat mannen eerder zullen zeggen dat zij vinden dat mannen ook inspraak moeten hebben.  
+
+
+## Dinsdag 21 mei
+Inlezen power analyse;
+power wordt bepaalt door steekproefomvang(hoeveel antwoorden nodig), effectgrootte(verband tussen twee variabelen, bijvoorbeeld verschil in gemiddelden) en significantieniveau(hoe groot is de kans dat een resultaat door toeval is bepaalt).
+Met een poweranalyse bepaal je de steekproefomvang(dus hoeveel antwoorden er nodig zijn voor een betrouwbaar resultaat).
+Powerniveau moet boven de 80% zitten. 
+Voor een poweranalyse zijn drie factoren nodig om de vierde te berekenen.
+Statistische power(meestal 80% of hoger)
+Steekproefomvang(de onbekende)
+Significantieniveau(meestal 5% (of 1%))
+Verwachte effectgrootte(?, zelf inschatten dmv eerder onderzoek)
+
+Door het significantieniveau tussen de 5% en de 1% te veranderen heb je invloed op de kans op een type-| fout en een type-|| fout.
+(BRON: Bhandari, P. (2022, 1 september). Statistische power (statistical power) en poweranalyses. Scribbr. https://www.scribbr.nl/statistiek/statistische-power/)
+(In Floris zijn logboek is een power analyse uitgevoerd.)
+
+
+Ideeën plot voor morgen:
+- vraag 13: 'Vindt u dat de wettelijke bedenktijd moet terugkomen?'
+vergelijken met 'gender' of 'religieuze overtuiging'
+
+
+- vraag 10 en vraag 11 vergelijken:
+'Vindt u dat een minderjarig kind de keuze moet hebben om voor een abortus te kiezen?'
+'Vindt u dat de ouders zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen?'
+Zullen mensen die bij vraag 10 'Ja' invullen dan ook 'Nee' invullen bij vraag 11?
+Je kunt namelijk ook zeggen dat een minderjarig kind de keuze moet hebben, maar dat deze keuze dan vervolgens bij de ouders ligt.
+
+- vraag 6: 'Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?'
+Vergelijken met geloof. Zal iemand sneller 'Nee' zeggen als deze gelooft?
+
+
+## Woensdag 22 mei
+Hoeveel procent van de mensen die gelooft antwoord bij vraag 6: 'Nee'
+uitzoeken:
+- hoeveel procent gelooft
+(selecteer op 'Niet gelovig' en trek dat vervolgens af van het geheel)
+- hoeveel procent antwoord nee
+
+
+```{r}
+(tabel_geloof_vraag6 <- (table(data_renamed$Abortus_keuze, data_renamed$Religie)))
+```
+In de tabel hierboven zie je hoeveel mensen die ja/nee hebben geantwoord bij vraag 6 (Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?) een religieuze overtuiging heeft.
+
+```{r}
+(proptabel_geloof_vraag6 <- prop.table(table(data_renamed$Abortus_keuze, data_renamed$Religie)))
+```
+Uit de tabel hierboven kun je zien dat 80% van de mensen die de enquête hebben ingevuld niet gelooft. Al deze mensen hebben bij vraag 6 ingevuld dat je zelf voor een abortus mag kiezen.
+
+```{r}
+data_renamed %>%
+    select(Religie, Abortus_keuze) %>%
+    mutate(Gelovig=ifelse(Religie == "Niet gelovig", "Niet gelovig", "Wel gelovig")) %>%
+    ggplot(aes(x=Gelovig, fill=Abortus_keuze)) +
+    geom_bar()
+```
+Dit is een mooie plot, maar de proportie klopt nu nog niet.
+
+```{r}
+tewmp <- data_renamed %>%
+    select(Religie, Abortus_keuze) %>%
+    mutate(Gelovig=ifelse(Religie == "Niet gelovig", "Niet gelovig", "Wel gelovig"))
+x <- prop.table(table(tewmp$Gelovig, tewmp$Abortus_keuze))
+x
+as.data.frame(x)%>%
+    ggplot(aes(x = Var1, y = Freq, fill = Var2)) +
+    geom_col(position = "dodge")
+```
+In de bovenstaande plot zie je de verdeling weergegeven van mensen die wel geloven en niet geloven en wat deze hebben geantwoord op de vraag of mensen zelf mogen kiezen of ze een abortus willen.
+
+## donderdag 23 mei
+Verbeteren plot van gisteren:
+```{r}
+tijdelijke_data <- data_renamed %>%
+    select(Religie, Abortus_keuze) %>%
+    mutate(Gelovig=ifelse(Religie == "Niet gelovig", "Niet gelovig", "Wel gelovig"))
+x <- prop.table(table(tijdelijke_data$Gelovig, tijdelijke_data$Abortus_keuze))
+x
+as.data.frame(x)%>%
+    ggplot(aes(x = Var1, y = Freq, fill = Var2)) +
+    labs(title = "Corrolatie religie en mening abortus",
+         subtitle = "Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?",
+         x = "",
+         fill = "Antwoord",
+         y = "Aantal antwoorden") +
+    geom_col(position = "dodge")
+```
+Je ziet in de plot hierboven dat alle mensen die hebben aangegeven niet een religieuze overtuiging te hebben bij vraag 6 ook hebben aangegeven dat iemand zelf moet kunnen kiezen of die een abortus wil. Bij de mensen die hebben ingevuld wel een religieuze overtuiging te hebben is er een deel die heeft aangegeven dat iemand niet zelf moet kunnen kiezen of die een abortus wil. Dus alle mensen die tegen vrije keuze over abortus zijn hebben een religieuze overtuiging. Dit is opvallend.
+
+Achtergrond informatie geloof en abortus:
+Volgens het christendom is er vanaf het moment van de bevruchting nieuw leven ontstaan. Hierom zijn er veel christenen die tegen abortus zijn. In 'tabel_geloof_vraag6' (zie hieronder nog eens weergegeven) zie je dat van de 11 christenen er 3 tegen abortus zijn. 
+In de koran (bevat de regels van de islam) wordt abortus niet expliciet verboden. Wel wordt er in omschreven dat het verboden is om abortus te plegen zodra er sprake is van leven. Volgens de Islam is dit 120 dagen na de bevruchting. Dit is rond de vier maanden. Een abortus mag je plegen tot de 24e week na de bevruchting. Dit is rond de zes maanden. Dus volgens de islam mag je wel abortus plegen, als dit binnen de vier maanden valt. In de tabel hieronder geven de twee moslims aan tegen abortus te zijn. 
+
+```{r}
+tabel_geloof_vraag6
+```
+volgens het hindoeïsme mag een vrouw geen abortus plegen, tenzij het leven van de vrouw in gevaar loopt.
+Volgens het boeddhisme is er niet een voor of tegen abortus. Sommigen boeddhisten zeggen dat je bij abortus iemands leven neemt en dat de medische ingrijp iemand buiten de kringloop van iemand zijn leven plaatsen. Maar er zijn ook boeddhisten die abortus goed keuren onder bepaalde voorwaarden. Zolang de betrokkenen goed nadenken over de gevolgen van hun keuze.
