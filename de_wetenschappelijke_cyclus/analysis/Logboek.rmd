@@ -3,8 +3,8 @@ title: 'Logboek: Publieke Opinie'
 author: "Floris Menninga"
 date: "2024-04-22"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -21,7 +21,7 @@ library(viridis)
 library(ggplot2)
 library(dplyr) 
 library(rgexf)
-
+library(ggrepel)
 # Voor statistische analyses:
 library("pwr")
 
@@ -135,6 +135,7 @@ df_leeftijd <- data.frame(abortus$Wat.is.uw.leeftijd.)
 
 # verdeling van de leeftijden:
 ggplot(df_leeftijd, aes(x= abortus$Wat.is.uw.leeftijd.)) +
+  geom_histogram(aes(y = ..density..)) + 
   geom_density() +
   xlab("Leeftijd (Jaren)") 
 
@@ -253,13 +254,20 @@ abortus$financiele_beperkingen <- factor(x = abortus$De.vrouw.niet.in.staat.is.v
                                          levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
                                          labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
                                          order =TRUE)
-
-
-
-
-
-
 df <- data.frame(abortus)
+
+
+# Voor de factoren met "Ja" en "Nee" als levels:
+#df <- df %>% mutate(across(c(Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.)), .fns = factor(
+#                         levels = c("Ja", "Nee"),
+ #                        labels = c("Ja", "Nee")))
+
+
+
+#test11 <- df %>%  across(ID, Wat.is.uw.geslacht..) ~ filter(geslacht == "Man")
+  
+
+
 
 #ggplot(df, aes(x=, y=abortus$Wat.is.uw.leeftijd.)) +
  # geom_bar(stat="identity", color="blue", fill="white")
@@ -291,7 +299,7 @@ Verdeling van de leeftijd van de mensen die de enquete hebben ingevuld en hun id
 # Grafiek met leeftijden uit verschillende provincies.
 ggplot(df, aes(y=abortus$afkomst,
                x= abortus$Wat.is.uw.leeftijd.)) +
-  geom_boxplot(color = "black", fill = "gold") +
+  geom_boxplot(color = "black", fill = "gold", varwidth = T) +
     xlab("Leeftijd (Jaren") +
     ylab("Op gegroeid in de provincie:")
 
@@ -471,52 +479,40 @@ ggplot(data, aes(x="", y=value, fill=group)) +
 
 
 ```
-```{r}
-# Test pie chart:
-#library(ggplot2)
-# Create Data
-data <- data.frame(
-  group=abortus$afkomst,
-  value=abortus$afkomst
-)
 
-
-# Basic piechart
-ggplot(data, aes(x="", y=abortus$afkomst, fill=group)) +
-  geom_bar(stat="identity", width=1, color="white") +
-  coord_polar("y", start=0) +
-  theme_void() + 
-  theme(legend.position="none") 
-
-
-
-
-```
 ```{r eval=T}
-df_1 <- data.frame(abortus)
 
-ggplot(df_1, aes(x= c(1:109), y = vader)) +
-  geom_point(aes(color = geslacht)) +
+proportie_man_vader <- df %>% select(vader) %>% filter(df$geslacht == "Man")
+proportie_man_vader_01 <- ifelse(proportie_man_vader == "Ja" , 0,1)
+
+hi <- prop.table(proportie_man_vader_01)
+
+proportie_vrouw_vader <- 
+
+ggplot(df, aes( y = vader)) +
+  geom_bar(aes()) +
   labs(color = "test") +
   #scale_color_manual(name = "Cylinders") 
 #  scale_fill_discrete(name = "test") +
   ggtitle("Moet de vader zeggenschap hebben over \nde beslissing om een abortus te induceren? ") 
 
   
-
 ```
 
 ```{r}
 
 
-ggplot(df, aes(x= ID, y = onderwijsniveau)) +
-  geom_jitter(aes(color = vader, shape = geslacht), width = 0.005, alpha = 0.7) +
-  labs(color = "Keuze") +
-  #geom_jitter(width = 0.005, alpha = 0.7)
-  ggtitle("Moet de vader zeggenschap hebben over \nde beslissing om een abortus te induceren? ")
-
+ggplot(df, aes(x= Wat.is.uw.leeftijd., y = onderwijsniveau)) +
+ # geom_point(aes(color = vader, size = 2.5), alpha = 0.5) +
+  facet_wrap(~geslacht) +
+  labs(" ") +
+  xlab("Leeftijd (Jaren)") +
+  ylab("Onderwijsniveau") +
+  geom_jitter(aes(color = vader, size = 2.5), alpha = 0.7, height = 0.05) +
+  ggtitle("Moet de vader zeggenschap hebben over \nde beslissing om een abortus te induceren?")
 
 ```
+
 
 
 15-05-2024:
@@ -533,6 +529,8 @@ ggplot(data = df, mapping = aes(x = (ID), y = als_nee)) +
   geom_point()
 
 ```
+
+
 ```{r}
 # Voor de vraag: Vindt u dat er voor abortusgekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen? 
 library(ggridges)
@@ -545,6 +543,8 @@ ggplot(data = df, mapping = aes(x = c(1:109), y = levensgevaar_vrouw_o, fill = g
   # labels beter maken.
   # To-do: prercentage verbeteren, huidige waarden kloppen nog niet.
 ```
+
+
 ```{r}
 # Voor de vraag: Mag abortus toegestaan zijn als de zwangerschap resultaat is van verkrachting?
 
@@ -554,6 +554,7 @@ ggplot(data = df, mapping = aes(x = (ID/100), y = veroorzaakt_o, fill = geslacht
   xlab("Percentage mensen") + # verifiëren of dit wel klopt...
   ylab(" ")
 ```
+
 
 ```{r}
 #Voor de vraag:  
@@ -568,6 +569,78 @@ ggplot(data = df, mapping = aes(x = (c(1:109)), y = levensgevaar_vrouw_o)) + # g
   ylab(" ")
 
   # To-do: sorteer voorl leeftijd gradient.
+
+```
+25-05-2024:
+# Donut grafiek:
+Op de onderstaande grafieken wordt het aantal mensen per provincie gevisualiseerd.
+
+
+```{r grafiek_voor_presentatie}
+#library(ggrepel)
+
+# Maak tabel met aantal mensen per provincie.
+x <- table(abortus$afkomst)
+x <- sort(x, decreasing = T)
+provincie_aantal <- data.frame(x)
+
+
+# Reken de percentages uit: 
+provincie_aantal$fraction = provincie_aantal$Freq / sum(provincie_aantal$Freq)
+provincie_aantal$percentage = round(provincie_aantal$fraction *100, digits =1)
+provincie_aantal$ymax = cumsum(provincie_aantal$fraction)
+provincie_aantal$ymin = c(0, head(provincie_aantal$ymax, n=-1))
+provincie_aantal$labelp = (provincie_aantal$ymax+provincie_aantal$ymin)/2
+provincie_aantal$label = (paste(provincie_aantal$percentage, "% ", provincie_aantal$Var1))
+
+# Verander de naam van de provincie colom van Var1 naar "provincies":
+provincie_aantal <- provincie_aantal %>%
+    rename(provincies = Var1)
+
+
+# Maak het grafiekje:
+ggplot(provincie_aantal,aes(ymax=ymax, ymin=ymin, xmax=13, xmin=3)) +
+     geom_rect(color = "black",aes(fill=provincies)) +
+     geom_label_repel(x = 13, aes(y=labelp, label= label), size=3, max.overlaps = 11, min.segment.length = 0) +
+    # geom_label( x = 13, aes(y=labelp, label= label), size=4)+
+     ggtitle("Enquete deelnemers, verdeling over de provincies:")  +
+     coord_polar(theta="y") + 
+     xlim(c(-13, 13)) +
+     xlab(" ") +
+     ylab(" ")
+
+```
+### Tweede variant (stacked-barchart)
+
+```{r variant_van_de_bovenstaande_grafiek}
+#library(ggrepel)
+
+# Maak tabel met aantal mensen per provincie.
+x <- table(abortus$afkomst)
+x <- sort(x, decreasing = F)
+
+provincie_aantal <- data.frame(x)
+
+# Reken de percentages uit: 
+provincie_aantal$fraction = provincie_aantal$Freq / sum(provincie_aantal$Freq)
+provincie_aantal$percentage = round(provincie_aantal$fraction *100, digits =1)
+provincie_aantal$ymax = cumsum(provincie_aantal$fraction)
+provincie_aantal$ymin = c(0, head(provincie_aantal$ymax, n=-1))
+provincie_aantal$labelp = (provincie_aantal$ymax+provincie_aantal$ymin)/2
+provincie_aantal$label = (paste(provincie_aantal$percentage, "% ", provincie_aantal$Var1))
+
+# Verander de naam van de provincie colom van Var1 naar "provincies":
+renamed_provincie_aantal <- provincie_aantal %>%
+    rename(provincies = Var1)
+
+# Maak het grafiekje:
+ggplot(renamed_provincie_aantal, aes(ymax=ymax, ymin=ymin, xmax=13, xmin=3)) +
+     geom_rect(color = "black",aes(fill=provincies)) +
+     geom_label_repel(x = 13, aes(y=labelp, label= label), size=3, max.overlaps = 10, min.segment.length = 0) +
+    # geom_label( x = 13, aes(y=labelp, label= label), size=4)+
+     ggtitle("Enquete deelnemers, verdeling over de provincies:") +
+     xlab(" ") +
+     ylab(" ")
 ```
 
 
@@ -615,9 +688,9 @@ plot(hc)
 
 
 # Make the plot
-ggraph(cc, layout = 'circlepack') + 
-  geom_node_circle() +
-  theme_test()
+#ggraph(cc, layout = 'circlepack') + 
+ # geom_node_circle() +
+ # theme_test()
 ```
 
 ```{r}
@@ -748,6 +821,13 @@ ja_abortus_onder_21 <- (ifelse(ja_abortus_onder_21_df$eigen_keuze_abortus=="Wel 
 
 ja_nee_abortus_onder_21 <- chisq.test(df$geslacht, ja_abortus, correct = T)
 
+# boven de 21:
+ja_abortus_onder_21_df <-  df %>% 
+  filter(df$Wat.is.uw.leeftijd. > 21)
+ja_abortus_onder_21 <- (ifelse(ja_abortus_onder_21_df$eigen_keuze_abortus=="Wel abortus toestaan", 1,0))
+#all(duplicated(abortus$geslacht)[-1L])
+
+ja_nee_abortus_onder_21 <- chisq.test(df$geslacht, ja_abortus, correct = T)
 
 
 #ja_nee_abortus <- t.test(ja_abortus, as.numeric(abortus$geslacht), data = abortus, alternative = "two.sided")
@@ -841,27 +921,28 @@ chi_abortus_zeggenschap_vader <- chisq.test(df$geslacht, abortus_zeggenschap_vad
 ## Visualisatie van de Chi-square resultaten:
 
 ```{r}
-chi_test_vector_geslacht <- c(chi_ja_abortus,chi_abortus_als_gevolg_van,chi_abortus_minderjarig_keuze,chi_abortus_zeggenschap_ouders,chi_abortus_echo,chi_abortus_bedenktijd,chi_abortus_adoptie,chi_abortus_zeggenschap_vader)
+chi_test_vector_geslacht <- c(chi_ja_abortus[3],chi_abortus_als_gevolg_van[3],chi_abortus_minderjarig_keuze[3],chi_abortus_zeggenschap_ouders[3],chi_abortus_echo[3],chi_abortus_bedenktijd[3],chi_abortus_adoptie[3],chi_abortus_zeggenschap_vader[3])
 
-labels_chi_test_vector_geslacht <- c(1:8)
+#df_chi_geslacht_test <- data.frame(c(chi_ja_abortus[3],chi_abortus_als_gevolg_van[3]))
 
-df_chi_geslacht <- data.frame(chi_ja_abortus[3],chi_abortus_als_gevolg_van[3],chi_abortus_minderjarig_keuze[3],chi_abortus_zeggenschap_ouders[3],chi_abortus_echo[3],chi_abortus_bedenktijd[3],chi_abortus_adoptie[3],chi_abortus_zeggenschap_vader[3]) %>% rename(
+df_chi_geslacht <- data.frame(chi_test_vector_geslacht) %>% rename(
   chi_ja_abortus = p.value,
   chi_abortus_als_gevolg_van = p.value.1,
   chi_abortus_minderjarig_keuze = p.value.2,
-  
-  
-  
-  
-  
-  
-)
+  chi_abortus_zeggenschap_ouders = p.value.3,
+  chi_abortus_echo = p.value.4,
+  chi_abortus_bedenktijd = p.value.5,
+  chi_abortus_adoptie = p.value.6,
+  chi_abortus_zeggenschap_vader = p.value.7
+  )
+
 
 
 ```
 
 ```{r}
-ggplot(data = )
+#ggplot(data = df_chi_geslacht, mapping = aes(x = df$ID , y = df_chi_geslacht$)) +
+#  geom_bar(stat = "identity")
 
 ```
 
