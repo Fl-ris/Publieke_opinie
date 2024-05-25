@@ -919,13 +919,18 @@ chi_abortus_zeggenschap_vader <- chisq.test(df$geslacht, abortus_zeggenschap_vad
 
 ```
 ## Visualisatie van de Chi-square resultaten:
+25-05-2024:
+Om een overzicht te geven van alle chi-square resulaten voor alle vragen is er een grafiek van gemaakt. 
+De rode lijn geeft significantie aan, wanneer een waarde onder deze lijn ligt (p < 0.05) is het resulaat statistische significant en wanneer de waarde er boven ligt (p > 0.05) is het resulaat niet statistisch significant. 
+Als het resulaat significant is betekend het voor deze stellingen dat er een verschil is tussen de keuze tussen de twee geslachten. 
 
-```{r}
+
+```{r chi_square_visualizatie}
 chi_test_vector_geslacht <- c(chi_ja_abortus[3],chi_abortus_als_gevolg_van[3],chi_abortus_minderjarig_keuze[3],chi_abortus_zeggenschap_ouders[3],chi_abortus_echo[3],chi_abortus_bedenktijd[3],chi_abortus_adoptie[3],chi_abortus_zeggenschap_vader[3])
 
 #df_chi_geslacht_test <- data.frame(c(chi_ja_abortus[3],chi_abortus_als_gevolg_van[3]))
 
-df_chi_geslacht <- data.frame(chi_test_vector_geslacht) %>% rename(
+df_chi_geslacht <- (data.frame((chi_test_vector_geslacht)) %>% rename(
   chi_ja_abortus = p.value,
   chi_abortus_als_gevolg_van = p.value.1,
   chi_abortus_minderjarig_keuze = p.value.2,
@@ -934,18 +939,23 @@ df_chi_geslacht <- data.frame(chi_test_vector_geslacht) %>% rename(
   chi_abortus_bedenktijd = p.value.5,
   chi_abortus_adoptie = p.value.6,
   chi_abortus_zeggenschap_vader = p.value.7
-  )
+  ))
 
-
-
+df_chi_geslacht %>% 
+  pivot_longer(cols = c(1:8)) -> df_chi_geslacht
 ```
+In het bovenstaande blok met code wordt er een data-frame gemaakt die alle p-waardes bevat van de hypothes die opgesteld zijn. 
+Daarna wordt de data veranderd in "tidy data" (een meting per rij en variablen als colommen).
 
 ```{r}
-#ggplot(data = df_chi_geslacht, mapping = aes(x = df$ID , y = df_chi_geslacht$)) +
-#  geom_bar(stat = "identity")
-
+ggplot(data = df_chi_geslacht, mapping = aes(x = name , y = value)) +
+  geom_bar(stat = "identity") +
+  geom_hline(yintercept=0.05, linetype="dashed", color = "red") +
+  ylab("P-waarde Chi-square test:") +
+  xlab(" ") +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.6))
 ```
-
+Aan de bovenstaande grafiek te zien is er alleen een significant verschil tussen de meningen van de verschillende geslachten voor de kwestie of de vader ook zeggenschap mag hebben over de abortus, dit is van alle vragen de vraag waar ik ook wel van had verwacht dat het een polarizerende vraag zou zijn. 
 
 # Two-way chi^2 test:
 De volgende hypothese is opgesteld:
