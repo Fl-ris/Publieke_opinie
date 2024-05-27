@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.5.22)  22 MAY 2024 10:06
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.5.22)  27 MAY 2024 15:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -499,22 +499,22 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 138.
 (/home/floris/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 152.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 148.
 (/home/floris/.TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [1
 
-{/home/floris/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/home/floris/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/home/floris/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}] [2]
-<simple_template_files/figure-latex/plot-demo-1.pdf, id=37, 469.755pt x 325.215pt>
+{/home/floris/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/home/floris/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/home/floris/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}]
+<simple_template_files/figure-latex/plot-demo-1.pdf, id=28, 469.755pt x 325.215pt>
 File: simple_template_files/figure-latex/plot-demo-1.pdf Graphic file (type pdf)
 <use simple_template_files/figure-latex/plot-demo-1.pdf>
-Package pdftex.def Info: simple_template_files/figure-latex/plot-demo-1.pdf  used on input line 214.
+Package pdftex.def Info: simple_template_files/figure-latex/plot-demo-1.pdf  used on input line 192.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
-[3]
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 228.
+[2]
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 206.
 (/home/floris/.TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [4{/home/floris/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc} <./simple_template_files/figure-latex/plot-demo-1.pdf>] [5] (./simple_template.aux)
+) [3{/home/floris/.TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc} <./simple_template_files/figure-latex/plot-demo-1.pdf>] [4] (./simple_template.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-04-11>
@@ -524,18 +524,18 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 12641 strings out of 476010
- 197071 string characters out of 5791388
- 1938751 words of memory out of 5000000
- 34592 multiletter control sequences out of 15000+600000
+ 12631 strings out of 476010
+ 196936 string characters out of 5791388
+ 1937751 words of memory out of 5000000
+ 34586 multiletter control sequences out of 15000+600000
  611568 words of font info for 67 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 89i,7n,93p,880b,454s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,7n,93p,937b,453s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </home/floris/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></home/floris/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></home/floris/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx9.pfb></home/floris/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmbxi10.pfb></home/floris/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb></home/floris/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb></home/floris/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb></home/floris/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb></home/floris/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmr9.pfb></home/floris/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb></home/floris/.TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb>
-Output written on simple_template.pdf (5 pages, 311161 bytes).
+Output written on simple_template.pdf (4 pages, 295735 bytes).
 PDF statistics:
- 164 PDF objects out of 1000 (max. 8388607)
- 130 compressed objects within 2 object streams
- 21 named destinations out of 1000 (max. 500000)
- 102 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 146 PDF objects out of 1000 (max. 8388607)
+ 113 compressed objects within 2 object streams
+ 17 named destinations out of 1000 (max. 500000)
+ 78 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -806,6 +806,9 @@ De H0 en H1 hypotheses worden hier opgesteld voor alle vragen:
 >H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of de biologische vader zeggenschap moet hebben over de beslissing voor een abortus.
 >H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of de biologische vader zeggenschap moet hebben over de beslissing voor een abortus.
 
+27-05-2024:
+Deze zelfde hypotheses zijn ook gebruikt voor de Chi-square test met leeftijd als voorspellende variabele i.p.v. geslacht. 
+
 ```{r}
 #onder21 <- filter(abortus$Wat.is.uw.leeftijd., abortus$Wat.is.uw.leeftijd. < 21)
 
@@ -948,12 +951,14 @@ In het bovenstaande blok met code wordt er een data-frame gemaakt die alle p-waa
 Daarna wordt de data veranderd in "tidy data" (een meting per rij en variablen als colommen).
 
 ```{r}
+
 ggplot(data = df_chi_geslacht, mapping = aes(x = name , y = value)) +
   geom_bar(stat = "identity") +
   geom_hline(yintercept=0.05, linetype="dashed", color = "red") +
   ylab("P-waarde Chi-square test:") +
   xlab(" ") +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.6))
+
 ```
 Aan de bovenstaande grafiek te zien is er alleen een significant verschil tussen de meningen van de verschillende geslachten voor de kwestie of de vader ook zeggenschap mag hebben over de abortus, dit is van alle vragen de vraag waar ik ook wel van had verwacht dat het een polarizerende vraag zou zijn. 
 
@@ -977,6 +982,19 @@ chi_ja_abortus <- chisq.test(df$geslacht, ja_abortus, correct = F)
 De p-waarde van de Chi-square test is: `r chi_ja_abortus$p.value` dit is boven de 0.05 dus kan de nul hypothese aangenomen worden, geslacht is geen bijdragende factor in de keuze of abortus toegestaan mag zijn of niet. <br>
 De Chi-squered waarde is: `r round(chi_ja_abortus$statistic, digits = 2)` <br>
 
+
+```{r}
+# Test met andere variabele
+
+# Lijst van 1 en 0 maken voor Ja en Nee. 
+abortus_zeggenschap_vader_01 <- (ifelse(abortus$vader=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn. 
+
+# Chi-square test:
+chi_abortus_zeggenschap_vader <- chisq.test(df$afkomst, abortus_zeggenschap_vader_01, correct = T)
+chi_abortus_zeggenschap_vader
+
+
+```
 <hr>
 
 
@@ -1008,5 +1026,11 @@ ggplot(data = df, mapping = aes(x = Wat.is.uw.leeftijd., y = c(1:109))) +
 
 
 
+```
+```{r}
+
+test222 <- df %>% 
+  select(Wat.is.uw.leeftijd.) %>% filter(Wat.is.uw.leeftijd. <= 30)
+sum(table(test222))
 ```
 

@@ -1,14 +1,15 @@
 ---
-title: My Awesome Catchy Title! # Geef je paper een naam die prikkelt, informatief is, en zo kort mogelijk
+title: Invloed van geslacht en leeftijd op de mening over abortus  # Geef je paper een naam die prikkelt, informatief is, en zo kort mogelijk
 
 author: |
-  | Michiel Noback $^1$, Fenna Feenstra $^1$, John Doe $^2$
-  | $^1$Hanzehogeschool,  $^2$Een ander instituut
+  | Iris Ineke $^1$, Jasper Jonker $^1$ en Floris Menninga $^2$
+  | $^1$Hanzehogeschool
 
-lang: nl # dit zorgt er voor dat "abstract" "samenvatting" gaat heten
+lang: nl
 
 abstract: |
-  Geef hier je samenvatting in maximaal 150 woorden. Het is een samenvatting van het hele artikel; niet alleen de resultaten! Begin met het belang van dit onderzoek, dan hoe het onderzoek is aangepakt en de belangrijkste resultaten en eindig met de implicaties ervan voor de wetenschap/de maatschappij. Neem nooit figuren of tabellen op in de samenvatting.
+  Text hier...
+
 
 bibliography: simple_template.bib # naam van je .bib file. Deze moet hetzelfde zijn als je Rmd bestandsnaam
 
@@ -22,18 +23,7 @@ output:
 
 ---
 
-# Introductie op deze template
-
-**Dit hoofdstuk niet in je eigen paper toevoegen!**
-
-Dit template bevat alle verplichte onderdelen van de paper die je moet schrijven. De titels van de secties mag je NIET wijzigen. Voor elk onderdeel is gegeven wat erin thuis hoort en hoe je dat kan aanpakken. Ook is er aangegeven hoeveel woorden er minimaal en maximaal in de sectie gebruikt mogen worden. In totaal mag je artikel niet minder dan 1000 en niet meer dan 2000 woorden bevatten.
-
-Gebruik de [wordcount plugin](https://github.com/benmarwick/wordcountaddin) om het aantal woorden te tellen van een sectie, en voeg aan het einde een totaal in (zoals al aanwezig in deze template).
-
-
 ## Setup *Chunk* {#setup-chunk}
-
-Aan het begin van je paper kan je een zogenaamde *setup chunk* toevoegen. Hierin kan je het gedrag van `knitr` configureren en de bibliotheken laden die je in je code gebruikt. Hieronder is een voorbeeld van zo'n *setup chunk*.
 
 ```{r setup, message=FALSE, warning=FALSE, include=FALSE}
 knitr::opts_chunk$set(out.width = '100%', dpi=300) # configuratie voor figuur grootte en resolutie
@@ -43,10 +33,6 @@ library(ggplot2)
 ```
 
 **NB** Gebruik altijd een naam voor iedere chunk. Dat maakt het *debuggen* van problemen bij het *knitten* van je RMarkdown document veel gemakkelijker.
-
-## Code "*Chunks*" wel of niet tonen
-
-In principe laat je code nooit zien in een publicatie, behalve als de code expliciet besproken wordt en een essentieel onderdeel vormt van je werk. Je kan code gemakkelijk verbergen door gebruik te maken van de optie `echo=FALSE` in de chunk header. Ook storende output kan je eventueel verbergen door gebruik te maken van `message=FALSE` of `warning=FALSE`. Eventueel kan je all chunks in een keer verbergen door dit in je *setup chunk* te plaatsen: `knitr::opts_chunk$set(echo = FALSE)`.
 
 ## Referenties / citeren {#refs}
 
@@ -58,18 +44,10 @@ Zie ook de hoofdstukken in het geweldige book over [bookdown](https://bookdown.o
 
 Voor de rest: GIYF!
 
-## Taalgebruik
-
-Wetenschappelijk taalgebruik is heel anders dan dagelijks communiceren - laat staan de taal die in online wordt gebruikt in bv Whatsapp of Instagram! Wetenschappelijk taalgebruik is formeel, onpersoonlijk en  ondubbelzinnig.
-Een klein voorbeeld: Je schrijft nooit "ik heb de verandering van zoutconcentratie bij langduring huilen onderzocht" maar "de verandering van zoutconcentratie in de tijd bij aanhoudend huilen is onderzocht" 
-
-Natuurlijk moeten spelling en grammatica (zo goed als) foutloos zijn! RStudio heeft redelijk goede spellingscontrole, ook voor Nederlands (alhoewel je deze misschien wel apart moet installeren). Gebruik deze!
-
-
-Alle volgende onderdelen moet je opnemen in je eigen artikel. Let vooral ook op het minimu
 
 # Introductie
 
+  Vragen over het abortus beleid zijn polariserende ethische kwesties. In ons onderzoek trachten we correlaties te vinden tussen verschillende variabelen    zoals: leeftijd, geslacht, opleidingsniveau, geloof etc. en de ideologische verschillen in mening tussen deze mensen. Om de meningen van het publiek te    peilen met betrekking tot hun ethische normen en waarden is er een vragenlijst opgesteld.
 Je start altijd met de maatschappelijke drijfveer voor je onderzoek; waarom is het van belang dat dit onderzoek is uitgevoerd?
 Vervolgens bespreek je de achtergronden van je onderzoek. Wat is er al eerder onderzocht op dit vlak en wat mist er juist nog; welke speciale technieken heb je gebruikt? Refereer zorgvuldig naar bronnen die je hebt gebruikt - zie ook paragraaf \@ref(refs).
 
