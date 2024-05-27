@@ -3,15 +3,18 @@ title: "Logboek_Jasper"
 author: "Jasper"
 date: "2024-05-13"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 # inleiding
 Dit is het logboek van de volgende onder zoeksvraag: 
 
 *Is er een verschil tussen de ethische meningen van mensen van andere leeftijden, geslachten en geloof?* <br>
 Dit gaan we doen met behulp van een enqute en een  verwerking in R studio. <br>
-
+De enquête wordt  verspreid over meerdere mensen van verschillende leefijdsgroepen. Hierdoor hopen we meerdere leeftijdsgroepen te kunnen interviewen. <br>
+De vragen waar we voor hebben gekozen zijn ja en nee vragen zonder toelichting van de invuller in te zetten. Want dat is moeilijker te verwerken dan bijvoorbeeld " wat is uw gevoel hier bij?". Dan krijg je meer niet echt duidelijke data. <br>
+We hebben wel op het eind een paar stellingen met waardes als  zeer oneens tot zeer eens. <br>
+We hebben er voor gekozen om in microsoft forms te doen omdat je dan ook een csv file van kan maken. <br>
 
 # Logboek
 ## 22 april tot 26 april
@@ -28,6 +31,7 @@ De verbeter punten waren: <br>
 
 ## 7 mei
 Begonnen we met de enqute na alle goedkeureingen.
+
 ## 8 mei 
 Meerdere mensen gevraagd om het in te vullen.
 
@@ -36,12 +40,12 @@ enqute open laten staan en allemaal meet waarden binnen krijgen en bedeken waar 
 
 ## 14 mei
 Ik moet laten zien wat de gemiddelde leeftijd is van onze meetwaarde. 
-```{r}
+```{r, include=FALSE}
 library(tidyverse)
 library(dplyr)
 
 ```
-
+Hier worden wat namen veranderd want anders krijg je namen als *Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil* en dat is veel te lang.
 ```{r}
 
 abortus <- read.csv("abortus_dataset.csv",
@@ -97,19 +101,19 @@ leeftijd <- data.frame(abortus$leeftijd)
 ggplot(leeftijd, aes(x=abortus$leeftijd)) + geom_histogram(aes(y =after_stat(density)), color = "black")+geom_density(alpha = .2, fill= "red")
 ```
 
-/n
-Hier zie dat het niet helemaal normaal verdeelt is maar kunnen wel een test doen
+Hier zie dat het niet helemaal normaal verdeelt is, dit komt omdat het eerst is verspreid onder de mede studenten en aan hun ouders.
+Hierdoor krijg je in sommige gebieden meer invullingen. In de grafriek zie je ook dat het ook terug komen.
 
 ```{r}
 shapiro.test(abortus$leeftijd)
 
 ```
 
-Hier zie zeker dat de leeftijd van onze invullers niet normaal verdeelt is.
+Hier zie zeker dat de leeftijd van onze invuller niet normaal verdeelt is.
 
 
 ## 15 mei.
-Ik laat zien waar onze invullers vandaan komen in een donut chart.
+Ik laat zien waar onze invuller vandaan komt in een donut chart.
 
 ```{r}
 
@@ -138,16 +142,17 @@ ggplot(renamed_city_count, aes(ymax=ymax, ymin=ymin, xmax=13, xmin=3, fill=Provi
      coord_polar(theta="y") + 
      xlim(c(-13, 13)) 
 ```
-
-Hier kan je zien dat de meeste mensen uit de noordelijke regios komen. \n
-Dus uit Drenthe, Friesland en Groningen \n
-
-Ook een boxplot gemaakt over de verdeling van de leeftijd
+<br>
+Hier kan je zien dat de meeste mensen uit de noordelijke regio komen. Dus uit Drenthe, Friesland en Groningen 
+Dit is logisch omdat we de enqute hebben uit gezet in de noordelijke provincies.
+<br>
+Ook een boxplot gemaakt over de verdeling van de leeftijd (meer als oefening)
 ```{r}
 ggplot(leeftijd, aes(x = abortus$leeftijd)) + geom_boxplot()
 ```
+<br> 
 ## 16 mei
-Ik ga laten zien het verschil in mening over "Vindt u dat de ouders zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen?" tussen jongeren (21 jaar en jonger want deze personen zijn oficeel nog niet volwassen is) en ouderen (22 jaar en ouder)
+Ik ga laten zien het verschil in mening over "Vindt u dat de ouders zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen?" tussen jongeren (21 jaar en jonger want deze personen zijn officieel nog niet volwassen is) en ouderen (22 jaar en ouder)
 ```{r}
 
 abortus %>%
@@ -159,14 +164,15 @@ abortus %>%
 
 ```
 
-
+Dit is geen goeie plot om te laten zien wat de verschillen zijn in antwoorden. Hier laat je nu het aantal keer zien dat het is ingevuld. Hierdoor lijkt het dat ja heel vaak word in gevuld terwijl het gewoon minder vaak is ingevuld door iemand onder de leeftijd van 21 jaar <br>
+Ik ga nog bedenken wat een goeie manier is om het te laten zijn en een goei vergelijking te kunnen maken.
 
 ## 21 Mei
 Ik ga even met iets anders bezig het lukt niet echt.  
-De keuze dat we hebben gemaakt voor de leeftijd van 21 jaar want over de helle wereld is 21 jaar de laaste leeftijd van de wereld. We hadden ook kunnen kiezen voor 18 jaar. Want in Nederland is dat de grens. Maar als je kijkt naar Amerika is er een onderzoek geweest naar de conectie met de legale leeftijd van drinken en auto ongelukken. Hier is naar voren gekomen dat hoe lager de leeftijd hoe meer auto ongelukken er zijn. Hier kan je beivorbeeld uit cloncluderen dat deze mensen nog niet verantwoordelijk genoeg zijn om met alchol om te gaan,
+De keuze dat we hebben gemaakt voor de leeftijd van 21 jaar want over de helle wereld is 21 jaar de oudste leeftijd van de wereld. We hadden ook kunnen kiezen voor 18 jaar. Want in Nederland is dat de grens. Maar als je kijkt naar Amerika is er een onderzoek geweest naar de conectie met de legale leeftijd van drinken en auto ongelukken. Hier is naar voren gekomen dat hoe lager de leeftijd hoe meer auto ongelukken er zijn. Hier kan je bijvoorbeeld uit concluderen dat deze mensen nog niet verantwoordelijk genoeg zijn om met alcohol om te gaan,
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6876521/
 ## 22 mei 
-Ik ga de tabel van 16 mei om zetten naar precentage. zo dat het wel klopt en niet op aantallen gaat.
+Ik ga de tabel van 16 mei om zetten naar percentage. zo dat het wel klopt en niet op aantallen gaat.
  
 ```{r}
 x <-abortus %>%
@@ -177,11 +183,24 @@ table_2 <- prop.table(table(x$leeftijd_boven_onder_21[x$leeftijd_boven_onder_21 
 x3 <- rbind(table_1,table_2)
 as.data.frame.table(x3) %>%
     ggplot(aes(x = Var1,y = Freq,  fill = Var2)) +
-    geom_col(position = "dodge")
+    geom_col(position = "dodge")+
+    guides(color = guide_legend(title = "Wat is de mening")) +
+    labs(title = "Ouderzeggenschap over miderjarge", 
+         y = "Voorkomen keuze in de groep in percentage", 
+         x = "Leeftijd boven of onder de 21")
+
 
     
 ```
-Hier zie je dus dat de mennig erg verschild over ouderzeggenschap. 
+
+Hier zie je dus dat de mening erg verschild over ouderzeggenschap. 
 jongeren hebben willen nee en ouderen zeggen ja
+
+## 23 mei 
+De grafiek van boven mooi maken en testen gaan uit voeren op de de laatste grafiek.
+```{r}
+
+```
+
 
 
