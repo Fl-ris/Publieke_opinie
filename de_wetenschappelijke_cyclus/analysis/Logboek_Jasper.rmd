@@ -43,7 +43,6 @@ Ik moet laten zien wat de gemiddelde leeftijd is van onze meetwaarde.
 ```{r, include=FALSE}
 library(tidyverse)
 library(dplyr)
-
 ```
 Hier worden wat namen veranderd want anders krijg je namen als *Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil* en dat is veel te lang.
 ```{r}
@@ -175,32 +174,45 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6876521/
 Ik ga de tabel van 16 mei om zetten naar percentage. zo dat het wel klopt en niet op aantallen gaat.
  
 ```{r}
-x <-abortus %>%
-    select(leeftijd, ouderszegenschap) %>%
-    mutate(leeftijd_boven_onder_21 = ifelse(leeftijd > 21, "boven", "onder"))
-table_1 <- prop.table(table(x$leeftijd_boven_onder_21[x$leeftijd_boven_onder_21 == "boven"], x$ouderszegenschap[x$leeftijd_boven_onder_21 == "boven"]))
-table_2 <- prop.table(table(x$leeftijd_boven_onder_21[x$leeftijd_boven_onder_21 == "onder"], x$ouderszegenschap[x$leeftijd_boven_onder_21 == "onder"]))
+Spiltsing_leeftijd <-abortus %>%
+    select(leeftijd, ouderszegenschap, geslacht) %>%
+    mutate(leeftijd_boven_onder_24 = ifelse(leeftijd > 25, "boven", "onder"))
+table_1 <- prop.table(table(Spiltsing_leeftijd$leeftijd_boven_onder_24[Spiltsing_leeftijd$leeftijd_boven_onder_24 == "boven"], Spiltsing_leeftijd$ouderszegenschap[Spiltsing_leeftijd$leeftijd_boven_onder_24 == "boven"]))
+table_2 <- prop.table(table(Spiltsing_leeftijd$leeftijd_boven_onder_24[Spiltsing_leeftijd$leeftijd_boven_onder_24 == "onder"], Spiltsing_leeftijd$ouderszegenschap[Spiltsing_leeftijd$leeftijd_boven_onder_24 == "onder"]))
+table_Man <- prop.table(table(Spiltsing_leeftijd$leeftijd_boven_onder_24[Spiltsing_leeftijd$geslacht == "Man"], Spiltsing_leeftijd$ouderszegenschap[Spiltsing_leeftijd$geslacht == "Man"]))
+table_Vrouw <- prop.table(table(Spiltsing_leeftijd$leeftijd_boven_onder_24[Spiltsing_leeftijd$geslacht == "Vrouw"], Spiltsing_leeftijd$ouderszegenschap[Spiltsing_leeftijd$geslacht == "Vrouw"]))
 x3 <- rbind(table_1,table_2)
 as.data.frame.table(x3) %>%
     ggplot(aes(x = Var1,y = Freq,  fill = Var2)) +
     geom_col(position = "dodge")+
     guides(color = guide_legend(title = "Wat is de mening")) +
     labs(title = "Ouderzeggenschap over miderjarge", 
-         y = "Voorkomen keuze in de groep in percentage", 
+         y = "Voorkomen keuze in de groep in poprties", 
          x = "Leeftijd boven of onder de 21")
 
 
-    
+
+
 ```
 
-Hier zie je dus dat de mening erg verschild over ouderzeggenschap. 
+Hier zie je dus dat de mening erg verschild over zeggenschaps. 
 jongeren hebben willen nee en ouderen zeggen ja
 
 ## 23 mei 
 De grafiek van boven mooi maken en testen gaan uit voeren op de de laatste grafiek.
+De grafriek is goed gelukt nu dus dat is klaar. 
+##  27 mei 
+Ik ga een chi square test doen.
 ```{r}
 
-```
+# Lijst van 1 en 0 maken voor Ja en Nee. 
+abortus_minderjarig_keuze_01 <- ifelse(Spiltsing_leeftijd$leeftijd_boven_onder_24=="boven", 1, 0) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
 
+# Chi-square test:
+chi_abortus_minderjarig_keuze_1 <- chisq.test(abortus$geslacht, abortus_minderjarig_keuze_01, correct = T)
+chi_abortus_minderjarig_keuze_1
+
+```
+Uit deze chi square test kunnen we concluderen dat er geen significant verschil is tussen de mening van de mensen, van verschilde geslacht en onder de 25 over hun mening over of de ouders hun mening mee telt.
 
 
