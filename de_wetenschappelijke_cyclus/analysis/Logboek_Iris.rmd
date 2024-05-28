@@ -473,4 +473,5 @@ PieDonut(data_donut, aes(religieuze_overtuiging, antwoord_vraag, count=Freq),
            showRatioThreshold = getOption("PieDonut.showRatioThreshold", 0.0) # percentages gefixt
          )
 ```
-In de PieDonut functie staat dat hij vanaf 0.02% de label niet weergeeft. Deze heb ik op 0 gezet en nu geeft hij alle percentages mooi weer.
+In de PieDonut functie staat dat hij vanaf 2% de label niet weergeeft. Deze heb ik op 0 gezet en nu geeft hij alle percentages mooi weer.
+
