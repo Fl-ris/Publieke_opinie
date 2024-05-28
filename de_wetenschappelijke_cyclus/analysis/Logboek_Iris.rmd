@@ -10,26 +10,8 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Inleiding
+In dit onderzoek proberen wij te onderzoeken of er factoren zijn die invloed hebben op iemand zijn mening over abortus. We hebben een enquête met vragen gemaakt en hebben deze vervolgens rondgestuurd. De resultaten die uit deze enquête kwam hebben we met behulp van Rstudio geanalyseerd. Hierin hebben we onderzocht of factoren zoals; geslacht, onderwijsniveau, leeftijd, religieuze overtuiging en de provincie waarin iemand is opgegroeid invloed hebben op hoe mensen de vragen in de enquête hebben beantwoord. 
 
 
 ## Vrijdag 26 april
@@ -185,11 +167,11 @@ Hoeveel van deze antwoorden komen van mannen en hoeveel van vrouwen? Zou het zo 
 ```{r}
 library(ggplot2)
 
-ggplot(data_renamed, aes(fill=Biologische_vader_zeggenschap, x=Gender, y= ID)) + 
+ggplot(data_renamed, aes(fill=Biologische_vader_zeggenschap, x=Gender, y=Leeftijd)) + 
     geom_bar(position="dodge", stat="identity")
 ```
-y invullen! hoe uitzoeken?
-Deze plot is nog niet logisch. id op de y-as aanpassen.
+y goed invullen! hoe uitzoeken?
+Deze plot is nog niet logisch, oefenen.
 
 
 ## Vrijdag 17 mei
@@ -307,7 +289,7 @@ as.data.frame(x)%>%
 ```
 In de bovenstaande plot zie je de verdeling weergegeven van mensen die wel geloven en niet geloven en wat deze hebben geantwoord op de vraag of mensen zelf mogen kiezen of ze een abortus willen.
 
-## donderdag 23 mei
+## Donderdag 23 mei
 Verbeteren plot van gisteren:
 ```{r}
 tijdelijke_data <- data_renamed %>%
@@ -335,3 +317,121 @@ tabel_geloof_vraag6
 ```
 volgens het hindoeïsme mag een vrouw geen abortus plegen, tenzij het leven van de vrouw in gevaar loopt.
 Volgens het boeddhisme is er niet een voor of tegen abortus. Sommigen boeddhisten zeggen dat je bij abortus iemands leven neemt en dat de medische ingrijp iemand buiten de kringloop van iemand zijn leven plaatsen. Maar er zijn ook boeddhisten die abortus goed keuren onder bepaalde voorwaarden. Zolang de betrokkenen goed nadenken over de gevolgen van hun keuze.
+
+## Vrijdag 24 mei
+Op aanraden van Michiel ga ik proberen de 'Barplot verdeling gender over antwoorden' aanpassen. Nu zijn man en vrouw samen honderd procent, maar het is waarschijnlijk beter af te lezen als 'man' honderd procent is en 'vrouw' ook honderd procent. 
+
+Dataframe maken van de prop_tabel:
+```{r, eval = FALSE}
+new_proptabel_dataframe <- as.data.frame(prop_tabel) %>%
+    rename(
+    gender = Var1,
+    antwoord_vraag = Var2,
+    aantal = Freq)
+```
+
+Het juist verdelen van de procenten:
+```{r}
+ prop_tabel
+ new_proptabel_dataframe <- as.data.frame(prop_tabel) %>%
+     rename(
+     gender = Var1,
+     antwoord_vraag = Var2) %>%
+     group_by(gender, antwoord_vraag) %>% 
+     summarize(count = n(), .groups = "drop") %>%
+     group_by(gender) %>%
+     mutate(perc = count / sum(count) * 100)
+```
+
+Hoe ziet de tabel eruit?:
+```{r}
+new_proptabel_dataframe
+```
+
+Nieuwe dataframe verwerken in plot:
+```{r}
+library(ggplot2)
+
+ggplot(new_proptabel_dataframe, aes(x = gender, y=perc, fill=antwoord_vraag)) +
+    labs(title="Barplot verdeling gender over antwoorden",
+         subtitle = "Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?",
+         x = "Gender",
+         fill = "Antwoord",
+         y = "percentage") +
+    geom_bar(stat = "identity", position = "dodge", color="black")+
+    theme_minimal() +
+    scale_fill_brewer(palette = "Dark2")
+```
+In de bovenstaande plot gaat nog iets fout nu, maar ik snap niet helemaal wat. Waarschijnlijk iets met de y-waarde.
+
+
+## Zondag 26 mei
+Aan de presentatie gewerkt voor de Donut chart.
+
+
+## Maandag 27 mei
+Het gaat waarschijnlijk fout in het maken van de tabel. Morgen even naar kijken.
+```{r}
+new_proptabel_dataframe
+```
+
+Begin maken met intro voor bovenaan logboek:
+In dit onderzoek proberen wij te onderzoeken of er factoren zijn die invloed hebben op iemand zijn mening over abortus. We hebben een enquête met vragen gemaakt en hebben deze vervolgens rondgestuurd. De resultaten die uit deze enquête kwam hebben we met behulp van Rstudio geanalyseerd. Hierin hebben we onderzocht of factoren zoals; geslacht, onderwijsniveau, leeftijd, religieuze overtuiging en de provincie waarin iemand is opgegroeid invloed hebben op hoe mensen de vragen in de enquête hebben beantwoord. 
+
+Structuur wetenschappelijk onderzoek:
+
+- inleiding
+- materiaal en methode
+- resultaten
+- discussie/ conclusie
+
+Hoe zit de structuur in elkaar:
+
+- Wat moet er allemaal in de inleiding?:
+Begin met een aandachtstrekker, waarom doen we dit onderzoek. Omschrijf wat we hebben onderzocht. Als er al kennis is over dit onderwerp, kaart dan eerdere onderzoeken aan. Omschrijf wat de maatschappelijke relevantie is van dit onderzoek. Wat zijn de hypothesen. Wat voor soort onderzoek doen we: hoe verzamelen we data en hoe analyseren we dat vervolgens? (eventueel de structuur van de paper)
+
+- Wat moet er in materiaal en methode?:
+(Vaak in verleden tijd geschreven)(wanneer? hoelang? hoeveel?)
+Hoe hebben we die enquête gemaakt en met welk programma.
+Hoe hebben we de resultaten verwerkt: welk programma gebruikt (grafieken meegeven), hoe betrouwbaar is de data?
+
+- Wat moet er in de resultaten?
+Doornemen nuttige resultaten. Dus de informatie die antwoord geeft op de onderzoeksvraag (De resultaten moeten je conclusie onderbouwen)
+(selecteer eerst welke tabellen en figuren je wilt bespreken en schrijf er daarna een tekst omheen).
+
+- Wat moet er in de Discussie/ conclusie?
+Interpretatie van de resultaten. Hierin zul je de onderzoeksvraag beantwoorden en aangeven of de hypothese klopt (waarom wel/niet?). Komt het resultaat overeen met eerdere onderzoeken? Als de resultaten niet voldoen aan onze verwachtingen, leg dan uit of hier verklaringen voor zijn. Heeft dit onderzoek bijgedragen aan de maatschappij? Wat zou je meegeven voor vervolgonderzoek?
+
+```{r}
+new_proptabel_dataframe <- data_renamed %>% 
+    group_by(Gender, Biologische_vader_zeggenschap) %>%
+    summarize(count = n(), .groups = "drop") %>%
+    group_by(Gender) %>%
+    mutate(perc = count/sum(count) * 100)
+
+new_proptabel_dataframe
+```
+Het lag inderdaad aan de tabel. Mischiel heeft me hierbij geholpen. Morgen de grafiek aanpassen.
+
+## Dinsdag 28 mei
+```{r}
+library(ggplot2)
+
+ggplot(new_proptabel_dataframe, aes(x =Gender, y=perc, fill=Biologische_vader_zeggenschap)) +
+    labs(title="Barplot verdeling gender over antwoorden",
+         subtitle = "Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?",
+         x = "Gender",
+         fill = "Antwoord",
+         y = "percentage") +
+    geom_bar(stat = "identity", position = "dodge", color="black")+
+    theme_minimal() +
+    scale_fill_brewer(palette = "Dark2")
+```
+Nu is de grafiek zo dat de antwoorden van de mannen samen honderd procent is en dat de antwoorden van de vrouwen ook samen honderd procent is. Nu is de grafiek iets minder misleidend, omdat er iets meer mannen dan vrouwen de enquête hebben ingevuld.
+
+Gemiste kans: Als we het onderzoek opnieuw zouden doen, zouden we een vraag moeten toevoegen die vraagt of mensen een dochter hebben. Dan kunnen we onderzoeken of (voornamelijk) mannen met een dochter sneller voor abortus zullen zijn dan mannen zonder een dochter.
+
+
+
+
+
