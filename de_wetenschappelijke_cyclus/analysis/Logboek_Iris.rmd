@@ -432,6 +432,45 @@ Nu is de grafiek zo dat de antwoorden van de mannen samen honderd procent is en 
 Gemiste kans: Als we het onderzoek opnieuw zouden doen, zouden we een vraag moeten toevoegen die vraagt of mensen een dochter hebben. Dan kunnen we onderzoeken of (voornamelijk) mannen met een dochter sneller voor abortus zullen zijn dan mannen zonder een dochter.
 
 
+Pie-donut variatie proberen:
+Ik ga de tabel over de religieuze overtuiging en of mensen voor of tegen de eigen keuze over abortus zijn opnieuw gebruiken hier.
+```{r}
+data_donut <- as.data.frame(tabel_geloof_vraag6) %>%
+    rename(
+        antwoord_vraag = Var1,
+        religieuze_overtuiging = Var2)
+data_donut
+```
 
+"webr" installed:
+```{r}
+library(ggplot2)
+library(webr)
+library(dplyr)
 
+PieDonut(data_donut, aes(religieuze_overtuiging, antwoord_vraag, count=Freq),
+         title = "Geloof en mening abortus",
+            showRatioDonut = TRUE, # percentage buitenste cirkel (mening abortus)
+            showRatioPie = TRUE, # percentage in de binnenste cirkel (geloof)
+         showPieName = FALSE, # haalt de enorme naam in het midden weg, mooier
+         pieLabelSize = 2 # grootte tekst binnenste ring (geloof)
+         )
+```
+Je ziet in de bovenstaande PieDonut dat van de mensen die geantwoord hebben op de vraag(binnenste ring) er 80.8% niet gelovig is, 10.6% christelijk, 6.7% anders en de Islam geeft hij nog niet goed weer. Ik vermoed dat het vak misschien te klein is om het percentage weer te geven? in de buitenste ring zie je dat van de niet gelovige mensen 100% vindt dat abortus een eigen keuze moet zijn en zo voor elk geloof. Ook hier wordt er in de kleinere vakken niet het percentage weergegeven.
 
+```{r}
+library(ggplot2)
+library(webr)
+library(dplyr)
+
+PieDonut(data_donut, aes(religieuze_overtuiging, antwoord_vraag, count=Freq),
+         title = "Geloof en mening abortus",
+            showRatioDonut = TRUE, # percentage buitenste cirkel (mening abortus)
+            showRatioPie = TRUE, # percentage in de binnenste cirkel (geloof)
+         showPieName = FALSE, # haalt de enorme naam in het midden weg, mooier
+         pieLabelSize = 1.8, # grootte tekst binnenste ring (geloof)
+         donutLabelSize = 2,
+           showRatioThreshold = getOption("PieDonut.showRatioThreshold", 0.0) # percentages gefixt
+         )
+```
+In de PieDonut functie staat dat hij vanaf 0.02% de label niet weergeeft. Deze heb ik op 0 gezet en nu geeft hij alle percentages mooi weer.
