@@ -814,15 +814,18 @@ Deze zelfde hypotheses zijn ook gebruikt voor de Chi-square test met leeftijd al
 
 #binaire_lijst_keuze_abortus <- 
 
-ja_abortus <- (ifelse(abortus$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
-chi_ja_abortus <- chisq.test(df$geslacht, ja_abortus, correct = T)
+#ja_abortus <- (ifelse(abortus$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
+ja_abortus <- table(df$geslacht, df$eigen_keuze_abortus)
+chi_ja_abortus <- chisq.test(ja_abortus, correct = T)
+
+
 
 ja_abortus_onder_21_df <-  df %>% 
   filter(df$Wat.is.uw.leeftijd. <= 21)
 ja_abortus_onder_21 <- (ifelse(ja_abortus_onder_21_df$eigen_keuze_abortus=="Wel abortus toestaan", 1,0))
 #all(duplicated(abortus$geslacht)[-1L])
 
-ja_nee_abortus_onder_21 <- chisq.test(df$geslacht, ja_abortus, correct = T)
+#ja_nee_abortus_onder_21 <- chisq.test(df$geslacht, ja_abortus, correct = T)
 
 # boven de 21:
 ja_abortus_onder_21_df <-  df %>% 
@@ -830,7 +833,7 @@ ja_abortus_onder_21_df <-  df %>%
 ja_abortus_onder_21 <- (ifelse(ja_abortus_onder_21_df$eigen_keuze_abortus=="Wel abortus toestaan", 1,0))
 #all(duplicated(abortus$geslacht)[-1L])
 
-ja_nee_abortus_onder_21 <- chisq.test(df$geslacht, ja_abortus, correct = T)
+#ja_nee_abortus_onder_21 <- chisq.test(df$geslacht, ja_abortus, correct = T)
 
 
 #ja_nee_abortus <- t.test(ja_abortus, as.numeric(abortus$geslacht), data = abortus, alternative = "two.sided")
@@ -843,14 +846,18 @@ H0 is verworpen en H1 is aangenomen omdat de p-waarde `"r" ja_nee_abortus$p.valu
 
 
 
+
+
 ```{r}
 # Chi-square voor de vraag: Vindt u dat iemand een abortus mag als de zwangerschap een gevolg is van verkrachting?
 
 # Lijst van 1 en 0 maken voor Ja en Nee. 
-abortus_als_gevolg_van_01 <- (ifelse(abortus$Vindt.u.dat.iemand.een.abortus.mag.als.de.zwangerschap.een.gevolg.is.van.verkrachting.=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
+#abortus_als_gevolg_van_01 <- (ifelse(abortus$Vindt.u.dat.iemand.een.abortus.mag.als.de.zwangerschap.een.gevolg.is.van.verkrachting.=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
+
+abortus_als_gevolg_van_01 <- table(df$geslacht, df$Vindt.u.dat.iemand.een.abortus.mag.als.de.zwangerschap.een.gevolg.is.van.verkrachting.)
 
 # Chi-square test:
-chi_abortus_als_gevolg_van <- chisq.test(df$geslacht, abortus_als_gevolg_van_01, correct = T)
+chi_abortus_als_gevolg_van <- chisq.test(abortus_als_gevolg_van_01, correct = T)
 
 ```
 
@@ -858,20 +865,22 @@ chi_abortus_als_gevolg_van <- chisq.test(df$geslacht, abortus_als_gevolg_van_01,
 # Chi-square voor de vraag: Vindt u dat een minderjarig kind de keuze moet hebben om voor een abortus te kiezen?
 
 # Lijst van 1 en 0 maken voor Ja en Nee. 
-abortus_minderjarig_keuze_01 <- (ifelse(abortus$minderjarig=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
+#abortus_minderjarig_keuze_01 <- (ifelse(abortus$minderjarig=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
+
+abortus_minderjarig_keuze_01 <- table(df$geslacht, df$minderjarig)
 
 # Chi-square test:
-chi_abortus_minderjarig_keuze <- chisq.test(df$geslacht, abortus_minderjarig_keuze_01, correct = T)
+chi_abortus_minderjarig_keuze <- chisq.test(abortus_minderjarig_keuze_01, correct = T)
 
 ```
 ```{r}
 # Chi-square voor de vraag: Vindt u dat de ouders zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen?
 
 # Lijst van 1 en 0 maken voor Ja en Nee. 
-abortus_zeggenschap_ouders_01 <- (ifelse(abortus$ouders=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
-
+#abortus_zeggenschap_ouders_01 <- (ifelse(abortus$ouders=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
+abortus_zeggenschap_ouders_01 <- table(df$geslacht, df$ouders)
 # Chi-square test:
-chi_abortus_zeggenschap_ouders <- chisq.test(df$geslacht, abortus_zeggenschap_ouders_01, correct = T)
+chi_abortus_zeggenschap_ouders <- chisq.test(abortus_zeggenschap_ouders_01, correct = T)
 
 # Test om leeftijd mee te nemen als factor:
 #chi_abortus_als_gevolg_van_leeftijd <- chisq.test(df$Wat.is.uw.leeftijd., abortus_zeggenschap_ouders, correct = T)
@@ -882,10 +891,10 @@ chi_abortus_zeggenschap_ouders <- chisq.test(df$geslacht, abortus_zeggenschap_ou
 # Chi-square voor de vraag: Moet het wettelijk verplicht worden voor vrouwen die een abortus willen om een echo van de foetus te zien voordat een abortus toegestaan is?
 
 # Lijst van 1 en 0 maken voor Ja en Nee. 
-abortus_echo_01 <- (ifelse(abortus$minderjarig=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
-
+#abortus_echo_01 <- (ifelse(abortus$minderjarig=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
+abortus_echo_01 <- table(df$geslacht, df$minderjarig)
 # Chi-square test:
-chi_abortus_echo <- chisq.test(df$geslacht, abortus_echo_01, correct = T)
+chi_abortus_echo <- chisq.test(abortus_echo_01, correct = T)
 
 ```
 
@@ -893,10 +902,10 @@ chi_abortus_echo <- chisq.test(df$geslacht, abortus_echo_01, correct = T)
 # Chi-square voor de vraag: Vindt u dat de wettelijke bedenktijd moet terugkomen?
 
 # Lijst van 1 en 0 maken voor Ja en Nee. 
-abortus_bedenktijd_01 <- (ifelse(abortus$bedenktijd=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
-
+#abortus_bedenktijd_01 <- (ifelse(abortus$bedenktijd=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
+abortus_bedenktijd_01 <- table(df$geslacht, df$bedenktijd)
 # Chi-square test:
-chi_abortus_bedenktijd <- chisq.test(df$geslacht, abortus_bedenktijd_01, correct = T)
+chi_abortus_bedenktijd <- chisq.test(abortus_bedenktijd_01, correct = T)
 
 ```
 
@@ -904,10 +913,10 @@ chi_abortus_bedenktijd <- chisq.test(df$geslacht, abortus_bedenktijd_01, correct
 # Chi-square voor de vraag: Vindt u dat adoptie een alternatief is voor abortus?
 
 # Lijst van 1 en 0 maken voor Ja en Nee. 
-abortus_adoptie_01 <- (ifelse(abortus$adoptie=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn. 
-
+#abortus_adoptie_01 <- (ifelse(abortus$adoptie=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn. 
+abortus_adoptie_01 <- table(df$geslacht, df$adoptie)
 # Chi-square test:
-chi_abortus_adoptie <- chisq.test(df$geslacht, abortus_adoptie_01, correct = T)
+chi_abortus_adoptie <- chisq.test(abortus_adoptie_01, correct = T)
 
 ```
 
@@ -915,10 +924,10 @@ chi_abortus_adoptie <- chisq.test(df$geslacht, abortus_adoptie_01, correct = T)
 # Chi-square voor de vraag: Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?
 
 # Lijst van 1 en 0 maken voor Ja en Nee. 
-abortus_zeggenschap_vader_01 <- (ifelse(abortus$vader=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn. 
-
+#abortus_zeggenschap_vader_01 <- (ifelse(abortus$vader=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn. 
+abortus_zeggenschap_vader_01 <- table(df$geslacht, df$vader)
 # Chi-square test:
-chi_abortus_zeggenschap_vader <- chisq.test(df$geslacht, abortus_zeggenschap_vader_01, correct = T)
+chi_abortus_zeggenschap_vader <- chisq.test(abortus_zeggenschap_vader_01, correct = T)
 
 ```
 ## Visualisatie van de Chi-square resultaten:
@@ -962,7 +971,7 @@ ggplot(data = df_chi_geslacht, mapping = aes(x = name , y = value)) +
 ```
 Aan de bovenstaande grafiek te zien is er alleen een significant verschil tussen de meningen van de verschillende geslachten voor de kwestie of de vader ook zeggenschap mag hebben over de abortus, dit is van alle vragen de vraag waar ik ook wel van had verwacht dat het een polarizerende vraag zou zijn. 
 
-# Two-way chi^2 test:
+# Chi^2 test:
 De volgende hypothese is opgesteld:
 H0: Geslacht is geen bijdragende factor in de keuze of abortus toegestaan mag zijn of niet. 
 H1: Geslacht is een bijdragende factor in de keuze of abortus toegestaan mag zijn of niet.
@@ -974,12 +983,12 @@ H1: Geslacht is een bijdragende factor in de keuze of abortus toegestaan mag zij
 
 #test_ja_abortus <- (ifelse(test_ja_abortus$eigen_keuze_abortus=="Wel abortus toestaan" & #test_ja_abortus$geslacht == "Man", 6,0))
 #chisq.test(df$geslacht, ja_abortus ,correct = F)
-
+ja_abortus <- table(df$geslacht, df$eigen_keuze_abortus)
 # Chi-square test:
-chi_ja_abortus <- chisq.test(df$geslacht, ja_abortus, correct = F)
+chi_ja_abortus <- chisq.test(ja_abortus, correct = F)
 
 ```
-De p-waarde van de Chi-square test is: `r chi_ja_abortus$p.value` dit is boven de 0.05 dus kan de nul hypothese aangenomen worden, geslacht is geen bijdragende factor in de keuze of abortus toegestaan mag zijn of niet. <br>
+De p-waarde van de Chi-square test is: `r chi_ja_abortus$p.value` dit is boven de 0.05 dus kan de nul hypothese aangenomen worden, geslacht is geen significant bijdragende factor in de keuze of abortus toegestaan mag zijn of niet. <br>
 De Chi-squered waarde is: `r round(chi_ja_abortus$statistic, digits = 2)` <br>
 
 
@@ -992,6 +1001,7 @@ abortus_zeggenschap_vader_01 <- (ifelse(abortus$vader=="Ja", 1,0)) # 1 voor de m
 # Chi-square test:
 chi_abortus_zeggenschap_vader <- chisq.test(df$afkomst, abortus_zeggenschap_vader_01, correct = T)
 chi_abortus_zeggenschap_vader
+
 
 
 ```
@@ -1027,10 +1037,42 @@ ggplot(data = df, mapping = aes(x = Wat.is.uw.leeftijd., y = c(1:109))) +
 
 
 ```
+
+
+**29-05-2024:**
+Alle chi-square tests retroactief aangepast, nu met een tabel i.p.v. eerst alle waarden van de vragen omzetten in 1 (Eens) en 0 (Oneens).
+
+
+# Logischische regressie: #
+Om het verband tussen meerdere predictors te zien is de logistische regressie gebruikt. 
+
+
+```{r  Logistische regressie test}
+# Nieuw dataframe met de relevante colommen van df.
+df_logistische_regressie <- data.frame(ID = df$ID, geslacht =df$geslacht, leeftijd = df$Wat.is.uw.leeftijd., keuze = df$eigen_keuze_abortus)
+
+# logistische_regressie voor de vraag "moet abortus een eigen keuze zijn?" met als voorspellende factoren (predictors) leeftijd, geslacht en opleidingsniveau. 
+logistische_regressie_test <- glm(df$eigen_keuze_abortus ~ df$Wat.is.uw.leeftijd. + df$geslacht + df$Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., data = df, family = binomial)
+
+
+```
+Voor de logistische_regressie voor de vraag "moet abortus een eigen keuze zijn?" met als predictors leeftijd, geslacht en opleidingsniveau gaf R een waarschuwing: Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred. 
+Mogenlijk komt dit omdat er niet genoeg metingen zijn voor elk opleidingsniveau, daarom is opleidingsniveau weggehaald as predictor in het onderstaande code blok. 
+
 ```{r}
 
-test222 <- df %>% 
-  select(Wat.is.uw.leeftijd.) %>% filter(Wat.is.uw.leeftijd. <= 30)
-sum(table(test222))
+logistische_regressie <- glm(keuze ~ leeftijd + geslacht, data = df_logistische_regressie, family = binomial)
+
+logistische_regressie
+
+# Voorspel test met de volgende data:
+
+newdata1 <- data.frame(ID = c(1,2), geslacht = c("Man", "Vrouw"), leeftijd = c(20,22), keuze = c("Wel abortus toestaan","Wel abortus toestaan"))
+
+# Voorspelling van de bovenstaande twee test observaties aan de hand van de gemaakte logistische regressie:
+voorspelde_waarde_1 <- predict.lm(logistische_regressie, newdata = newdata1, type = "response")
+voorspelde_waarde_1
 ```
+Met behulp van de predict.lm() functie worden de twee test observaties (net als in de originele dataset) aan de hand van de gemaakte logistische regressie. De nummers moeten nog omgezet worden naar een Ja/Nee antwoord op de vraag: Abortus toestaan.
+
 
