@@ -65,8 +65,8 @@ abortus$geloof <- factor(x = abortus$Wat.is.uw.religieuze.overtuiging..,
 
 
 abortus$geslacht <- factor(x = abortus$Wat.is.uw.geslacht..,
-                           levels = c("Man", "Vrouw"),
-                           labels = c("Man", "Vrouw"))
+                           levels = c("Man", "Vrouw", "Wil ik liever niet melden"),
+                           labels = c("Man", "Vrouw", "Wil ik liever niet melden"))
 # Voor de vraag: Wat is uw religieuze overtuiging?
 
 abortus$afkomst <- factor(x = abortus$In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht., 
@@ -174,24 +174,25 @@ https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6876521/
 Ik ga de tabel van 16 mei om zetten naar percentage. zo dat het wel klopt en niet op aantallen gaat.
  
 ```{r}
+#hier maak ik een splitsing van de leeftijden boven en onder 
 Spiltsing_leeftijd <-abortus %>%
     select(leeftijd, ouderszegenschap, geslacht) %>%
     mutate(leeftijd_boven_onder_24 = ifelse(leeftijd > 25, "boven", "onder"))
-table_1 <- prop.table(table(Spiltsing_leeftijd$leeftijd_boven_onder_24[Spiltsing_leeftijd$leeftijd_boven_onder_24 == "boven"], Spiltsing_leeftijd$ouderszegenschap[Spiltsing_leeftijd$leeftijd_boven_onder_24 == "boven"]))
-table_2 <- prop.table(table(Spiltsing_leeftijd$leeftijd_boven_onder_24[Spiltsing_leeftijd$leeftijd_boven_onder_24 == "onder"], Spiltsing_leeftijd$ouderszegenschap[Spiltsing_leeftijd$leeftijd_boven_onder_24 == "onder"]))
-table_Man <- prop.table(table(Spiltsing_leeftijd$leeftijd_boven_onder_24[Spiltsing_leeftijd$geslacht == "Man"], Spiltsing_leeftijd$ouderszegenschap[Spiltsing_leeftijd$geslacht == "Man"]))
-table_Vrouw <- prop.table(table(Spiltsing_leeftijd$leeftijd_boven_onder_24[Spiltsing_leeftijd$geslacht == "Vrouw"], Spiltsing_leeftijd$ouderszegenschap[Spiltsing_leeftijd$geslacht == "Vrouw"]))
-x3 <- rbind(table_1,table_2)
-as.data.frame.table(x3) %>%
+#Hier maak ik een tabel van de leeftijd boven de 25 
+table_Boven_25 <- prop.table(table(Spiltsing_leeftijd$leeftijd_boven_onder_24[Spiltsing_leeftijd$leeftijd_boven_onder_24 == "boven"], Spiltsing_leeftijd$ouderszegenschap[Spiltsing_leeftijd$leeftijd_boven_onder_24 == "boven"]))
+#Hier maak ik een tabel voor de leeftijd tot en met de leeftijd van 25
+table_Onder_25<- prop.table(table(Spiltsing_leeftijd$leeftijd_boven_onder_24[Spiltsing_leeftijd$leeftijd_boven_onder_24 == "onder"], Spiltsing_leeftijd$ouderszegenschap[Spiltsing_leeftijd$leeftijd_boven_onder_24 == "onder"]))
+#hier worden de twee tabellen samengevoegd
+table_onder_boven_samen <- rbind(table_Onder_25,table_Boven_25)
+#hier wordt de grafiek gemaakt van de twee de laaste tabel 
+as.data.frame.table(table_onder_boven_samen) %>%
     ggplot(aes(x = Var1,y = Freq,  fill = Var2)) +
     geom_col(position = "dodge")+
     guides(color = guide_legend(title = "Wat is de mening")) +
     labs(title = "Ouderzeggenschap over miderjarge", 
          y = "Voorkomen keuze in de groep in poprties", 
          x = "Leeftijd boven of onder de 21")
-
-
-
+Spiltsing_leeftijd
 
 ```
 
@@ -202,17 +203,67 @@ jongeren hebben willen nee en ouderen zeggen ja
 De grafiek van boven mooi maken en testen gaan uit voeren op de de laatste grafiek.
 De grafriek is goed gelukt nu dus dat is klaar. 
 ##  27 mei 
-Ik ga een chi square test doen.
+Ik ga een chi square test doen. Of het geslacht mee telt voor mensen onder de leeftijd van 25 over het onderwerp mening van ouders <br>
+De leeftijd van 25 is gekomen omdat de hersenen tussen de leeftijd van 20 en 25 jaar volgroeid is. Daarom is de vorige figuur ook verander naar de leeftijd van 25 jaar. 
+>H0 de leeftijd heeft geen significat verschil op de mennig over zeggenenschap van de ouders bij de leeftijd groep van onder 25 <br>
+
 ```{r}
 
-# Lijst van 1 en 0 maken voor Ja en Nee. 
-abortus_minderjarig_keuze_01 <- ifelse(Spiltsing_leeftijd$leeftijd_boven_onder_24=="boven", 1, 0) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
+# 1 voor de mensen de voorstander zijn, 0 als 
+#ze tegen zijn.
 
 # Chi-square test:
-chi_abortus_minderjarig_keuze_1 <- chisq.test(abortus$geslacht, abortus_minderjarig_keuze_01, correct = T)
-chi_abortus_minderjarig_keuze_1
+chi_abortus_minderjarig_keuze_onder <- chisq.test(table_Onder_25,  correct = T)
+chi_abortus_minderjarig_keuze_onder
 
 ```
-Uit deze chi square test kunnen we concluderen dat er geen significant verschil is tussen de mening van de mensen, van verschilde geslacht en onder de 25 over hun mening over of de ouders hun mening mee telt.
+Uit deze chi square test kunnen we concluderen dat er geen significant verschil is tussen de mening van de mensen, van verschilde geslacht en onder de leeftijd 25 over hun mening over of de ouders hun mening mee telt bij abortus. 
+Dat is ook wel logisch om te zien als je de figuur hier boven ziet.
+```{r}
 
+chi_abortus_minderjarig_keuze_boven <- chisq.test(table_Boven_25, correct = T)
+chi_abortus_minderjarig_keuze_boven
+
+```
+
+
+
+
+## 28 mei 
+Met de paper bezig geweest de introductie geschreven en met de powepoint bezig geweest
+
+## 29 mei
+De vorige Chi sqare test is fout gegaan, ik heb gekeken of onder de leefiftij van 25 een significant verschil zit en boven de leeftijd van 25 en dat was er beide niet,  hier onder is ie nu wel goed.
+
+```{r}
+#hier wordt een table gemaakt van het percentages van de antwoorden op het geheel
+Boven_onder_Ouderzegschap <-table(Spiltsing_leeftijd$leeftijd_boven_onder_24, Spiltsing_leeftijd$ouderszegenschap)
+(chi_leeftijd_Ouderzegschap <-chisq.test(Boven_onder_Ouderzegschap))
+
+```
+Hier uit is te zien dat er wel een significant verschil is tussen de verschillende leeftijd groepen. <br>
+Hier onder hebben we de de manier van de chis square test veranderd. 
+```{r}
+tabel_ofen <- table(abortus$geslacht, abortus$eigen_keuze_abortus)
+
+chisq.test(tabel_ofen)
+
+```
+Er wordt nu telkens een chisp.test te doen op elke vraag.
+```{r}
+abortus_aangpast <- abortus %>%
+    mutate(leeftijd_boven_onder_24 = ifelse(leeftijd > 25, "boven", "onder"))
+
+Boven_onder_kidskeuze <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Kindskeuze)
+chi_leeftijd_kids_keuze <-chisq.test(Boven_onder_kidskeuze)
+```
+```{r}
+Boven_onder_Wel_geen <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil.)
+ chi_leeftijd_eigen_keuze <-chisq.test(Boven_onder_Wel_geen)
+
+```
+```{r}
+Boven_onder_Vader<-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.)
+chi_leeftijd_vader_keuze <-chisq.test(Boven_onder_Vader)
+```
 
