@@ -73,11 +73,11 @@ Dit kan met de 'ggraph' package.
 Data inlezen.
 ```{r}
 data <- read.csv('abortus_dataset.csv')
-head(data)
+# head(data)
 ```
 
 ```{r}
-summary(data)
+# summary(data)
 ```
 Kolommen duidelijkere namen gegeven en onnodige kolommen verwijderd.
 (stellingen nog niet veranderd!)
@@ -104,7 +104,7 @@ data_renamed <- data %>%
     ) %>%
     select(- c(Tijd.van.laatste.wijziging, E.mail, Naam))
 
-head(data_renamed)
+# head(data_renamed)
 ```
 
 (later "Anders" en "Wil ik liever niet zeggen" toevoegen!)
@@ -366,7 +366,7 @@ In de bovenstaande plot gaat nog iets fout nu, maar ik snap niet helemaal wat. W
 
 
 ## Zondag 26 mei
-Aan de presentatie gewerkt voor de Donut chart.
+Aan de presentatie gewerkt voor de Donut chart. Powerpoint gemaakt en voordeel opgeschreven (makkelijk te begrijpen).
 
 
 ## Maandag 27 mei
@@ -473,5 +473,57 @@ PieDonut(data_donut, aes(religieuze_overtuiging, antwoord_vraag, count=Freq),
            showRatioThreshold = getOption("PieDonut.showRatioThreshold", 0.0) # percentages gefixt
          )
 ```
-In de PieDonut functie staat dat hij vanaf 2% de label niet weergeeft. Deze heb ik op 0 gezet en nu geeft hij alle percentages mooi weer.
+In de PieDonut functie staat in de default blijkbaar dat hij vanaf 2% de label niet weergeeft. Deze heb ik op 0 gezet en nu geeft hij alle percentages mooi weer.
+
+De bovenstaande Donut chart staat nu ook als een variatie in onze presentatie.
+
+
+## Woensdag 29 mei
+(presentaties waren vandaag)
+artikel doorlezen (Abortion Attitudes: An Overview of Demographic and Ideological Differences).
+
+Uit dit onderzoek blijkt dat:
+Er zit geen significant verschil tussen gender en iemands mening over abortus.
+Uit dit onderzoek blijkt dat religieuze overtuiging ervoor zorgt dat mannen minder support geven aan hun vrouw voor abortus.
+
+Morgen een chisq.test doen op de geloof plot.
+
+## Donderdag 30 mei
+Tabel een naam geven:
+```{r}
+geloof_tabel_test <- data_renamed %>%
+    select(Religie, Abortus_keuze) %>%
+    mutate(Gelovig=ifelse(Religie == "Niet gelovig", "Niet gelovig", "Wel gelovig"))
+geloof_tabel_test
+```
+Een chisq.test moet op cijfers, dus de geloof_tabel_test is de verkeerde tabel om te gebruiken in dit geval. Dit is de goede:
+```{r}
+tabel_geloof_vraag6
+```
+
+Voer de test erop uit:
+```{r}
+chisq.test(tabel_geloof_vraag6)
+```
+De p-waarde is '7.088e-05'. Dit is lager dan 0.05, dus is er een significant verschil aangetoond. 
+
+Maar deze klopt nog niet.
+De geloven moeten nog samen genomen worden tot een 'wel gelovig'.
+```{r}
+tabel_geloof_vraag6
+```
+```{r}
+tabel_geloof_vraag6 %>%
+    mutate(gelovig = tabel_geloof_vraag6$Anders + tabel_geloof_vraag6$Christendom)
+```
+
+```{r}
+data.frame(tabel_geloof_vraag6)
+```
+
+```{r}
+poging101 <- data.frame(tabel_geloof_vraag6) %>%
+    mutate(gelovig = ifelse(tabel_geloof_vraag6$Var1 + tabel_geloof_vraag6$Var2))
+```
+Het lukt niet.
 
