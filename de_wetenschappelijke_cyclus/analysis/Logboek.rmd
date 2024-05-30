@@ -159,7 +159,7 @@ abortus$eigen_keuze_abortus <- factor(x = abortus$Vindt.u.dat.iemand.zelf.moet.k
 
 # Voor de vraag: Wat is uw religieuze overtuiging?
 abortus$geloof <- factor(x = abortus$Wat.is.uw.religieuze.overtuiging.., 
-                           levels = c("Christendom", "Islam", "Hindoeïsme", "Boeddhisme", "Niet gelovig", "Anders"),
+                           levels = c("Christendom ", "Islam", "Hindoeïsme", "Boeddhisme", "Niet gelovig", "Anders"),
                            labels = c("Christendom", "Islam", "Hindoeïsme", "Boeddhisme", "Niet gelovig", "Anders"))
 
 
@@ -219,8 +219,8 @@ abortus$adoptie <- factor(x = abortus$Vindt.u.dat.adoptie.een.alternatief.is.voo
 
 abortus$vader <- factor(x = 
                           abortus$Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.,
-                            levels = c("Ja", "Nee"),
-                            labels = c("Ja", "Nee"))
+                            levels = c("Ja", "Nee", "Weet ik niet"),
+                            labels = c("Ja", "Nee", "Weet ik niet"))
 
 # Vragen met een volgorde: 
 # namen van de variabelen eidigen met "_o" om aan te duiden dat er een volgorde in zit (order)
@@ -937,20 +937,20 @@ De rode lijn geeft significantie aan, wanneer een waarde onder deze lijn ligt (p
 Als het resulaat significant is betekend het voor deze stellingen dat er een verschil is tussen de keuze tussen de twee geslachten. 
 
 
-```{r chi_square_visualizatie}
+```{r dataframe maken voor Chi-square visualizatie}
 chi_test_vector_geslacht <- c(chi_ja_abortus[3],chi_abortus_als_gevolg_van[3],chi_abortus_minderjarig_keuze[3],chi_abortus_zeggenschap_ouders[3],chi_abortus_echo[3],chi_abortus_bedenktijd[3],chi_abortus_adoptie[3],chi_abortus_zeggenschap_vader[3])
 
 #df_chi_geslacht_test <- data.frame(c(chi_ja_abortus[3],chi_abortus_als_gevolg_van[3]))
 
 df_chi_geslacht <- (data.frame((chi_test_vector_geslacht)) %>% rename(
-  chi_ja_abortus = p.value,
-  chi_abortus_als_gevolg_van = p.value.1,
-  chi_abortus_minderjarig_keuze = p.value.2,
-  chi_abortus_zeggenschap_ouders = p.value.3,
-  chi_abortus_echo = p.value.4,
-  chi_abortus_bedenktijd = p.value.5,
-  chi_abortus_adoptie = p.value.6,
-  chi_abortus_zeggenschap_vader = p.value.7
+  `Abortus toestaan` = p.value,
+  `Gevolg van verkrachtign` = p.value.1,
+  `Minderjarig kind` = p.value.2,
+  `Zeggenschap ouders` = p.value.3,
+  `Echo bekijken` = p.value.4,
+  `Bedenktijd invoeren` = p.value.5,
+  `Adoptie als alternatief` = p.value.6,
+  `Zeggenschap vader` = p.value.7
   ))
 
 df_chi_geslacht %>% 
@@ -959,14 +959,16 @@ df_chi_geslacht %>%
 In het bovenstaande blok met code wordt er een data-frame gemaakt die alle p-waardes bevat van de hypothes die opgesteld zijn. 
 Daarna wordt de data veranderd in "tidy data" (een meting per rij en variablen als colommen).
 
-```{r}
+```{r Visualizatie van P-waarden van Chi-square test}
 
 ggplot(data = df_chi_geslacht, mapping = aes(x = name , y = value)) +
   geom_bar(stat = "identity") +
   geom_hline(yintercept=0.05, linetype="dashed", color = "red") +
   ylab("P-waarde Chi-square test:") +
   xlab(" ") +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.6))
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.6)) 
+  
 
 ```
 Aan de bovenstaande grafiek te zien is er alleen een significant verschil tussen de meningen van de verschillende geslachten voor de kwestie of de vader ook zeggenschap mag hebben over de abortus, dit is van alle vragen de vraag waar ik ook wel van had verwacht dat het een polarizerende vraag zou zijn. 
@@ -1043,14 +1045,64 @@ ggplot(data = df, mapping = aes(x = Wat.is.uw.leeftijd., y = c(1:109))) +
 Alle chi-square tests retroactief aangepast, nu met een tabel i.p.v. eerst alle waarden van de vragen omzetten in 1 (Eens) en 0 (Oneens).
 
 
-# Logischische regressie: #
+
+**30-05-2024:**
+
+# Logistische regressie: #
 Om het verband tussen meerdere predictors te zien is de logistische regressie gebruikt. 
 
+Omdat er niet genoeg mensen van elk geloof zijn wordt iedereen verdeeld in twee groepen, gelovig en niet gelovig, het is natuurlijk genuanceerder dan dat maar met deze versimpeling zal ook al wel een patroon zichtbaar gemaakt kunnen worden.
 
-```{r  Logistische regressie test}
+
+```{r binaire lijst maken geloving of niet gelovig}
+df <- df %>% 
+  mutate(gelovig_01 = ifelse(df$geloof == "Niet gelovig", 0,1)) 
+
+```
+
+### Dataframes maken voor de logistische regressie: ###
+**In de onderstaande code chunks worden er dataframes gemaakt voor de volgende 
+tests:**
+Keuze van de man met leeftijd en opleidingsniveau als predictors,
+Keuze van de vrouw met leeftijd en opleidingsniveau als predictors,
+en Keuze van mensen met ongespecificeerd geslacht met leeftijd en opleidingsniveau als predictors.
+Van deze laatste categorie is er maar een persoon, dus kan hier de analyze niet op uitevoerd worden. 
+
+
+```{r  Dataframe voor logistische regressie maken (mannen + vrouwen)}
 # Nieuw dataframe met de relevante colommen van df.
-df_logistische_regressie <- data.frame(ID = df$ID, geslacht =df$geslacht, leeftijd = df$Wat.is.uw.leeftijd., keuze = df$eigen_keuze_abortus)
+#df_logistische_regressie <- data.frame(ID = df$ID, geslacht =df$geslacht, leeftijd = df$Wat.is.uw.leeftijd., keuze = df$eigen_keuze_abortus, df$geloof)
 
+df_logistische_regressie <- df %>% 
+  select(geslacht, Wat.is.uw.leeftijd., gelovig_01, Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., eigen_keuze_abortus, vader, bedenktijd, minderjarig, gezondheid_vrouw, ouders)
+```
+
+
+```{r  Dataframe voor logistische regressie maken (man)}
+# Dataframe voor man:
+df_man <- df %>% 
+  select(geslacht, Wat.is.uw.leeftijd., gelovig_01, Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., eigen_keuze_abortus, vader, bedenktijd, minderjarig, gezondheid_vrouw, ouders) %>% 
+  filter(geslacht == "Man")
+
+```
+
+
+```{r  Dataframe voor logistische regressie maken (vrouw)}
+# Dataframe voor vrouw:
+df_vrouw <- df %>% 
+  select(geslacht, Wat.is.uw.leeftijd., gelovig_01, Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., eigen_keuze_abortus, vader, bedenktijd, minderjarig, gezondheid_vrouw, ouders) %>% filter(geslacht == "Vrouw")
+```
+
+
+```{r  Dataframe voor logistische regressie maken (ongespecificeerd geslacht)}
+# Dataframe voor ongespecificeerd geslacht:
+df_ongespecificeerd_geslacht <- df %>% 
+  select(geslacht, Wat.is.uw.leeftijd., gelovig_01, Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., eigen_keuze_abortus, vader, bedenktijd, minderjarig, gezondheid_vrouw, ouders) %>% filter(geslacht == "Wil ik liever niet melden ")
+
+```
+
+
+```{r }
 # logistische_regressie voor de vraag "moet abortus een eigen keuze zijn?" met als voorspellende factoren (predictors) leeftijd, geslacht en opleidingsniveau. 
 logistische_regressie_test <- glm(df$eigen_keuze_abortus ~ df$Wat.is.uw.leeftijd. + df$geslacht + df$Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., data = df, family = binomial)
 
@@ -1059,20 +1111,108 @@ logistische_regressie_test <- glm(df$eigen_keuze_abortus ~ df$Wat.is.uw.leeftijd
 Voor de logistische_regressie voor de vraag "moet abortus een eigen keuze zijn?" met als predictors leeftijd, geslacht en opleidingsniveau gaf R een waarschuwing: Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred. 
 Mogenlijk komt dit omdat er niet genoeg metingen zijn voor elk opleidingsniveau, daarom is opleidingsniveau weggehaald as predictor in het onderstaande code blok. 
 
-```{r}
-
-logistische_regressie <- glm(keuze ~ leeftijd + geslacht, data = df_logistische_regressie, family = binomial)
-
+```{r Logistische regressie (man en vrouw) met leeftijd en geslacht als predictors}
+# Logistische regressie met leeftijd en geslacht als predictors
+logistische_regressie <- glm(eigen_keuze_abortus ~ Wat.is.uw.leeftijd. + geslacht, data = df_logistische_regressie, family = binomial)
 logistische_regressie
+```
 
-# Voorspel test met de volgende data:
 
-newdata1 <- data.frame(ID = c(1,2), geslacht = c("Man", "Vrouw"), leeftijd = c(20,22), keuze = c("Wel abortus toestaan","Wel abortus toestaan"))
+``` {r Logistische regressie (man) met leeftijd, geloof en opleidingsniveau als predictors}
+# Logistische regressie voor de vraag: Moet abortus een eigen keuze zijn?
+lr_man_eigen_keuze_abortus <- glm(eigen_keuze_abortus ~ Wat.is.uw.leeftijd. + gelovig_01 + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., data = df_man, family = binomial)
+
+#summary(lr_man_eigen_keuze_abortus)
+coef(lr_man_eigen_keuze_abortus)
+
+# Logistische regressie voor de vraag: Moet de biologische vader zeggenschap hebben over de abortus
+lr_man_vader <- glm(vader ~ Wat.is.uw.leeftijd. + gelovig_01 + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., data = df_man, family = binomial)
+#summary(lr_man_eigen_keuze_abortus)
+#summary(lr_man_vader)
+
+```
+
+De odds ratio wordt gebruikt om te laten zien hoeveel invloed de predictors individueel hebben wanneer de anderen niet veranderen. 
+
+```{r }
+
+# Zodat het niet in wetenschappelijke notatie weergeven wordt als het onder de 999 is. 
+options(scipen = 999)
+
+# Bereken de coefficienten (log e)
+coefficienten_van_lr_man_eigen_keuze_abortus <- coef(lr_man_eigen_keuze_abortus)
+
+# Verander de coefficienten naar procentuele verandering:
+odds_ratio_lr_man_eigen_keuze_abortus <- ( 1 - (exp(coefficienten_van_lr_man_eigen_keuze_abortus))) * 100
+odds_ratio_lr_man_eigen_keuze_abortus
+
+```
+Interpretatie van deze odds ratio's: Het percentage geeft aan dat wanneer alle andere variabelen het zelfde zijn, de waarschijnlijkheid dat 
+er een andere uitkoms gekozen wordt (bijvoorbeeld een ander antwoord op de vraag of abortus toegestaan zou moeten zijn). Een positief percentage geeft aan dat het 
+
+
+``` {r}
+
+
+# Voorspel test met de volgende test data:
+newdata1 <- data.frame(geslacht = c("Man", "Vrouw"), Wat.is.uw.leeftijd. = c(20,22), keuze = c("Wel abortus toestaan","Wel abortus toestaan"))
 
 # Voorspelling van de bovenstaande twee test observaties aan de hand van de gemaakte logistische regressie:
 voorspelde_waarde_1 <- predict.lm(logistische_regressie, newdata = newdata1, type = "response")
 voorspelde_waarde_1
+
 ```
 Met behulp van de predict.lm() functie worden de twee test observaties (net als in de originele dataset) aan de hand van de gemaakte logistische regressie. De nummers moeten nog omgezet worden naar een Ja/Nee antwoord op de vraag: Abortus toestaan.
+De waarden die verkregen zijn met de predict.lm() functie kunnen vervolgens in de onderstaande grafiek worden geplot om te zien in welke categorie ze waarschijnlijk horen. (Welk antwoord het persoon waarschijnlijk zou geven.)
 
+```{r Visualizatie Lr vraag: eigen keuze abortus (mannen + vrouwen)}
+# Maak nieuw dataframe met de waardes van de logistische regressie en de keuze die de mensen die bij deze waardes horen gemaakt hebben. 
+voorspelde_data <- data.frame(logistische_regressie$fitted.values, df$eigen_keuze_abortus)
+
+voorspelde_data <- voorspelde_data[order(voorspelde_data$logistische_regressie.fitted.values, decreasing = F),]
+
+voorspelde_data$rank <- 1:nrow(voorspelde_data)
+
+ggplot(data = voorspelde_data, aes(x = rank, y = logistische_regressie.fitted.values)) +
+  geom_point(aes(color=df.eigen_keuze_abortus, shape = df$geslacht), alpha = 0.9) +
+  ggtitle("Eigen keuze abortus:") +
+  xlab("Index") +
+  ylab("Waarschijnlijkheid (tussen 0 en 1)")
+```
+
+```{r Visualizatie Lr vraag: Moet de vader zeggenschap hebben (mannen)}
+
+# Maak nieuw dataframe met de waardes van de logistische regressie en de keuze die de mensen die bij deze waardes horen gemaakt hebben. 
+lr_voorspelling_vader <- data.frame(lr_man_vader$fitted.values, df_man$vader)
+
+lr_voorspelling_vader <- lr_voorspelling_vader[order(lr_voorspelling_vader$lr_man_vader.fitted.values, decreasing = F),]
+
+lr_voorspelling_vader$rank <- 1:nrow(lr_voorspelling_vader)
+
+ggplot(data = lr_voorspelling_vader, aes(x = rank, y = lr_man_vader.fitted.values)) +
+  geom_point(aes(color=df_man.vader, alpha = 0.9)) +
+  ggtitle("Eigen keuze abortus:") +
+  xlab("Index") +
+  ylab("Waarschijnlijkheid (tussen 0 en 1)")
+```
+
+
+
+
+
+
+```{r eval=F}
+
+
+tabel_geloof_vraag6 <- (table(data_renamed$Abortus_keuze, data_renamed$Religie))
+tabel_geloof_vraag6 <- data.frame(tabel_geloof_vraag6)
+
+
+tabel_geloof_vraag6 <- tabel_geloof_vraag6 %>% 
+  pivot_wider(names_from = Var2, values_from = Freq)
+
+tabel_geloof_vraag6$totaal_aantal <- (x = tabel_geloof_vraag6$Var1)
+
+(tabel_geloof_vraag6)
+```
 
