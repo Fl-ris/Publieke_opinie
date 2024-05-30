@@ -512,18 +512,19 @@ De geloven moeten nog samen genomen worden tot een 'wel gelovig'.
 ```{r}
 tabel_geloof_vraag6
 ```
-```{r}
-tabel_geloof_vraag6 %>%
-    mutate(gelovig = tabel_geloof_vraag6$Anders + tabel_geloof_vraag6$Christendom)
-```
 
 ```{r}
 data.frame(tabel_geloof_vraag6)
 ```
-
+!!!!!!
 ```{r}
 poging101 <- data.frame(tabel_geloof_vraag6) %>%
-    mutate(gelovig = ifelse(tabel_geloof_vraag6$Var1 + tabel_geloof_vraag6$Var2))
+    mutate(gelovig=ifelse(Var2 == "Niet gelovig", resultaat_if, de_else))
+
+#Voorbeeld eerder gebruikt:
+#data_renamed %>%
+#    select(Religie, Abortus_keuze) %>%
+#    mutate(Gelovig=ifelse(Religie == "Niet gelovig", "Niet gelovig", "Wel gelovig")) 
 ```
 Het lukt niet.
 
