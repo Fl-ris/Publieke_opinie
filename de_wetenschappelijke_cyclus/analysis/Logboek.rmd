@@ -1319,20 +1319,49 @@ Zoals op de bovenstaande afbeelding zichtbaar is, is er minder goed een patroon 
 
 
 
-
+### Test visualisatie voor paper:
+31-05-2024:
+Als introductie van de verkregen data moeten er een paar grafieken weergeven worden waarop de keuzes van de 
+menensen die de enquete ingevuld hebben weergeven is. 
 
 ```{r eval=F}
+x1 <- table(df$adoptie)
+adoptie_plot_data <- data.frame(x1)
+adoptie_plot_data$fraction = adoptie_plot_data$Freq / sum(adoptie_plot_data$Freq)
+adoptie_plot_data$percentage = round(adoptie_plot_data$fraction *100, digits =1)
+
+#adoptie_plot <- 
+ggplot(data = df, mapping = aes(x = adoptie_plot_data, y = adoptie, fill = geslacht)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = (" "))) +
+ # ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
+  xlab("Percentage mensen") +
+  ylab(" ")
 
 
-tabel_geloof_vraag6 <- (table(data_renamed$Abortus_keuze, data_renamed$Religie))
-tabel_geloof_vraag6 <- data.frame(tabel_geloof_vraag6)
+adoptie_plot
 
+vader_plot <- ggplot(data = df, mapping = aes(x = c(1:109), y = vader, fill = geslacht)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = (" "))) +
+ # ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
+  xlab("Percentage mensen") + # nog aapassen naar procent.
+  ylab(" ")
 
-tabel_geloof_vraag6 <- tabel_geloof_vraag6 %>% 
-  pivot_wider(names_from = Var2, values_from = Freq)
+echo_plot <- ggplot(data = df, mapping = aes(x = c(1:109), y = echo, fill = geslacht)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = (" "))) +
+#  ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
+  xlab("Percentage mensen") + # nog aapassen naar procent.
+  ylab(" ")
 
-tabel_geloof_vraag6$totaal_aantal <- (x = tabel_geloof_vraag6$Var1)
+bedenktijd_plot <- ggplot(data = df, mapping = aes(x = c(1:109), y = bedenktijd, fill = geslacht)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = (" "))) +
+ # ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
+  xlab("Percentage mensen") + # nog aapassen naar procent.
+  ylab(" ")
 
-(tabel_geloof_vraag6)
+#ggarrange(gezondheid_plot, vader_plot, echo_plot, bedenktijd_plot)
 ```
 
