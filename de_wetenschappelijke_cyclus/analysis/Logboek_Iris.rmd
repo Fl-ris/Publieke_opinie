@@ -517,6 +517,7 @@ tabel_geloof_vraag6
 data.frame(tabel_geloof_vraag6)
 ```
 !!!!!!
+De tabel moet opgedeeld worden in een kolom met mensen die wel geloven en mensen die niet geloven.
 ```{r}
 poging101 <- data.frame(tabel_geloof_vraag6) %>%
     mutate(gelovig=ifelse(Var2 == "Niet gelovig", resultaat_if, de_else))
@@ -528,3 +529,61 @@ poging101 <- data.frame(tabel_geloof_vraag6) %>%
 ```
 Het lukt niet.
 
+```{r}
+library(tidyr)
+# data frame van maken
+(tabel_geloof_vraag6 <- (table(data_renamed$Abortus_keuze, data_renamed$Religie)))
+tabel_geloof_vraag6 <- data.frame(tabel_geloof_vraag6)
+tabel_geloof_vraag6
+
+# tabel maken van dataframe?
+tabel_geloof_vraag6 <- tabel_geloof_vraag6 %>% 
+  pivot_wider(names_from = Var2, values_from = Freq)
+
+# nieuwe colom maken
+tabel_geloof_vraag6$totaal_aantal <- mutate(test=tabel_geloof_vraag6$Anders + tabel_geloof_vraag6$`Christendom `+tabel_geloof_vraag6$Islam)
+```
+Morgen verder.
+
+
+## Vrijdag 31 mei
+Ik ga zelf een data frame maken. Zodra er vernieuwde gegevens zijn moeten we dus dit dat frame met de hand aanpassen.
+```{r}
+library(dplyr)
+
+# data frame op basis van tabel_geloof_vraag6
+data_frame_geloof <- data.frame(
+    Anders = c(6, 1),
+    Christendom = c(8, 3),
+    Islam = c(2, 0),
+    Niet_gelovig = c(84, 0)
+)
+# rij naam veranderen naar 'Ja' en 'Nee'
+rownames(data_frame_geloof) <- c("Ja", "Nee")
+
+data_frame_geloof
+```
+En nu de gekoven samenvoegen tot een.
+```{r}
+# optellen alle geloven
+nieuwe_dataframe_geloof <- tabel_geloof_vraag6 %>%
+    mutate(Gelovig = tabel_geloof_vraag6$Anders + tabel_geloof_vraag6$`Christendom ` + tabel_geloof_vraag6$Islam) %>%
+    # onnodige rijen weghalen
+    select(-Anders, -`Christendom `, -Islam)
+
+nieuwe_dataframe_geloof
+```
+```{r}
+table_van_dataframe_geloof <- table(nieuwe_dataframe_geloof)
+table_van_dataframe_geloof
+```
+Ik kwam er net achter dat ik al de juiste data frame heb.. Dit had zoveel sneller gekund, maar goed.
+Ik hoef hier alleen nog een tabel van te maken:
+```{r}
+(nu_echt_tabel_geloof <- table(geloof_tabel_test$Abortus_keuze, geloof_tabel_test$Gelovig))
+```
+En dan nu de test:
+```{r}
+chisq.test(nu_echt_tabel_geloof)
+```
+De p-waarde ligt boven de 0.05, dus is er aangetoond dat er een significant verschil zit in mensen hun mening over abortus tussen mensen die wel en niet een religieuze overtuiging hebben.
