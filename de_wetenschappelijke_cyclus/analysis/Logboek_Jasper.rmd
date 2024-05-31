@@ -41,8 +41,18 @@ enqute open laten staan en allemaal meet waarden binnen krijgen en bedeken waar 
 ## 14 mei
 Ik moet laten zien wat de gemiddelde leeftijd is van onze meetwaarde. 
 ```{r, include=FALSE}
+# Libraries
+library(data.tree)
+library(ggraph)
+library(igraph)
 library(tidyverse)
-library(dplyr)
+library(viridis)
+library(ggplot2)
+library(dplyr) 
+library(rgexf)
+library(ggrepel)
+# Voor statistische analyses:
+library("pwr")
 ```
 Hier worden wat namen veranderd want anders krijg je namen als *Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil* en dat is veel te lang.
 ```{r}
@@ -265,5 +275,31 @@ Boven_onder_Wel_geen <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_a
 ```{r}
 Boven_onder_Vader<-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.)
 chi_leeftijd_vader_keuze <-chisq.test(Boven_onder_Vader)
+```
+## 30 mei 
+Ik a bezig met meer Chi squar testen zo dat ik ze zo meteen in een grafriek kan stoppen om in 1 keer te kunnenlaten zien waar een sinficant verschil is 
+```{r}
+Boven_onder_Keuze_arbortus <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil.)
+chi_leeftijd_keuze_Abortus <-chisq.test(Boven_onder_Keuze_arbortus)
+```
+```{r}
+Boven_onder_Keuze_Gevaar_moeder <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.er.voor.abortus.gekozen.mag.worden.als.de.gezondheid.van.de.vrouw.door.de.zwangerschap.in.gevaar.kan.komen.)
+chi_leeftijd_keuze_Gevaar_moeder <-chisq.test(Boven_onder_Keuze_Gevaar_moeder)
+```
+Hier onder word de plot gemaakt
+```{r}
+chi_test_vector_leeftijd <- c(chi_leeftijd_keuze_Abortus[3])
+
+df_chi_leeftijd <- (data.frame((chi_test_vector_leeftijd)) %>% rename(
+  `Abortus toestaan` = p.value
+  ))
+
+ggplot(data = df_chi_leeftijd, mapping = aes(x = name , y = value)) +
+  geom_bar(stat = "identity") +
+  geom_hline(yintercept=0.05, linetype="dashed", color = "red") +
+  ylab("P-waarde Chi-square test:") +
+  xlab(" ") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.6)) 
 ```
 
