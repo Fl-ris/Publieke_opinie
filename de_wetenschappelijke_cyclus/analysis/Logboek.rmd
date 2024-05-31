@@ -22,11 +22,11 @@ library(ggplot2)
 library(dplyr) 
 library(rgexf)
 library(ggrepel)
+
+library("ggpubr")
+
 # Voor statistische analyses:
 library("pwr")
-
-
-
 ```
 
 ## **Inleiding:** ##
@@ -131,7 +131,15 @@ summary(abortus)
 
 ```{r echo=T}
 
+df_test <- df %>% select(geslacht, Wat.is.uw.leeftijd.)
+
 df_leeftijd <- data.frame(abortus$Wat.is.uw.leeftijd.) 
+
+# test
+ggplot(df_leeftijd, aes(x= df_test$Wat.is.uw.leeftijd., y = df_test$geslacht)) +
+  geom_boxplot()
+  xlab("Leeftijd (Jaren)") 
+
 
 # verdeling van de leeftijden:
 ggplot(df_leeftijd, aes(x= abortus$Wat.is.uw.leeftijd.)) +
@@ -144,9 +152,9 @@ ggplot(df_leeftijd, aes(x= abortus$Wat.is.uw.leeftijd.)) +
 
 ## Omzetten naar factoren
 In het onderstaande blok code worden factoren gemaakt van de meerkeuze vragen.
+Het eerste deel bestaat uit factoren waar geen volgorde in zit, daarna factoren met volgorde.
 
-
-```{r}
+```{r Factoren maken voor dataframe}
 
 #table(abortus$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil., useNA = "always")
 
@@ -274,9 +282,27 @@ df <- data.frame(abortus)
 
 ```
 
+
+
+```{r}
+df_test <- df %>% select(geslacht, Wat.is.uw.leeftijd.)
+
+# test
+ggplot(df_leeftijd, aes(x= df_test$Wat.is.uw.leeftijd., y = df_test$geslacht)) +
+  geom_boxplot(fill = "gold", alpha = 0.3, varwidth = T) +
+  xlab("Leeftijd (Jaren)") +
+  ylab("Geslacht") +
+  theme_minimal()
+
+
+
+```
+Voor de bovenstaande grafiek is de alpha=03 waarde gekozen voor asthestische doeleinden, niet omdat er overlap kan zijn. 
+
+
 ### Overzicht: abortus toestaan of niet:
 ```{r}
-table(abortus$eigen_keuze_abortus, useNA = "always") # voor de vraag: Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?
+table(abortus$eigen_keuze_abortus) # voor de vraag: Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?
 
 ```
 
@@ -286,7 +312,7 @@ table(abortus$eigen_keuze_abortus, useNA = "always") # voor de vraag: Vindt u da
 # Grafiek met de verschillende geloven en de leeftijdverdeling die er bij hoort. 
 ggplot(df, aes(y=abortus$geloof,
                x= abortus$Wat.is.uw.leeftijd.)) +
-  geom_boxplot(color = "black", fill = "gold", varwidth=T) +
+  geom_boxplot(color = "black", fill = "gold", alpha = 0.3, varwidth=T) +
     xlab("Leeftijd (Jaren") +
     ylab("Geloof")
 
@@ -299,7 +325,7 @@ Verdeling van de leeftijd van de mensen die de enquete hebben ingevuld en hun id
 # Grafiek met leeftijden uit verschillende provincies.
 ggplot(df, aes(y=abortus$afkomst,
                x= abortus$Wat.is.uw.leeftijd.)) +
-  geom_boxplot(color = "black", fill = "gold", varwidth = T) +
+  geom_boxplot(color = "black", fill = "gold", alpha = 0.3, varwidth = T) +
     xlab("Leeftijd (Jaren") +
     ylab("Op gegroeid in de provincie:")
 
@@ -343,7 +369,7 @@ tijd_vector <- data.frame(tijd_vector)
 
 ggplot(tijd_vector, aes(y=tijd_vector,
                         x= abortus$Wat.is.uw.leeftijd.)) +
-  geom_boxplot(aes(color = abortus$geslacht)) +
+  geom_boxplot(aes(color = abortus$geslacht, alpha=0.2)) +
   facet_wrap(~abortus$geslacht) +
     xlab("Leeftijd (Jaren)") +
     ylab("Tijd om formulier in te vullen (minuten)") #+
@@ -639,14 +665,15 @@ ggplot(renamed_provincie_aantal, aes(ymax=ymax, ymin=ymin, xmax=13, xmin=3)) +
      geom_label_repel(x = 13, aes(y=labelp, label= label), size=3, max.overlaps = 10, min.segment.length = 0) +
     # geom_label( x = 13, aes(y=labelp, label= label), size=4)+
      ggtitle("Enquete deelnemers, verdeling over de provincies:") +
+     theme_minimal() +
      xlab(" ") +
      ylab(" ")
 ```
-
+De bovenstaande grafiek geeft weer hoe een donut grafiek opgebouwd is, het zijn geom_rect() blokken die op elkaar gestapeld zijn, de lijn waar een nieuw blok begint wordt bepaald met de cumulatieve som van de vector met proporties. Om er een donut van te maken zoals in chunk 23 weergeven wordt moet de lijn: coord_polar(theta="y") toegevoegd worden.
 
 ## Cirkel packing grafiek test
 
-```{r eval=F}
+```{r Circulair packing test 1}
 # Test 2:
 
 
@@ -693,7 +720,7 @@ plot(hc)
  # theme_test()
 ```
 
-```{r}
+```{r Circulair packing test 2}
 library(ggraph)
 library(igraph)
 library(tidyverse)
@@ -971,7 +998,7 @@ ggplot(data = df_chi_geslacht, mapping = aes(x = name , y = value)) +
   
 
 ```
-Aan de bovenstaande grafiek te zien is er alleen een significant verschil tussen de meningen van de verschillende geslachten voor de kwestie of de vader ook zeggenschap mag hebben over de abortus, dit is van alle vragen de vraag waar ik ook wel van had verwacht dat het een polarizerende vraag zou zijn. 
+Aan de bovenstaande grafiek te zien is er alleen een significant verschil tussen de meningen van de verschillende geslachten over de kwestie of de vader ook zeggenschap mag hebben over de abortus, dit is van alle vragen de vraag waar ik ook wel van had verwacht dat het  polariserend zou zijn. 
 
 # Chi^2 test:
 De volgende hypothese is opgesteld:
@@ -1045,7 +1072,6 @@ ggplot(data = df, mapping = aes(x = Wat.is.uw.leeftijd., y = c(1:109))) +
 Alle chi-square tests retroactief aangepast, nu met een tabel i.p.v. eerst alle waarden van de vragen omzetten in 1 (Eens) en 0 (Oneens).
 
 
-
 **30-05-2024:**
 
 # Logistische regressie: #
@@ -1073,9 +1099,16 @@ Van deze laatste categorie is er maar een persoon, dus kan hier de analyze niet 
 # Nieuw dataframe met de relevante colommen van df.
 #df_logistische_regressie <- data.frame(ID = df$ID, geslacht =df$geslacht, leeftijd = df$Wat.is.uw.leeftijd., keuze = df$eigen_keuze_abortus, df$geloof)
 
+# Voor de kolom met 0,1 waarden voor de keuze zijn alle "Weet ik niet" antwoorden vervangen door 0 (test)
 df_logistische_regressie <- df %>% 
-  select(geslacht, Wat.is.uw.leeftijd., gelovig_01, Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., eigen_keuze_abortus, vader, bedenktijd, minderjarig, gezondheid_vrouw, ouders)
+  select(geslacht, Wat.is.uw.leeftijd., gelovig_01, Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., eigen_keuze_abortus, vader, bedenktijd, minderjarig, gezondheid_vrouw, ouders, echo) %>%
+  mutate(ouders = (ifelse(ouders == "Ja", 1, 0)), leeftijd_onder_30 = (ifelse(Wat.is.uw.leeftijd. <= 30, 1,0)))
+  
+
 ```
+De leeftijden zijn verdeeld in twee categorien, mensen onder 30 en mensen boven de 30 jaar oud, de reden voor deze indeling is
+dat er in de verdeling van leeftijden twee pieken zijn, rond de 20 en rond de 50. Er zijn maar weinig metingen die hier tussen in zitten. 
+Het jongste persoon die niet voor vrijheid van abortus gekozen heeft is 39 jaar oud. 
 
 
 ```{r  Dataframe voor logistische regressie maken (man)}
@@ -1085,21 +1118,23 @@ df_man <- df %>%
   filter(geslacht == "Man")
 
 ```
-
+Maak het dataframe voor de mannen
 
 ```{r  Dataframe voor logistische regressie maken (vrouw)}
 # Dataframe voor vrouw:
 df_vrouw <- df %>% 
   select(geslacht, Wat.is.uw.leeftijd., gelovig_01, Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., eigen_keuze_abortus, vader, bedenktijd, minderjarig, gezondheid_vrouw, ouders) %>% filter(geslacht == "Vrouw")
 ```
+Maak het dataframe voor de vrouwen
 
 
 ```{r  Dataframe voor logistische regressie maken (ongespecificeerd geslacht)}
 # Dataframe voor ongespecificeerd geslacht:
 df_ongespecificeerd_geslacht <- df %>% 
-  select(geslacht, Wat.is.uw.leeftijd., gelovig_01, Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., eigen_keuze_abortus, vader, bedenktijd, minderjarig, gezondheid_vrouw, ouders) %>% filter(geslacht == "Wil ik liever niet melden ")
+  select(geslacht, Wat.is.uw.leeftijd., gelovig_01, Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., eigen_keuze_abortus, vader, bedenktijd, minderjarig, gezondheid_vrouw, ouders) %>% filter(geslacht == "Wil ik liever niet melden")
 
 ```
+Maak het dataframe voor de "ongespecificeerd geslacht" mensen.
 
 
 ```{r }
@@ -1109,26 +1144,67 @@ logistische_regressie_test <- glm(df$eigen_keuze_abortus ~ df$Wat.is.uw.leeftijd
 
 ```
 Voor de logistische_regressie voor de vraag "moet abortus een eigen keuze zijn?" met als predictors leeftijd, geslacht en opleidingsniveau gaf R een waarschuwing: Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred. 
-Mogenlijk komt dit omdat er niet genoeg metingen zijn voor elk opleidingsniveau, daarom is opleidingsniveau weggehaald as predictor in het onderstaande code blok. 
+Mogenlijk komt dit omdat er niet genoeg metingen zijn voor elk opleidingsniveau.
 
-```{r Logistische regressie (man en vrouw) met leeftijd en geslacht als predictors}
+
+
+```{r Logistische regressie (man en vrouw)}
+
 # Logistische regressie met leeftijd en geslacht als predictors
-logistische_regressie <- glm(eigen_keuze_abortus ~ Wat.is.uw.leeftijd. + geslacht, data = df_logistische_regressie, family = binomial)
-logistische_regressie
+logistische_regressie <- glm(eigen_keuze_abortus ~ leeftijd_onder_30 + geslacht + gelovig_01 + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond.,  data = df_logistische_regressie, family = binomial)
+
+
+
+lr_man_vrouw_vader <- glm(vader ~ leeftijd_onder_30 + geslacht + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond. + gelovig_01, data = df_logistische_regressie, family = binomial)
+
+
+# Logistische regressie voor de vraag: Moeten minderjarig kind zeggenschap hebben over eigen abortus, met als predictors: leeftijd, geslacht, onderwijsniveau en geloof
+lr_man_vrouw_zeggenschap_minderjarig <- glm(minderjarig ~ leeftijd_onder_30 + geslacht + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond. + gelovig_01, data = df_logistische_regressie, family = binomial)
+
+
+# Logistische regressie voor de vraag: Moet er een echo van de foetus laten zien worden voor er voor abortus gekozen mag worden:
+lr_man_vrouw_echo <- glm(echo ~ leeftijd_onder_30 + geslacht + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond. + gelovig_01, data = df_logistische_regressie, family = binomial)
+
+
+# Bedenktijd:
+lr_man_vrouw_bedenktijd <- glm(bedenktijd ~ leeftijd_onder_30 + geslacht + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond. + gelovig_01, data = df_logistische_regressie, family = binomial)
+
+# Logistische regressie voor de vraag: Mag er voor abortus gekozen worden als de gezondheid van de vrouw in gevaar is?
+lr_man_vrouw_gezondheid_vrouw <- glm(df_logistische_regressie$gezondheid_vrouw ~ leeftijd_onder_30 + geslacht + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond. + gelovig_01, data = df_logistische_regressie, family = binomial)
+
+lr_man_vrouw_gezondheid_ouders <- glm(df_logistische_regressie$ouders ~ leeftijd_onder_30 + geslacht + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond. + gelovig_01, data = df_logistische_regressie, family = binomial)
+
+
+
+
+# summary(lr_man_vrouw_zeggenschap_minderjarig) # geloof significant
+#summary(lr_man_vrouw_vader) # leeftijd en geslacht significant, geloof bijna
+# summary(logistische_regressie) # niets significant
+# summary(lr_man_vrouw_echo) # geloof significant
+#summary(lr_man_vrouw_bedenktijd) # geslacht significant
+#summary(lr_man_vrouw_gezondheid_vrouw) # niets significant
+#summary(lr_man_vrouw_gezondheid_ouders) # Niets significant
 ```
+Voor de vraag: Moet een minderjarig kind de keuze hebben om een abortus te nemen? De enige significante factor is geloof, met een p-waarde van 0.00308. 
 
 
-``` {r Logistische regressie (man) met leeftijd, geloof en opleidingsniveau als predictors}
+
+``` {r Logistische regressie (man)}
 # Logistische regressie voor de vraag: Moet abortus een eigen keuze zijn?
 lr_man_eigen_keuze_abortus <- glm(eigen_keuze_abortus ~ Wat.is.uw.leeftijd. + gelovig_01 + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., data = df_man, family = binomial)
 
-#summary(lr_man_eigen_keuze_abortus)
-coef(lr_man_eigen_keuze_abortus)
+
+
+# Logistische regressie voor de vraag: 
+lr_man_minderjarig <- glm(minderjarig ~ Wat.is.uw.leeftijd. + gelovig_01 + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., data = df_man, family = binomial)
+
+
+#coef(lr_man_eigen_keuze_abortus)
 
 # Logistische regressie voor de vraag: Moet de biologische vader zeggenschap hebben over de abortus
 lr_man_vader <- glm(vader ~ Wat.is.uw.leeftijd. + gelovig_01 + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., data = df_man, family = binomial)
-#summary(lr_man_eigen_keuze_abortus)
-#summary(lr_man_vader)
+summary(lr_man_eigen_keuze_abortus)
+summary(lr_man_vader)
 
 ```
 
@@ -1144,6 +1220,7 @@ coefficienten_van_lr_man_eigen_keuze_abortus <- coef(lr_man_eigen_keuze_abortus)
 
 # Verander de coefficienten naar procentuele verandering:
 odds_ratio_lr_man_eigen_keuze_abortus <- ( 1 - (exp(coefficienten_van_lr_man_eigen_keuze_abortus))) * 100
+
 odds_ratio_lr_man_eigen_keuze_abortus
 
 ```
@@ -1174,11 +1251,12 @@ voorspelde_data <- voorspelde_data[order(voorspelde_data$logistische_regressie.f
 voorspelde_data$rank <- 1:nrow(voorspelde_data)
 
 ggplot(data = voorspelde_data, aes(x = rank, y = logistische_regressie.fitted.values)) +
-  geom_point(aes(color=df.eigen_keuze_abortus, shape = df$geslacht), alpha = 0.9) +
+  geom_point(aes(color=df$eigen_keuze_abortus, shape = df$geslacht, alpha = 0.9)) +
   ggtitle("Eigen keuze abortus:") +
   xlab("Index") +
   ylab("Waarschijnlijkheid (tussen 0 en 1)")
 ```
+Voor de bovenstaande logistische regressie waren er geen significante predictors, daarom is er geen trend op de grafiek zichtbaar en is deze onbruikbaar. (deze grafiek was een test)
 
 ```{r Visualizatie Lr vraag: Moet de vader zeggenschap hebben (mannen)}
 
@@ -1190,11 +1268,53 @@ lr_voorspelling_vader <- lr_voorspelling_vader[order(lr_voorspelling_vader$lr_ma
 lr_voorspelling_vader$rank <- 1:nrow(lr_voorspelling_vader)
 
 ggplot(data = lr_voorspelling_vader, aes(x = rank, y = lr_man_vader.fitted.values)) +
-  geom_point(aes(color=df_man.vader, alpha = 0.9)) +
+  geom_point(aes(color=df_man$vader, size = df_man$Wat.is.uw.leeftijd., alpha = 0.8)) +
   ggtitle("Eigen keuze abortus:") +
   xlab("Index") +
   ylab("Waarschijnlijkheid (tussen 0 en 1)")
 ```
+Op de visualizatie van de bovenstaande logistische regressie was leeftijd de enige significante predictor van de keuze voor abortus. 
+(P-waarde: 0.00296)
+```{r Visualizatie Lr vraag: Moet een minderjarig kind de keuze hebben om voor een abortus te kiezen? (mannen)}
+
+# Maak nieuw dataframe met de waardes van de logistische regressie en de keuze die de mensen die bij deze waardes horen gemaakt hebben. 
+lr_man_voorspelling_minderjarig <- data.frame(lr_man_minderjarig$fitted.values, df_man$minderjarig)
+
+lr_man_voorspelling_minderjarig <- lr_man_voorspelling_minderjarig[order(lr_man_voorspelling_minderjarig$lr_man_minderjarig.fitted.values, decreasing = F),]
+
+lr_man_voorspelling_minderjarig$rank <- 1:nrow(lr_man_voorspelling_minderjarig)
+
+ggplot(data = lr_man_voorspelling_minderjarig, aes(x = rank, y = lr_man_minderjarig.fitted.values)) +
+  geom_point(aes(color=df_man$minderjarig, alpha = 0.9)) +
+  ggtitle("Eigen keuze abortus:") +
+  xlab("Index") +
+  ylab("Waarschijnlijkheid (tussen 0 en 1)")
+```
+
+lr_man_vrouw_vader
+
+```{r Visualizatie Lr vraag: Moet de vader zeggenschap hebben (mannen + vrouwen)}
+
+
+
+# Maak nieuw dataframe met de waardes van de logistische regressie en de keuze die de mensen die bij deze waardes horen gemaakt hebben. 
+lr_voorspelling_man_vrouw_vader <- data.frame(lr_man_vrouw_vader$fitted.values, df_logistische_regressie$vader)
+
+lr_voorspelling_man_vrouw_vader <- lr_voorspelling_man_vrouw_vader[order(lr_voorspelling_man_vrouw_vader$df_logistische_regressie.vader, decreasing = F),]
+
+lr_voorspelling_man_vrouw_vader$rank <- 1:nrow(lr_voorspelling_man_vrouw_vader)
+
+
+ggplot(data = lr_voorspelling_man_vrouw_vader, aes(x = rank, y = lr_voorspelling_man_vrouw_vader$lr_man_vrouw_vader.fitted.values)) +
+  geom_point(aes(color=df_logistische_regressie$geslacht ,size=df_logistische_regressie$Wat.is.uw.leeftijd., alpha = 0.9)) +
+  geom_ribbon(aes(ymin = (rank),
+    ymax = (rank), fill = rank), alpha = 0.2) +
+    geom_line(aes(colour = rank), size = 1) +
+  ggtitle("Eigen keuze abortus:") + 
+  xlab("Index") +
+  ylab("Waarschijnlijkheid (tussen 0 en 1)")
+```
+Zoals op de bovenstaande afbeelding zichtbaar is, is er minder goed een patroon in te zien wanneer alle predictor factoren (leeftijd, geslacht, opleidingsniveau en geloof) meegenomen worden. 
 
 
 
