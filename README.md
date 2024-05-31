@@ -1,5 +1,7 @@
 # Publieke opinie #
->Versie: 0
+>Versie: 1 <br>
+> Datum: 31-05-2024
+
 
 
 ## **Autheurs:** ##
@@ -8,11 +10,25 @@
 - Jasper Jonker <br>
 - Floris Menninga <br>
 </p>
+<hr>
 
+## **Inleiding:** ##
+Vragen over het abortus beleid zijn polariserende ethische kwesties. In ons onderzoek trachten we correlaties te vinden tussen verschillende variabelen zoals: leeftijd, geslacht, opleidingsniveau, geloof etc. en de ideologische verschillen in mening tussen deze mensen.
+
+Om de meningen van het publiek te peilen met betrekking tot hun ethische normen en waarden is er een enquete opgesteld die 16 vragen bevat die betrekking hebben op het abortusbeleid in Nederland
+<hr>
 
 ## **Onderzoeksvraag** ##
 Met behulp van R wordt de volgende onderzoeksvraag beantwoord: <br />
-Is er een verschil tussen de ethische meningen van mensen van andere leeftijden, geslachten en geloof?
+Is er een verschil tussen de ethiek gerelateerde meningen van mensen van andere leeftijden, geslachten, opleidingsniveau's en geloven?
+<hr>
+
+## **Contactgegevens** ##
+Voor vragen en supplementele informatie, neem contact op met 
+de autheurs: (Github gebruikersnamen)
+Iris: irisineke
+Jasper: JasperJonker1
+Floris: Fl-ris
 
 
 ## **Referenties:** ##
