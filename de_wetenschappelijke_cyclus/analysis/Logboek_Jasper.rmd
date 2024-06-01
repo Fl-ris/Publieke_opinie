@@ -223,6 +223,7 @@ De leeftijd van 25 is gekomen omdat de hersenen tussen de leeftijd van 20 en 25 
 #ze tegen zijn.
 
 # Chi-square test:
+#chi tesit over de leeftidijd onder de 25 over zeggen schap van de ouders
 chi_abortus_minderjarig_keuze_onder <- chisq.test(table_Onder_25,  correct = T)
 chi_abortus_minderjarig_keuze_onder
 
@@ -230,7 +231,7 @@ chi_abortus_minderjarig_keuze_onder
 Uit deze chi square test kunnen we concluderen dat er geen significant verschil is tussen de mening van de mensen, van verschilde geslacht en onder de leeftijd 25 over hun mening over of de ouders hun mening mee telt bij abortus. 
 Dat is ook wel logisch om te zien als je de figuur hier boven ziet.
 ```{r}
-
+#chi tesit over de leeftidijd boven de 25 over zeggen schap van de ouders
 chi_abortus_minderjarig_keuze_boven <- chisq.test(table_Boven_25, correct = T)
 chi_abortus_minderjarig_keuze_boven
 
@@ -246,7 +247,7 @@ Met de paper bezig geweest de introductie geschreven en met de powepoint bezig g
 De vorige Chi sqare test is fout gegaan, ik heb gekeken of onder de leefiftij van 25 een significant verschil zit en boven de leeftijd van 25 en dat was er beide niet,  hier onder is ie nu wel goed.
 
 ```{r}
-#hier wordt een table gemaakt van het percentages van de antwoorden op het geheel
+#heen chi test tussen de verschillende twee groepen.
 Boven_onder_Ouderzegschap <-table(Spiltsing_leeftijd$leeftijd_boven_onder_24, Spiltsing_leeftijd$ouderszegenschap)
 (chi_leeftijd_Ouderzegschap <-chisq.test(Boven_onder_Ouderzegschap))
 
@@ -254,6 +255,7 @@ Boven_onder_Ouderzegschap <-table(Spiltsing_leeftijd$leeftijd_boven_onder_24, Sp
 Hier uit is te zien dat er wel een significant verschil is tussen de verschillende leeftijd groepen. <br>
 Hier onder hebben we de de manier van de chis square test veranderd. 
 ```{r}
+#oefening 
 tabel_ofen <- table(abortus$geslacht, abortus$eigen_keuze_abortus)
 
 chisq.test(tabel_ofen)
@@ -261,42 +263,40 @@ chisq.test(tabel_ofen)
 ```
 Er wordt nu telkens een chisp.test te doen op elke vraag.
 ```{r}
+
 abortus_aangpast <- abortus %>%
     mutate(leeftijd_boven_onder_24 = ifelse(leeftijd > 25, "boven", "onder"))
 
 Boven_onder_kidskeuze <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Kindskeuze)
-chi_leeftijd_kids_keuze <-chisq.test(Boven_onder_kidskeuze)
+(chi_leeftijd_kids_eigen_keuze<-chisq.test(Boven_onder_kidskeuze))
 ```
 ```{r}
 Boven_onder_Wel_geen <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil.)
- chi_leeftijd_eigen_keuze <-chisq.test(Boven_onder_Wel_geen)
+ (chi_leeftijd_eigen_keuze_alegemeen <-chisq.test(Boven_onder_Wel_geen))
 
 ```
 ```{r}
 Boven_onder_Vader<-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.)
-chi_leeftijd_vader_keuze <-chisq.test(Boven_onder_Vader)
+(chi_leeftijd_vaderszeggenschap <-chisq.test(Boven_onder_Vader))
 ```
 ## 30 mei 
 Ik a bezig met meer Chi squar testen zo dat ik ze zo meteen in een grafriek kan stoppen om in 1 keer te kunnenlaten zien waar een sinficant verschil is 
-```{r}
-Boven_onder_Keuze_arbortus <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil.)
-chi_leeftijd_keuze_Abortus <-chisq.test(Boven_onder_Keuze_arbortus)
-```
+
 ```{r}
 Boven_onder_Keuze_Gevaar_moeder <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.er.voor.abortus.gekozen.mag.worden.als.de.gezondheid.van.de.vrouw.door.de.zwangerschap.in.gevaar.kan.komen.)
-chi_leeftijd_keuze_Gevaar_moeder <-chisq.test(Boven_onder_Keuze_Gevaar_moeder)
+(chi_leeftijd_keuze_Gevaar_moeder <-chisq.test(Boven_onder_Keuze_Gevaar_moeder))
 ```
 ```{r}
 Boven_onder_Keuze_verkachting <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.iemand.een.abortus.mag.als.de.zwangerschap.een.gevolg.is.van.verkrachting.)
-chi_leeftijd_keuze_verkrachting <-chisq.test(Boven_onder_Keuze_verkachting)
+(chi_leeftijd_keuze_verkrachting <-chisq.test(Boven_onder_Keuze_verkachting))
 ```
 ```{r}
 Boven_onder_Keuze_zonder_reden <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$De.vrouw.het.kind.niet.wil.houden.om.niet.gespecificeerde.redenen)
-chi_leeftijd_keuze_zonder_reden <-chisq.test(Boven_onder_Keuze_zonder_reden)
+(chi_leeftijd_keuze_zonder_reden <-chisq.test(Boven_onder_Keuze_zonder_reden))
 ```
 ```{r}
 Boven_onder_Keuze_Echo <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Moet.het.wettelijk.verplicht.worden.voor.vrouwen.die.een.abortus.willen.om.een.echo.van.de.foetus.te.zien.voordat.een.abortus.toegestaan.is.)
-chi_leeftijd_keuze_echo <-chisq.test(Boven_onder_Keuze_Echo)
+(chi_leeftijd_keuze_echo <-chisq.test(Boven_onder_Keuze_Echo))
 ```
 ```{r}
 Boven_onder_Keuze_bedenktijd <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.de.wettelijke.bedenktijd.moet.terugkomen.)
@@ -316,8 +316,18 @@ chi_leeftijd_keuze_vader
 
 Hier onder word de plot gemaakt
 ```{r}
-chi_test_vector_leeftijd <- c(chi_leeftijd_keuze_Abortus[3],chi_leeftijd_keuze_verkrachting[3],chi_leeftijd_kids_keuze[3],chi_leeftijd_Ouderzegschap[3],chi_leeftijd_keuze_echo[3],chi_leeftijd_keuze_bedenktijd[3],chi_leeftijd_keuze_adoptie[3],chi_leeftijd_vader_keuze )
-chi_test_vector_leeftijd
+chi_test_vector_leeftijd <- c(chi_leeftijd_eigen_keuze_alegemeen[3],chi_leeftijd_keuze_verkrachting[3],chi_leeftijd_kids_eigen_keuze[3],chi_leeftijd_Ouderzegschap[3],chi_leeftijd_keuze_echo[3],chi_leeftijd_keuze_bedenktijd[3],chi_leeftijd_keuze_adoptie[3],chi_leeftijd_vaderszeggenschap )
+df_chi_leeftijd <- (data.frame((chi_test_vector_leeftijd)) %>% rename(
+  `Abortus toestaan` = p.value,
+  `Gevolg van verkrachtign` = p.value.1,
+  `Minderjarig kind` = p.value.2,
+  `Zeggenschap ouders` = p.value.3,
+  `Echo bekijken` = p.value.4,
+  `Bedenktijd invoeren` = p.value.5,
+  `Adoptie als alternatief` = p.value.6,
+  `Zeggenschap vader` = p.value.7
+  ))
+df_chi_leeftijd
 ```
 
 
