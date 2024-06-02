@@ -11,7 +11,7 @@ Dit is het logboek van de volgende onder zoeksvraag:
 
 *Is er een verschil tussen de ethische meningen van mensen van andere leeftijden, geslachten en geloof?* <br>
 Dit gaan we doen met behulp van een enqute en een  verwerking in R studio. <br>
-De enquête wordt  verspreid over meerdere mensen van verschillende leefijdsgroepen. Hierdoor hopen we meerdere leeftijdsgroepen te kunnen interviewen. <br>
+De enquête wordt  verspreid over meerdere mensen van verschillende leeftijdsgroepen. Hierdoor hopen we meerdere leeftijdsgroepen te kunnen interviewen. <br>
 De vragen waar we voor hebben gekozen zijn ja en nee vragen zonder toelichting van de invuller in te zetten. Want dat is moeilijker te verwerken dan bijvoorbeeld " wat is uw gevoel hier bij?". Dan krijg je meer niet echt duidelijke data. <br>
 We hebben wel op het eind een paar stellingen met waardes als  zeer oneens tot zeer eens. <br>
 We hebben er voor gekozen om in microsoft forms te doen omdat je dan ook een csv file van kan maken. <br>
@@ -19,24 +19,24 @@ We hebben er voor gekozen om in microsoft forms te doen omdat je dan ook een csv
 # Logboek
 ## 22 april tot 26 april
 In deze periode hebben we vooral gekeken naar wat we wouden onderzoeken en wat. <br>
-We hebben uiteindelijk gekozen voor arbortus. <br>
-Omdat dit een etische kwetsie is, maar niet zo zwaar ligt als bijvoorbeeld vluchtelingen.<br>
+We hebben uiteindelijk gekozen voor abortus. <br>
+Omdat dit een etnische kwestie is, maar niet zo zwaar ligt als bijvoorbeeld vluchtelingen.<br>
 Ook is het al vaak in het nieuws geweest.<br>
 
 ## 27 april tot 6 mei <br>
-In deze periode hebben we de informatie gezocht over het onderwerp en maakte we ookeen enqute die we hebben laten zien aan andere personen. <br>
-Het laaste deden we door onafhanelijke persoen zodat we fouten er uit konden krijgen. 
+In deze periode hebben we de informatie gezocht over het onderwerp en maakte we ook een enquête die we hebben laten zien aan andere personen. <br>
+Het laatste deden we door onafhankelijke persoon zodat we fouten er uit konden krijgen. 
 Fouten zoals een te sturende vraag of een onduidelijke vraag. <br>
-De verbeter punten waren: <br>
+En wat we achterkwamen was bijvoorbeeld over de bedenk tijd die veranderd is. Dus wel intersesaant om te kijken wat de menig er over is <br>
 
 ## 7 mei
-Begonnen we met de enqute na alle goedkeureingen.
+Begonnen we met de enquête na alle goedkeuringen.
 
 ## 8 mei 
 Meerdere mensen gevraagd om het in te vullen.
 
 ## 9 mei tot ......
-enqute open laten staan en allemaal meet waarden binnen krijgen en bedeken waar het nog meer hebben kunnen uit delen
+enquête open laten staan en allemaal meet waarden binnen krijgen en bedenken waar het nog meer hebben kunnen uit delen
 
 ## 14 mei
 Ik moet laten zien wat de gemiddelde leeftijd is van onze meetwaarde. 
@@ -349,5 +349,5 @@ ggplot(data = df_chi_leeftijd, mapping = aes(x = name , y = value)) +
 ## 1 Juni
 Na lang gezeur is het gelukt om een figuur te maken om te kijken een significant te laten zien. 
 In de grafiek lijkt te zijn dat Zeggenschap ouders er niet in staat. <br>
-Dit is echter niet waar want het getal is te klein om te zien namelijk 0.003084398. Daar zit dis een groot verschil in. Dit is ook wel logisch omdat de ouders vinden dat kinderen niet kunnen kiezen en de kinderen vinden dat de ouders er geen mennig over mogen hebben. 
+Dit is echter niet waar want het getal is te klein om te zien namelijk 0.003084398. Daar zit dis een groot verschil in. Dit is ook wel logisch omdat de ouders vinden dat kinderen niet kunnen kiezen en de kinderen vinden dat de ouders er geen mening over mogen hebben. 
 
