@@ -118,18 +118,18 @@ De makers van deze enquete hebben hem naar klasgenoten, familieleden en vrienden
 De data verwerken:
 Huidige working directory: `r getwd()`
 
-```{r }
+```{r .csv inlezen }
 abortus <- read.csv("abortus_dataset.csv",
                     na.strings = "NA")
 head(abortus)
 ```
 
-```{r}
+```{r summary data}
 summary(abortus)
 #str(abortus)
 ```
 
-```{r echo=T}
+```{r Leeftijdsverdeling, echo=T }
 
 df_test <- df %>% select(geslacht, Wat.is.uw.leeftijd.)
 
@@ -183,7 +183,7 @@ abortus$afkomst <- factor(x = abortus$In.welke.provincie.heeft.u.het.grootste.de
 
 abortus$onderwijsniveau <- factor(x =
                                 abortus$Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond.,
-                                  levels = c("Geen diploma", "Middelbare school", "MBO", "HBO", "Universiteit","Overige"),
+                                  levels = c("Geen diploma ", "Middelbare school", "MBO", "HBO", "Universiteit","Overige"),
                                   labels = c("Geen diploma", "Middelbare school", "MBO", "HBO", "Universiteit","Overige"))
 
 
@@ -284,12 +284,12 @@ df <- data.frame(abortus)
 
 
 
-```{r}
+```{r Leeftijdsverdeling geslacht}
 df_test <- df %>% select(geslacht, Wat.is.uw.leeftijd.)
 
 # test
 ggplot(df_leeftijd, aes(x= df_test$Wat.is.uw.leeftijd., y = df_test$geslacht)) +
-  geom_boxplot(fill = "gold", alpha = 0.3, varwidth = T) +
+  geom_boxplot(fill = "blue", alpha = 0.3, varwidth = T) +
   xlab("Leeftijd (Jaren)") +
   ylab("Geslacht") +
   theme_minimal()
@@ -301,13 +301,13 @@ Voor de bovenstaande grafiek is de alpha=03 waarde gekozen voor asthestische doe
 
 
 ### Overzicht: abortus toestaan of niet:
-```{r}
+```{r tabel ja/nee abortus}
 table(abortus$eigen_keuze_abortus) # voor de vraag: Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?
 
 ```
 
 
-```{r echo=TRUE}
+```{r Grafiek leeftijd, echo=TRUE}
 
 # Grafiek met de verschillende geloven en de leeftijdverdeling die er bij hoort. 
 ggplot(df, aes(y=abortus$geloof,
@@ -320,7 +320,7 @@ ggplot(df, aes(y=abortus$geloof,
 Verdeling van de leeftijd van de mensen die de enquete hebben ingevuld en hun ideologie. 
 
 
-```{r}
+```{r Grafiek leeftijd 2,}
 
 # Grafiek met leeftijden uit verschillende provincies.
 ggplot(df, aes(y=abortus$afkomst,
@@ -336,7 +336,7 @@ De verdeling van de leeftijden en de provincies waar deze mensen vandaan komen w
 Niet elke provincie heeft genoeg datapunten om een boxplot van te maken. 
 
 
-```{r}
+```{r invultijd berekening}
 
 # De invultijd per leeftijd:
 
@@ -356,8 +356,11 @@ for (x in seq_along(abortus$Begintijd)) { # Loop door de begintijden heen..
   tijd_vector[x] <- as.numeric((eind_tijd[x] - begin_tijd[x])) # Voeg toe aan tijdsvector: het verschil tussen eind_tijd en begin_tijd om totale invul tijd te krijgen.
 }
 
-```
+# Dit kan veel makkelijker:
+tijd_vector <- eind_tijd - begin_tijd
 
+```
+De invultijd is niet belangrijk of relevant voor de onderzoeksvraag maar als test uitgevoerd om meer over R te leren. 
 
 Op 11 mei 2024 grafiek gemaakt van leeftijd / tijd nodig om de enquete in te vullen. 
 12-05-2024: Met facet_wrap() onderscheid gemaakt tussen mannen en vrouwen. (twee plots)
@@ -384,7 +387,7 @@ Bovenstaande grafiek laat de relatie tussen leeftijd en tijdnodig om het formuli
 Dit wordt voor mannen en vrouwen gedaan. (links mannen, midden vrouwen en rechts ongespecificeerd.)
 Er was maar een persoon dat ongespecificeerd opgav dus kan daar geen boxplot van gemaakt worden maar wordt dit weergeven met een enkele stip. (links onder in de grafiek)
 
-```{r}
+```{r dataframe invultijd}
 
 data_frame_invultijd <- data.frame(tijd_vector, abortus$geslacht, abortus$Wat.is.uw.leeftijd.)
 
@@ -414,9 +417,9 @@ Gemiddeld doen de "Geslacht niet opgegeven mensen" er `r mean(invultijd_anders$t
 Dit ligt tussen de `r quantile(invultijd_anders$tijd_vector, 0.25)` (25%) en `r quantile(invultijd_anders$tijd_vector, 0.75)` (75%)
 
 
-# Circulair Packing test 1: 
+# Circular Packing test 1: 
 Test met data van het internet om het hierachrische data format beter te begrijpen.
-```{r eval=FALSE}
+```{r circular packing test, eval=FALSE}
 
 
 
@@ -462,14 +465,14 @@ ggraph(graph, 'circlepack', weight = size) +
   coord_fixed()
 
 ```
+
 15-05-2024:
 Om te achterhalen of de leeftijden van de mensen die de enquete ingevuld hebben normaal verdeeld zijn 
 is de Shapiro Wilk test gebruikt. 
 
 ### Shapiro Wilk test:
 Deze test wordt uitgevoerd om vast te stellen of leeftijden van de mensen die de enquete ingevuld hebben normaal verdeeld is.
-```{r}
-
+```{r Shapiro test}
 
 shapiro_test <- shapiro.test(abortus$Wat.is.uw.leeftijd.)
 shapiro_test
@@ -481,51 +484,35 @@ Omdat de data niet normaal verdeeld is zal een niet-parametrische analyse nodig 
 Voorbeelden van deze non parametrische zijn: de Kruskal-Wallis test en de Chi-square en de two way z test.
 
 # Power analyse: <br>
-
-```{r}
+Dit was een test, de poweranalyse wordt in chunk .. uitgevoerd.
+```{r test 1 power analyse }
 
 #pwr.t.test(n = n, d = d, sig.level = alpha, type = "one.sample", alternative = "less")
 
 ```
-### Pie chart: <br>
- Niet gebruiken, alleen om te proberen...
-```{r}
-
-# Create Data
-data <- data.frame(
-  group=abortus$afkomst,
-  value=abortus$afkomst
-)
-
-# Basic piechart
-ggplot(data, aes(x="", y=value, fill=group)) +
-  geom_bar(stat="identity", width=1) +
-  coord_polar("y", start=0)
 
 
-
-```
-
-```{r eval=T}
+```{r test 2}
 
 proportie_man_vader <- df %>% select(vader) %>% filter(df$geslacht == "Man")
 proportie_man_vader_01 <- ifelse(proportie_man_vader == "Ja" , 0,1)
 
 hi <- prop.table(proportie_man_vader_01)
 
-proportie_vrouw_vader <- 
+#proportie_vrouw_vader <- 
 
 ggplot(df, aes( y = vader)) +
   geom_bar(aes()) +
   labs(color = "test") +
   #scale_color_manual(name = "Cylinders") 
 #  scale_fill_discrete(name = "test") +
-  ggtitle("Moet de vader zeggenschap hebben over \nde beslissing om een abortus te induceren? ") 
+  ggtitle("Moet de vader zeggenschap hebben over \nde beslissing om een abortus te induceren? ") +
+  theme_minimal()
 
   
 ```
-
-```{r}
+Omdat er niet even veel mannen als vrouwen zijn is het beter om de stemmen (ja/nee) in proporties/percentages te laten zien i.p.v. absolute aantallen. Dit moet later nog gedaan worden..
+```{r visualisatie vraag: zeggenschap vader}
 
 
 ggplot(df, aes(x= Wat.is.uw.leeftijd., y = onderwijsniveau)) +
@@ -538,7 +525,7 @@ ggplot(df, aes(x= Wat.is.uw.leeftijd., y = onderwijsniveau)) +
   ggtitle("Moet de vader zeggenschap hebben over \nde beslissing om een abortus te induceren?")
 
 ```
-
+Het opleidingsniveau kan geen ge-orderde factor zijn omdat "Middelbare school" kan leiden tot meerdere andere niveaus. Ook kan "Geen diploma" betekenen dat het persoon nog te jong is om deze te hebben maar later wel in een van de andere categorieën zal horen. 
 
 
 15-05-2024:
@@ -560,7 +547,7 @@ ggplot(data = df, mapping = aes(x = (ID), y = als_nee)) +
 ```{r}
 # Voor de vraag: Vindt u dat er voor abortusgekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen? 
 library(ggridges)
-ggplot(data = df, mapping = aes(x = c(1:109), y = levensgevaar_vrouw_o, fill = geslacht)) +
+ggplot(data = df, mapping = aes(x = c(1:114), y = levensgevaar_vrouw_o, fill = geslacht)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = (" "))) +
   ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
@@ -587,7 +574,7 @@ ggplot(data = df, mapping = aes(x = (ID/100), y = veroorzaakt_o, fill = geslacht
 #ggplot(data = df, mapping = aes(x = ))
 
 
-ggplot(data = df, mapping = aes(x = (c(1:109)), y = levensgevaar_vrouw_o)) + # geeft procent weer. 
+ggplot(data = df, mapping = aes(x = (c(1:114)), y = levensgevaar_vrouw_o)) + # geeft procent weer. 
   geom_bar(stat = "identity", aes(fill = Wat.is.uw.leeftijd.)) +
   facet_wrap(~geslacht) +
   ggtitle("Mag abortus als het leven van de vrouw in gevaar komt tijdens\nde zwangerschap?") +
@@ -746,7 +733,7 @@ ggraph(mygraph, layout = 'circlepack') +
 17-05-2024:
 Begin gemaakt met t.test en power test
 
-```{r}
+```{r Power test}
 library(dplyr)
 library(pwr)
 tabel <- table(abortus$geslacht ,abortus$eigen_keuze_abortus) # tabel met mannen en vrouwen en hun keuze of abortus toegestaan moet worden of niet. 
@@ -881,6 +868,8 @@ H0 is verworpen en H1 is aangenomen omdat de p-waarde `"r" ja_nee_abortus$p.valu
 # Lijst van 1 en 0 maken voor Ja en Nee. 
 #abortus_als_gevolg_van_01 <- (ifelse(abortus$Vindt.u.dat.iemand.een.abortus.mag.als.de.zwangerschap.een.gevolg.is.van.verkrachting.=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
 
+
+
 abortus_als_gevolg_van_01 <- table(df$geslacht, df$Vindt.u.dat.iemand.een.abortus.mag.als.de.zwangerschap.een.gevolg.is.van.verkrachting.)
 
 # Chi-square test:
@@ -989,8 +978,9 @@ Daarna wordt de data veranderd in "tidy data" (een meting per rij en variablen a
 ```{r Visualizatie van P-waarden van Chi-square test}
 
 ggplot(data = df_chi_geslacht, mapping = aes(x = name , y = value)) +
-  geom_bar(stat = "identity") +
+  geom_bar(stat = "identity",, fill = "blue", alpha = 0.5) +
   geom_hline(yintercept=0.05, linetype="dashed", color = "red") +
+  geom_label_repel(position = position_nudge_repel(y = -0.07),aes(label = round(value,digits = 3)) ) +
   ylab("P-waarde Chi-square test:") +
   xlab(" ") +
   theme_minimal() +
@@ -1056,7 +1046,7 @@ Op de onderstaande grafiek wordt het verband tussen leeftijd en keuze bij de vra
 
 ```{r}
 
-ggplot(data = df, mapping = aes(x = Wat.is.uw.leeftijd., y = c(1:109))) +
+ggplot(data = df, mapping = aes(x = Wat.is.uw.leeftijd., y = ID)) +
   geom_point(aes(color = eigen_keuze_abortus, size = Wat.is.uw.leeftijd.)) +
   facet_wrap(~geslacht) +
   xlab("Leeftijd (Jaren)") +
@@ -1150,7 +1140,7 @@ Mogenlijk komt dit omdat er niet genoeg metingen zijn voor elk opleidingsniveau.
 
 ```{r Logistische regressie (man en vrouw)}
 
-# Logistische regressie met leeftijd en geslacht als predictors
+# Logistische regressie met leeftijd, geloof, opleidingsniveau en geslacht als predictors
 logistische_regressie <- glm(eigen_keuze_abortus ~ leeftijd_onder_30 + geslacht + gelovig_01 + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond.,  data = df_logistische_regressie, family = binomial)
 
 
@@ -1175,18 +1165,37 @@ lr_man_vrouw_gezondheid_vrouw <- glm(df_logistische_regressie$gezondheid_vrouw ~
 lr_man_vrouw_gezondheid_ouders <- glm(df_logistische_regressie$ouders ~ leeftijd_onder_30 + geslacht + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond. + gelovig_01, data = df_logistische_regressie, family = binomial)
 
 
-
-
-# summary(lr_man_vrouw_zeggenschap_minderjarig) # geloof significant
+#summary(lr_man_vrouw_zeggenschap_minderjarig) # geloof significant
 #summary(lr_man_vrouw_vader) # leeftijd en geslacht significant, geloof bijna
-# summary(logistische_regressie) # niets significant
-# summary(lr_man_vrouw_echo) # geloof significant
+#summary(logistische_regressie) # niets significant
+#summary(lr_man_vrouw_echo) # geloof significant
 #summary(lr_man_vrouw_bedenktijd) # geslacht significant
 #summary(lr_man_vrouw_gezondheid_vrouw) # niets significant
 #summary(lr_man_vrouw_gezondheid_ouders) # Niets significant
 ```
 Voor de vraag: Moet een minderjarig kind de keuze hebben om een abortus te nemen? De enige significante factor is geloof, met een p-waarde van 0.00308. 
 
+
+## Textuele resulaten logistische regressie:
+
+```{r lr zeggenschap vader}
+summary(lr_man_vrouw_vader) # leeftijd en geslacht significant, geloof bijna
+```
+Uit de bovenstaande logistische regressie blijkt dat leeftijd en geslacht significant bijdragende factoren zijn, voor deze analyse is de leeftijd van de deelnemers in twee categorieën verdeeld: boven en onder de 30, wanneer dit niet gedaan wordt is de coefficient van leeftijd nog steeds onder de 0.05 maar wel wat hoger. Geloof was net niet onder de 0.05 met 0.0503. 
+
+```{r lr zeggenschap minderjarig}
+summary(lr_man_vrouw_zeggenschap_minderjarig) # geloof significant
+```
+
+```{r lr bedenktijd}
+summary(lr_man_vrouw_bedenktijd) # geslacht significant
+```
+
+```{r lr echo}
+
+summary(lr_man_vrouw_echo) # Geloof significant
+
+```
 
 
 ``` {r Logistische regressie (man)}
@@ -1203,10 +1212,13 @@ lr_man_minderjarig <- glm(minderjarig ~ Wat.is.uw.leeftijd. + gelovig_01 + Wat.i
 
 # Logistische regressie voor de vraag: Moet de biologische vader zeggenschap hebben over de abortus
 lr_man_vader <- glm(vader ~ Wat.is.uw.leeftijd. + gelovig_01 + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., data = df_man, family = binomial)
-summary(lr_man_eigen_keuze_abortus)
-summary(lr_man_vader)
+#summary(lr_man_eigen_keuze_abortus)
+#summary(lr_man_vader)
+
 
 ```
+De bovenstaande twee chunks worden niet meer gebruikt omdat de modellen met beide geslachten er in tegelijk ook werken.
+
 
 De odds ratio wordt gebruikt om te laten zien hoeveel invloed de predictors individueel hebben wanneer de anderen niet veranderen. 
 
@@ -1221,17 +1233,24 @@ coefficienten_van_lr_man_eigen_keuze_abortus <- coef(lr_man_eigen_keuze_abortus)
 # Verander de coefficienten naar procentuele verandering:
 odds_ratio_lr_man_eigen_keuze_abortus <- ( 1 - (exp(coefficienten_van_lr_man_eigen_keuze_abortus))) * 100
 
+
+list(odds_ratio_lr_man_eigen_keuze_abortus)
+odds_ratio_lr_man_eigen_keuze_abortus <- data.frame(odds_ratio_lr_man_eigen_keuze_abortus)# %>% rename(                                                      aa = Wat.is.uw.leeftijd.
+#)
+
 odds_ratio_lr_man_eigen_keuze_abortus
+
+
 
 ```
 Interpretatie van deze odds ratio's: Het percentage geeft aan dat wanneer alle andere variabelen het zelfde zijn, de waarschijnlijkheid dat 
 er een andere uitkoms gekozen wordt (bijvoorbeeld een ander antwoord op de vraag of abortus toegestaan zou moeten zijn). Een positief percentage geeft aan dat het 
 
 
-``` {r}
+``` {r interpolatie test logistische regressie}
 
 
-# Voorspel test met de volgende test data:
+# Voorspel test met de volgende test data: (van twee personen die niet in de dataset zitten)
 newdata1 <- data.frame(geslacht = c("Man", "Vrouw"), Wat.is.uw.leeftijd. = c(20,22), keuze = c("Wel abortus toestaan","Wel abortus toestaan"))
 
 # Voorspelling van de bovenstaande twee test observaties aan de hand van de gemaakte logistische regressie:
@@ -1269,6 +1288,7 @@ lr_voorspelling_vader$rank <- 1:nrow(lr_voorspelling_vader)
 
 ggplot(data = lr_voorspelling_vader, aes(x = rank, y = lr_man_vader.fitted.values)) +
   geom_point(aes(color=df_man$vader, size = df_man$Wat.is.uw.leeftijd., alpha = 0.8)) +
+  labs(size = "Leeftijd", color = "Antwoord op vraag") +
   ggtitle("Eigen keuze abortus:") +
   xlab("Index") +
   ylab("Waarschijnlijkheid (tussen 0 en 1)")
@@ -1330,10 +1350,14 @@ adoptie_plot_data <- data.frame(x1)
 adoptie_plot_data$fraction = adoptie_plot_data$Freq / sum(adoptie_plot_data$Freq)
 adoptie_plot_data$percentage = round(adoptie_plot_data$fraction *100, digits =1)
 
+
+
+
+
 #adoptie_plot <- 
 ggplot(data = df, mapping = aes(x = adoptie_plot_data, y = adoptie, fill = geslacht)) +
   geom_bar(stat = "identity") +
-  geom_text(aes(label = (" "))) +
+  #geom_text(aes(label = (" "))) +
  # ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
   xlab("Percentage mensen") +
   ylab(" ")
@@ -1341,21 +1365,21 @@ ggplot(data = df, mapping = aes(x = adoptie_plot_data, y = adoptie, fill = gesla
 
 adoptie_plot
 
-vader_plot <- ggplot(data = df, mapping = aes(x = c(1:109), y = vader, fill = geslacht)) +
+vader_plot <- ggplot(data = df, mapping = aes(x = c(1:114), y = vader, fill = geslacht)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = (" "))) +
  # ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
   xlab("Percentage mensen") + # nog aapassen naar procent.
   ylab(" ")
 
-echo_plot <- ggplot(data = df, mapping = aes(x = c(1:109), y = echo, fill = geslacht)) +
+echo_plot <- ggplot(data = df, mapping = aes(x = c(1:114), y = echo, fill = geslacht)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = (" "))) +
 #  ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
   xlab("Percentage mensen") + # nog aapassen naar procent.
   ylab(" ")
 
-bedenktijd_plot <- ggplot(data = df, mapping = aes(x = c(1:109), y = bedenktijd, fill = geslacht)) +
+bedenktijd_plot <- ggplot(data = df, mapping = aes(x = c(1:114), y = bedenktijd, fill = geslacht)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = (" "))) +
  # ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
@@ -1364,4 +1388,26 @@ bedenktijd_plot <- ggplot(data = df, mapping = aes(x = c(1:109), y = bedenktijd,
 
 #ggarrange(gezondheid_plot, vader_plot, echo_plot, bedenktijd_plot)
 ```
+```{r}
+# create a dataset
+specie <- c(rep("sorgho" , 3) , rep("poacee" , 3) , rep("banana" , 3) , rep("triticum" , 3) )
+
+keuzes <- df %>% select(geslacht, Wat.is.uw.leeftijd., levensgevaar_vrouw_o, geestelijke_handicap_o, levensbedreigende_ziekte_o, veroorzaakt_o, veroorzaakt_o, niet_gespecificeerd_o, financiele_beperkingen) %>% pivot_longer()
+keuze <- df %>% select (rep(levensgevaar_vrouw_o),)  
+
+
+condition <- rep(c("normal" , "stress" , "Nitrogen") , 4)
+value <- abs(rnorm(12 , 0 , 15))
+data <- data.frame(specie,condition,value)
+ 
+keuzes <- df %>% select(geslacht, Wat.is.uw.leeftijd.) %>% pivot_wider(colls = c(1:2))
+keuzes
+
+
+
+# Grouped
+ggplot(data, aes(fill=condition, y=value, x=specie)) + 
+    geom_bar(position="dodge", stat="identity")
+```
+
 
