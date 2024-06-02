@@ -3,8 +3,13 @@ title: "Logboek_Jasper"
 author: "Jasper"
 date: "2024-05-13"
 output:
+<<<<<<< HEAD
   html_document: default
   pdf_document: default
+=======
+  pdf_document: default
+  html_document: default
+>>>>>>> 5a8975aef22b59a08a712fde91fb191b5119aae5
 ---
 # inleiding
 Dit is het logboek van de volgende onder zoeksvraag: 
@@ -36,6 +41,7 @@ Begonnen we met de enquête na alle goedkeuringen.
 Meerdere mensen gevraagd om het in te vullen.
 
 ## 9 mei tot ......
+<<<<<<< HEAD
 enquête open laten staan en allemaal meet waarden binnen krijgen en bedenken waar het nog meer hebben kunnen uit delen
 
 ## 14 mei
@@ -55,6 +61,18 @@ library(ggrepel)
 library("pwr")
 ```
 Hier worden wat namen veranderd want anders krijg je namen als *Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil* en dat is veel te lang.
+=======
+enqute open laten staan en allemaal meet waarden binnen krijgen en bedeken waar het nog meer hebben kunnen uit delen
+
+## 14 mei
+Ik moet laten zien wat de gemiddelde leeftijd is van onze meetwaarde. 
+```{r}
+library(tidyverse)
+library(dplyr)
+
+```
+
+>>>>>>> 5a8975aef22b59a08a712fde91fb191b5119aae5
 ```{r}
 
 abortus <- read.csv("abortus_dataset.csv",
@@ -75,8 +93,13 @@ abortus$geloof <- factor(x = abortus$Wat.is.uw.religieuze.overtuiging..,
 
 
 abortus$geslacht <- factor(x = abortus$Wat.is.uw.geslacht..,
+<<<<<<< HEAD
                            levels = c("Man", "Vrouw", "Wil ik liever niet melden"),
                            labels = c("Man", "Vrouw", "Wil ik liever niet melden"))
+=======
+                           levels = c("Man", "Vrouw"),
+                           labels = c("Man", "Vrouw"))
+>>>>>>> 5a8975aef22b59a08a712fde91fb191b5119aae5
 # Voor de vraag: Wat is uw religieuze overtuiging?
 
 abortus$afkomst <- factor(x = abortus$In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht., 
@@ -110,19 +133,32 @@ leeftijd <- data.frame(abortus$leeftijd)
 ggplot(leeftijd, aes(x=abortus$leeftijd)) + geom_histogram(aes(y =after_stat(density)), color = "black")+geom_density(alpha = .2, fill= "red")
 ```
 
+<<<<<<< HEAD
 Hier zie dat het niet helemaal normaal verdeelt is, dit komt omdat het eerst is verspreid onder de mede studenten en aan hun ouders.
 Hierdoor krijg je in sommige gebieden meer invullingen. In de grafriek zie je ook dat het ook terug komen.
+=======
+/n
+Hier zie dat het niet helemaal normaal verdeelt is maar kunnen wel een test doen
+>>>>>>> 5a8975aef22b59a08a712fde91fb191b5119aae5
 
 ```{r}
 shapiro.test(abortus$leeftijd)
 
 ```
 
+<<<<<<< HEAD
 Hier zie zeker dat de leeftijd van onze invuller niet normaal verdeelt is.
 
 
 ## 15 mei.
 Ik laat zien waar onze invuller vandaan komt in een donut chart.
+=======
+Hier zie zeker dat de leeftijd van onze invullers niet normaal verdeelt is.
+
+
+## 15 mei.
+Ik laat zien waar onze invullers vandaan komen in een donut chart.
+>>>>>>> 5a8975aef22b59a08a712fde91fb191b5119aae5
 
 ```{r}
 
@@ -151,6 +187,7 @@ ggplot(renamed_city_count, aes(ymax=ymax, ymin=ymin, xmax=13, xmin=3, fill=Provi
      coord_polar(theta="y") + 
      xlim(c(-13, 13)) 
 ```
+<<<<<<< HEAD
 <br>
 Hier kan je zien dat de meeste mensen uit de noordelijke regio komen. Dus uit Drenthe, Friesland en Groningen 
 Dit is logisch omdat we de enqute hebben uit gezet in de noordelijke provincies.
@@ -162,17 +199,34 @@ ggplot(leeftijd, aes(x = abortus$leeftijd)) + geom_boxplot()
 <br> 
 ## 16 mei
 Ik ga laten zien het verschil in mening over "Vindt u dat de ouders zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen?" tussen jongeren (21 jaar en jonger want deze personen zijn officieel nog niet volwassen is) en ouderen (22 jaar en ouder)
+=======
+
+Hier kan je zien dat de meeste mensen uit de noordelijke regios komen. \n
+Dus uit Drenthe, Friesland en Groningen \n
+
+Ook een boxplot gemaakt over de verdeling van de leeftijd
+```{r}
+ggplot(leeftijd, aes(x = abortus$leeftijd)) + geom_boxplot()
+```
+## 16 mei
+Ik ga laten zien het verschil in mening over "Vindt u dat de ouders zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen?" tussen jongeren (21 jaar en jonger want deze personen zijn oficeel nog niet volwassen is) en ouderen (22 jaar en ouder)
+>>>>>>> 5a8975aef22b59a08a712fde91fb191b5119aae5
 ```{r}
 
 abortus %>%
     select(leeftijd, ouderszegenschap) %>%
+<<<<<<< HEAD
     mutate(leeftijd_boven_onder_21 = ifelse(leeftijd > 21, "boven", "onder")) %>%
+=======
+    mutate(leeftijd_boven_onder_21 = ifelse(leeftijd >= 21, "boven", "onder")) %>%
+>>>>>>> 5a8975aef22b59a08a712fde91fb191b5119aae5
     ggplot(mapping = aes(x = ouderszegenschap, fill = leeftijd_boven_onder_21)) +
     geom_bar(position = "dodge")
 
 
 ```
 
+<<<<<<< HEAD
 Dit is geen goeie plot om te laten zien wat de verschillen zijn in antwoorden. Hier laat je nu het aantal keer zien dat het is ingevuld. Hierdoor lijkt het dat ja heel vaak word in gevuld terwijl het gewoon minder vaak is ingevuld door iemand onder de leeftijd van 21 jaar <br>
 Ik ga nog bedenken wat een goeie manier is om het te laten zijn en een goei vergelijking te kunnen maken.
 
@@ -235,10 +289,28 @@ Dat is ook wel logisch om te zien als je de figuur hier boven ziet.
 chi_abortus_minderjarig_keuze_boven <- chisq.test(table_Boven_25, correct = T)
 chi_abortus_minderjarig_keuze_boven
 
+=======
+
+
+## 21 Mei
+Ik ga even met iets anders bezig het lukt niet echt.  
+De keuze dat we hebben gemaakt voor de leeftijd van 21 jaar want over de helle wereld is 21 jaar de laaste leeftijd van de wereld. We hadden ook kunnen kiezen voor 18 jaar. Want in Nederland is dat de grens. Maar als je kijkt naar Amerika is er een onderzoek geweest naar de conectie met de legale leeftijd van drinken en auto ongelukken. Hier is naar voren gekomen dat hoe lager de leeftijd hoe meer auto ongelukken er zijn. Hier kan je beivorbeeld uit cloncluderen dat deze mensen nog niet verantwoordelijk genoeg zijn om met alchol om te gaan,
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6876521/
+## 22 mei 
+Ik ga de tabel van 16 mei om zetten naar precentage. zo dat het wel klopt en niet op aantallen gaat.
+
+```{r}
+abortus %>%
+    select(leeftijd, ouderszegenschap) %>%
+    mutate(leeftijd_boven_onder_21 = ifelse(leeftijd >= 21, "boven", "onder")) %>%
+    ggplot(mapping = aes(x = ouderszegenschap, fill = leeftijd_boven_onder_21)) +
+    geom_bar(position = "dodge")
+>>>>>>> 5a8975aef22b59a08a712fde91fb191b5119aae5
 ```
 
 
 
+<<<<<<< HEAD
 
 ## 28 mei 
 Met de paper bezig geweest de introductie geschreven en met de powepoint bezig geweest
@@ -351,3 +423,5 @@ Na lang gezeur is het gelukt om een figuur te maken om te kijken een significant
 In de grafiek lijkt te zijn dat Zeggenschap ouders er niet in staat. <br>
 Dit is echter niet waar want het getal is te klein om te zien namelijk 0.003084398. Daar zit dis een groot verschil in. Dit is ook wel logisch omdat de ouders vinden dat kinderen niet kunnen kiezen en de kinderen vinden dat de ouders er geen mening over mogen hebben. 
 
+=======
+>>>>>>> 5a8975aef22b59a08a712fde91fb191b5119aae5

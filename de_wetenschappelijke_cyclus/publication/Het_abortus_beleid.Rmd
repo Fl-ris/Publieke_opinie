@@ -1,0 +1,318 @@
+---
+title: Invloed van leeftijd, geslacht en opleidingsniveau op abortus gerelateerde ideologische verschillen in mening.  # Geef je paper een naam die prikkelt, informatief is, en zo kort mogelijk
+
+author: |
+  | Iris Ineke $^1$, Jasper Jonker $^1$, Floris Menninga $^1$
+  | $^1$Hanzehogeschool
+
+lang: nl # dit zorgt er voor dat "abstract" "samenvatting" gaat heten
+
+abstract: |
+  To-do: Bibliografie maken (template invullen), thema gelijk maken (theme_minimal()) en aan het eind de abstract schrijven, dit moet een samenvatting zijn van alles dat bersproken is. 
+    In dit verslag kunt u lezen over ons onderzoek die wij hebben gedaan voor het schoolvak de weteschapeijlke cycles. Hiervoor moesten wij een onderzoek doen naar een eigen geokzen onderwerp zodat we weten hoe de wetenschapelijke cycles werkt en hoe je een goed onderziek doet. Wij hebben gekozen om onderzoek te doen met behulp van een enqute of de mennig over etnische vraagstukken veranderd op een bepaalde leeftijd of dat verschillende mensen leeftijdsgroepen er anders naar kijken. Onze enqute gaat dus over arbortus omdat het niet zo zwaar beladen is als vluchtelingen is en ook wel in het nieuws is geweest. 
+    
+
+bibliography: Het_abortus_beleid.bib # naam van je .bib file. Deze moet hetzelfde zijn als je Rmd bestandsnaam
+
+output:
+  bookdown::pdf_document2:
+    keep_tex: false    # set this to true if you want to investigate the generated tex
+    toc: false         # table of contents
+    fig_caption: true  # includes figure captions with numbering in output
+    includes:  
+        in_header: include_tex_header.tex #will include rules for linespacing and figure floating
+
+---
+
+
+```{r setup, message=FALSE, warning=FALSE, include=FALSE}
+knitr::opts_chunk$set(out.width = '100%', dpi=300) # configuratie voor figuur grootte en resolutie
+knitr::opts_chunk$set(echo = FALSE) # Deze regel zorgt ervoor GEEN ENKELE chunk getoond wordt! 
+knitr::opts_chunk$set(digits = 2)
+# Laad alle gebruikte bibliotheken hier
+library(ggplot2)
+```
+
+```{r message=FALSE, warning=FALSE}
+# Libraries
+library(ggraph)
+library(tidyverse)
+library(viridis)
+library(ggplot2)
+library(dplyr) 
+library(rgexf)
+library(ggrepel)
+
+#library("ggpubr")
+# Voor statistische analyses:
+#library("pwr")
+
+#Laad dataset:
+abortus <- read.csv("../analysis/abortus_dataset.csv", na.strings = "NA")
+
+
+# voor de vraag: Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?
+abortus$eigen_keuze_abortus <- factor(x = abortus$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil.,  
+                           levels = c("Ja", "Nee"),
+                           labels = c("Wel abortus toestaan", "Geen abortus toestaan"))
+
+# Voor de vraag: Wat is uw religieuze overtuiging?
+abortus$geloof <- factor(x = abortus$Wat.is.uw.religieuze.overtuiging.., 
+                           levels = c("Christendom ", "Islam", "Hindoeïsme", "Boeddhisme", "Niet gelovig", "Anders"),
+                           labels = c("Christendom", "Islam", "Hindoeïsme", "Boeddhisme", "Niet gelovig", "Anders"))
+
+
+abortus$geslacht <- factor(x = abortus$Wat.is.uw.geslacht..,
+                           levels = c("Man", "Vrouw", "Wil ik liever niet melden"),
+                           labels = c("Man", "Vrouw", "Wil ik liever niet melden"))
+# Voor de vraag: Wat is uw religieuze overtuiging?
+
+abortus$afkomst <- factor(x = abortus$In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht., 
+                           levels = c("Drenthe", "Flevoland", "Friesland", "Gelderland", "Groningen", "Limburg", "Noord-Brabant", "Noord-Holland", "Overijssel", "Utrecht", "Zeeland", "Zuid-Holland", "Ik ben niet in Nederland opgegroeid"),
+                           labels = c("Drenthe", "Flevoland", "Friesland", "Gelderland", "Groningen", "Limburg", "Noord-Brabant", "Noord-Holland", "Overijssel", "Utrecht", "Zeeland", "Zuid-Holland", "Buitenland"))
+
+
+abortus$onderwijsniveau <- factor(x =
+                                abortus$Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond.,
+                                  levels = c("Geen diploma", "Middelbare school", "MBO", "HBO", "Universiteit","Overige"),
+                                  labels = c("Geen diploma", "Middelbare school", "MBO", "HBO", "Universiteit","Overige"))
+
+
+
+# Voor de vraag: Indien u bij de vorige vraag nee heeft ingevuld...
+abortus$als_nee <- factor(x = 
+                        abortus$Indien.u.bij.de.vorige.vraag..Nee..heeft.ingevuld...Vindt.u.dat.er.uitzonderingen.zijn.waarin.iemand.dit.wel.zelf.moet.kunnen.kiezen.....,
+                          levels = c("Ja", "Nee", "Niet van toepassing"),
+                          labels = c("Ja", "Nee", "Niet van toepassing"))
+
+abortus.test <- data.frame(abortus$geloof)
+
+abortus$gezondheid_vrouw <- factor(x = abortus$Vindt.u.dat.er.voor.abortus.gekozen.mag.worden.als.de.gezondheid.van.de.vrouw.door.de.zwangerschap.in.gevaar.kan.komen.,
+                                   levels = c("Ja", "Nee", "Weet ik niet"),
+                                   labels = c("Ja", "Nee", "Weet ik niet"))
+
+
+abortus$gevolg <- factor(x = abortus$De.zwangerschap.veroorzaakt.is.door.verkrachting,
+                         levels = c("Ja", "Nee"),
+                         labels = c("Ja", "Nee"))
+
+abortus$minderjarig <- factor(x = abortus$Vindt.u.dat.een.minderjarig.kind.de.keuze.moet.hebben.om.voor.een.abortus.te.kiezen.....,
+                              levels = c("Ja", "Nee", "Weet ik niet"),
+                              labels = c("Ja", "Nee", "Weet ik niet"))
+
+abortus$ouders <- factor(x = abortus$Vindt.u.dat.de.ouders.zeggenschap.moeten.hebben.over.of.hun.minderjarige.kind.wel.of.niet.voor.abortus.mag.kiezen...,
+                         levels = c("Ja", "Nee", "Weet ik niet"),
+                         labels = c("Ja", "Nee", "Weet ik niet"))
+
+abortus$echo <- factor(x = abortus$Moet.het.wettelijk.verplicht.worden.voor.vrouwen.die.een.abortus.willen.om.een.echo.van.de.foetus.te.zien.voordat.een.abortus.toegestaan.is.,
+                       levels = c("Ja", "Nee", "Weet ik niet"),
+                       labels = c("Ja", "Nee", "Weet ik niet"))
+
+abortus$bedenktijd <- factor(x = abortus$Vindt.u.dat.de.wettelijke.bedenktijd.moet.terugkomen.,
+                             levels = c("Ja", "Nee", "Weet ik niet"),
+                             labels = c("Ja", "Nee", "Weet ik niet"))
+                             
+abortus$adoptie <- factor(x = abortus$Vindt.u.dat.adoptie.een.alternatief.is.voor.abortus.,
+                          levels = c("Ja", "Nee", "Weet ik niet"),
+                          labels = c("Ja", "Nee", "Weet ik niet"))
+
+abortus$vader <- factor(x = 
+                          abortus$Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.,
+                            levels = c("Ja", "Nee", "Weet ik niet"),
+                            labels = c("Ja", "Nee", "Weet ik niet"))
+
+# Vragen met een volgorde: 
+# namen van de variabelen eidigen met "_o" om aan te duiden dat er een volgorde in zit (order)
+
+abortus$levensgevaar_vrouw_o <- factor(x = abortus$Het.leven.van.de.vrouw.in.gevaar.is,
+                                     levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                     labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                     order = TRUE)
+
+abortus$geestelijke_handicap_o <- factor(x = abortus$Het.kind.met.een.geestelijke.handicap.geboren.kan.worden,
+                                         levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                         labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                         order = TRUE)
+abortus$levensbedreigende_ziekte_o <- factor(x = abortus$Het.kind.met.een.levensbedreigende.ziekte.geboren.kan.worden,
+                                             levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                             labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                             order = TRUE)
+
+abortus$veroorzaakt_o <- factor(x = abortus$De.zwangerschap.veroorzaakt.is.door.verkrachting,
+                                levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                order = TRUE)
+
+abortus$niet_gespecificeerd_o <- factor(x = abortus$De.vrouw.het.kind.niet.wil.houden.om.niet.gespecificeerde.redenen,
+                                        levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                        labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                        order = TRUE)
+
+
+abortus$financiele_beperkingen <- factor(x = abortus$De.vrouw.niet.in.staat.is.voor.het.kind.te.zorgen.vanwege.financiële.beperkingen,
+                                         levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                         labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                         order =TRUE)
+df <- data.frame(abortus)
+
+
+```
+
+
+```{r}
+# Voor info over leeftijd:
+df_test <- df %>% select(geslacht, Wat.is.uw.leeftijd.)
+
+man_leeftijd <- (df_test[df_test$geslacht == 'Man',]$Wat.is.uw.leeftijd.)
+vrouw_leeftijd <- (df_test[df_test$geslacht == 'Vrouw',]$Wat.is.uw.leeftijd.)
+
+
+```
+
+
+# Introductie
+
+Vragen over het abortus beleid zijn polariserende ethische kwesties. In ons onderzoek trachten we correlaties te vinden tussen verschillende variabelen zoals: leeftijd, geslacht, opleidingsniveau, geloof etc. en de ideologische verschillen in mening tussen deze mensen.  
+
+Om de meningen van het publiek te peilen met betrekking tot hun ethische normen en waarden is er een vragenlijst opgesteld.
+
+(De introductie moet tussen de 400-800 woorden bevatten.)
+
+
+# Materialen en Methoden
+...
+
+
+Deze sectie bevat tussen de 400-800 woorden.
+
+# Resultaten
+De enquête is afgenomen door `r count(df %>% select(geslacht) %>% filter(geslacht == "Man"))` mannen en `r count(df %>% select(geslacht) %>% filter(geslacht == "Vrouw"))` vrouwen, dit zijn er `r max(df$ID)` mensen in totaal. De gemiddelde leeftijd is `r round(mean(df$Wat.is.uw.leeftijd.), digits=1)` jaar. De leeftijden van de mensen zijn niet normaal verdeeld, zoals zichtbaar op figuur 1 is de verdeling bimodaal.
+Van de leeftijd van de mannen is de mediaan: `r summary(man_leeftijd)[3]`, het gemiddelde `r round(summary(man_leeftijd)[4], digits = 1)` en de standaard deviatie: `r round(sd(man_leeftijd), digits = 1)`.
+Van de leeftijd van de vrouwen is de mediaan: `r summary(vrouw_leeftijd)[3]`, het gemiddelde `r round(summary(vrouw_leeftijd)[4], digits = 1)` en de standaard deviatie: `r round(sd(vrouw_leeftijd), digits = 1)`.
+Er waren niet genoeg metingen (`r (count(df %>% select(geslacht) %>% filter(geslacht == "Wil ik liever niet melden")))`meting).
+
+
+```{r warning=FALSE, fig.cap='Leeftijd van de mensen die de enquete ingevuld hebben geplot tegen geslacht' }
+
+
+leeftijd_geslacht <- ggplot(df_test, aes(x= Wat.is.uw.leeftijd., y = geslacht)) +
+  geom_boxplot(fill = "gold", alpha = 0.3, varwidth = T) +
+  xlab("Leeftijd (Jaren)") +
+  ylab("Geslacht") +
+  theme_minimal()
+
+
+
+ggarrange(leeftijd_geslacht)
+
+```
+
+```{r}
+# Deze wel gebruiken?????!!?!?!?
+
+# verdeling van de leeftijden:
+leeftijd_dichtheid <- ggplot(df, aes(x= Wat.is.uw.leeftijd.)) +
+  geom_histogram(aes(y = ..density..)) + 
+  geom_density() +
+  xlab("Leeftijd (Jaren)") +
+  ylab("Dichtheid") +
+  theme_minimal() 
+
+# Grafiek met de verschillende geloven en de leeftijdverdeling die er bij hoort. 
+geloof_leeftijd <- ggplot(df, aes(y= geloof,
+               x= Wat.is.uw.leeftijd.)) +
+  geom_boxplot(color = "black", fill = "gold", varwidth=T) +
+    xlab("Leeftijd (Jaren") +
+    ylab("Geloof") +
+    theme_minimal()
+
+
+# Grafiek met leeftijden uit verschillende provincies.
+afkomst_leeftijd <- ggplot(df, aes(y=afkomst,
+               x= Wat.is.uw.leeftijd.)) +
+  geom_boxplot(color = "black", fill = "gold", varwidth = T) +
+    xlab("Leeftijd (Jaren") +
+    ylab("Op gegroeid in de provincie:") +
+    theme_minimal()
+
+
+ggarrange(afkomst_leeftijd, geloof_leeftijd)
+```
+
+Deze grafieken zijn nog niet klaar.... later nog aanpassen.
+```{r}
+x1 <- table(df$adoptie)
+adoptie_plot_data <- data.frame(x1)
+adoptie_plot_data$fraction = adoptie_plot_data$Freq / sum(adoptie_plot_data$Freq)
+adoptie_plot_data$percentage = round(adoptie_plot_data$fraction *100, digits =1)
+
+adoptie_plot <- ggplot(data = df, mapping = aes(x = adoptie_plot_data, y = adoptie, fill = geslacht)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = (" "))) +
+ # ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
+  xlab("Percentage mensen") +
+  ylab(" ")
+
+
+
+
+vader_plot <- ggplot(data = df, mapping = aes(x = c(1:109), y = vader, fill = geslacht)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = (" "))) +
+ # ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
+  xlab("Percentage mensen") + # nog aapassen naar procent.
+  ylab(" ")
+
+echo_plot <- ggplot(data = df, mapping = aes(x = c(1:109), y = echo, fill = geslacht)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = (" "))) +
+  coord_flip() +
+#  ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
+  xlab("Percentage mensen") + # nog aapassen naar procent.
+  ylab(" ")
+
+bedenktijd_plot <- ggplot(data = df, mapping = aes(x = c(1:109), y = bedenktijd, fill = geslacht)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = (" "))) +
+   coord_flip() +
+ # ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
+  xlab("Percentage mensen") + # nog aapassen naar procent.
+  ylab(" ")
+
+ggarrange(echo_plot, bedenktijd_plot)
+vader_plot
+```
+
+
+
+
+
+
+
+```{r plot-demo, warning=FALSE, fig.cap='Ozon concentraties geplot tegen zonlicht intensiteit, vergeleken over verschillende maanden. Lineaire modellen (blauwe lijnen) en confidence intervals (grijze gebieden) zijn hieraan toegevoegd.'}
+
+```
+
+
+
+
+# Discussie en Conclusies
+
+Deze sectie bevat tussen de 400-800 woorden.
+
+
+# Online bijlagen
+
+## Wordcount
+
+Voeg aan het eind een woord-telling in:
+
+```{r wordcount, message=FALSE}
+#install.packages(devtools)
+#devtools::install_github("benmarwick/wordcountaddin", type = "source", dependencies = TRUE)
+wordcountaddin:::text_stats()
+```
+
+# Referenties
+
+Een lijst van referenties wordt hier automagisch toegevoegd.
