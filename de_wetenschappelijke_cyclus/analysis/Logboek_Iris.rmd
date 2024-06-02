@@ -55,9 +55,9 @@ De volgorde van de vragen veranderd. Na de vraag over of er uitzonderingen zijn,
 Vragenlijst rondgestuurd. Logboek individueel geschreven.
 
 ## Maandag 13 mei
-Inlezen radar chart voor presentatie (met uit welke provinvie mensen komen).
+Inlezen radar chart voor presentatie (met uit welke provincie mensen komen).
 input: 
-- kolom: quantitative variable(hoeveelheden)
+- kolom: quantitative variable (hoeveelheden)
 - eerste 2 regels: min/max per variable
 - Library 'fmsb' is nodig, nog installeren!!
 Je kan het extra customizen, zie r-graph-gallery.com
@@ -65,7 +65,7 @@ Je kan het extra customizen, zie r-graph-gallery.com
 
 
 ## Dinsdag 14 mei
-Omdat een ander groepje al de radar chart gaat doen, hebben we besloten om een andere visualizatie te kiezen. Dus we gaan nu de circular packing uitzoeken. 
+Omdat een ander groepje al de radar chart gaat doen, hebben we besloten om een andere visualisatie te kiezen. Dus we gaan nu de circular packing uitzoeken. 
 Dit kan met de 'ggraph' package. 
 
 
@@ -128,7 +128,7 @@ Gemiddelde leeftijd enquêtes berekend en cat():
 cat(sprintf("de gemiddelde leeftijd van de enquête is: %.2f ik ben iris %.3f/n", gemiddelde_leeftijd, gemiddelde_leeftijd))
 ```
 In bovenstaande code zie je dat je met mean() het gemiddeld berekent van alle getallen die in de kolom leeftijd staan.
-Verder kun je met 'cat(sprintf())'  een variabele in je tekst zetten. Dmv '%.2f' rond het getal af op 2 decimalen. Hiermee kan je makkelijker variabelen in je tekst plaatsen.
+Verder kun je met 'cat(sprintf())'  een variabele in je tekst zetten. Door middel van '%.2f' (rond het getal af op 2 decimalen). Hiermee kan je makkelijker variabelen in je tekst plaatsen.
 
 
 Oefenen histogram maken:
@@ -411,7 +411,7 @@ new_proptabel_dataframe <- data_renamed %>%
 
 new_proptabel_dataframe
 ```
-Het lag inderdaad aan de tabel. Mischiel heeft me hierbij geholpen. Morgen de grafiek aanpassen.
+Het lag inderdaad aan de tabel. Michiel heeft me hierbij geholpen. Morgen de grafiek aanpassen.
 
 ## Dinsdag 28 mei
 ```{r}
@@ -587,3 +587,77 @@ En dan nu de test:
 chisq.test(nu_echt_tabel_geloof)
 ```
 De p-waarde ligt boven de 0.05, dus is er aangetoond dat er een significant verschil zit in mensen hun mening over abortus tussen mensen die wel en niet een religieuze overtuiging hebben.
+
+
+## Zondag 2 juni
+Grafieken en omschrijvingen voor de resultaten:
+```{r}
+library(ggplot2)
+
+ggplot(new_proptabel_dataframe, aes(x =Gender, y=perc, fill=Biologische_vader_zeggenschap)) +
+    labs(caption = "Figuur x: Barplot met de verdeling van antwoorden over gender 
+    op de vraag of de biologische vader zeggenschap moet hebben 
+    over de beslissing voor een abortus.",
+         x = "Gender",
+         fill = "Antwoord",
+         y = "percentage") +
+    geom_bar(stat = "identity", position = "dodge", color="black")+
+    theme_minimal() +
+    scale_fill_brewer(palette = "Dark2") +
+    # verplaatst de tekst naar links
+theme(plot.caption = element_text(hjust = 0, face = "italic")) 
+```
+In de bovenstaande plot zie je per gender in procenten weergegeven wat mensen hebben geantwoord op de vraag: 'Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?'
+Je ziet hier dat er gemiddeld meer vrouwen zijn die vinden dat mannen hier geen zeggenschap over hebben. Ook zijn er meer mannen die vinden dat de vader hier wel zeggenschap over moet hebben.
+Uit een Chi-squared test blijkt dat er een significant verschil zit tussen hoe mannen en vrouwen deze vraag beantwoorden. De p-waarde die hieruit kwam is namelijk ‘0.01954’ en dit ligt onder de '0.05'.
+
+
+
+```{r}
+tijdelijke_data <- data_renamed %>%
+    select(Religie, Abortus_keuze) %>%
+    mutate(Gelovig=ifelse(Religie == "Niet gelovig", "Niet gelovig", "Wel gelovig"))
+x <- prop.table(table(tijdelijke_data$Gelovig, tijdelijke_data$Abortus_keuze))
+x
+as.data.frame(x)%>%
+    ggplot(aes(x = Var1, y = Freq, fill = Var2)) +
+    labs(caption = "Figuur x: Corrolatie religie en mening abortus",
+         x = "",
+         fill = "Antwoord",
+         y = "Aantal antwoorden") +
+    geom_col(position = "dodge") +
+    # verplaatst de tekst naar links
+    theme(plot.caption = element_text(hjust = 0, face = "italic")) 
+```
+In de bovenstaande plot zie je de verdeling weergegeven van mensen die wel geloven en niet geloven en wat deze hebben geantwoord op de vraag of mensen zelf mogen kiezen of ze een abortus willen.
+
+Je ziet in de plot hierboven dat alle mensen die hebben aangegeven niet een religieuze overtuiging te hebben bij vraag 6 ook hebben aangegeven dat iemand zelf moet kunnen kiezen of die een abortus wil. Bij de mensen die hebben ingevuld wel een religieuze overtuiging te hebben is er een deel die heeft aangegeven dat iemand niet zelf moet kunnen kiezen of die een abortus wil.
+Uit de Chi-squared test komt dan ook dat er een significant verschil zit tussen mensen die wel aangeven een religieuze overtuiging te hebben en mensen die aangeven dat niet te hebben. De p-waarde die hieruit kwam is '0.0004108' en dit ligt onder de '0.05'.
+
+
+```{r}
+library(ggplot2)
+library(webr)
+library(dplyr)
+
+donutchart_geloof <- PieDonut(data_donut, aes(religieuze_overtuiging, antwoord_vraag, count=Freq),
+        # percentage buitenste cirkel (mening abortus)
+        showRatioDonut = TRUE,
+        # percentage in de binnenste cirkel (geloof)
+        showRatioPie = TRUE,
+        # haalt de enorme naam in het midden weg, mooier
+         showPieName = FALSE, 
+         # grootte tekst binnenste ring (geloof)
+         pieLabelSize = 1.8, 
+         donutLabelSize = 2,
+         # percentages gefikst
+          showRatioThreshold = getOption("PieDonut.showRatioThreshold", 0.0) 
+         ) +
+    labs(caption = "Figuur x: test101, pls doe het")
+
+donutchart_geloof
+```
+! zodra ik een caption probeer toe te voegen wordt de binnenste ring niet meer weergegeven. ! "titel: correlatie geloof en mening abortus"
+
+Je ziet in de bovenstaande plot 2 ringen. In de middelste ring is weergegeven wat de religieuze overtuiging van de respondenten zijn. Je ziet dat 80.8% aangeeft niet een religieuze overtuiging te hebben. Verder geeft 10.6% aan christelijk te zijn, 1.9% islamitisch en 6.7% ergens anders in te geloven (een geloof die niet bij de meegegeven opties stond). In de buitenste ring is weergegeven wat deze mensen hebben geantwoord op de vraag of iemand zelf moet kunnen kiezen of die een abortus wil. Je ziet hier dat 100% van de respondenten die aangeven niet een religieuze overtuiging te hebben ook zeggen dat iemand zelf moet kunnen kiezen of die een abortus wil. Ook 100% van de islamitische respondenten is voor de eigen keuze over abortus. Verder is 27% van de christenen tegen de eigen keuze over abortus en ook 14% van de mensen die aangeven ergens anders in te geloven is tegen de eigen keuze over abortus.
+
