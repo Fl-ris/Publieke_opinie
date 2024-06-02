@@ -171,15 +171,30 @@ vrouw_leeftijd <- (df_test[df_test$geslacht == 'Vrouw',]$Wat.is.uw.leeftijd.)
 
 # Introductie
 
-Vragen over het abortus beleid zijn polariserende ethische kwesties. In ons onderzoek trachten we correlaties te vinden tussen verschillende variabelen zoals: leeftijd, geslacht, opleidingsniveau, geloof etc. en de ideologische verschillen in mening tussen deze mensen.  
+Vragen over het abortus beleid zijn polariserende ethische kwesties. In ons onderzoek trachten we correlaties te vinden tussen verschillende variabelen zoals: leeftijd, geslacht, opleidingsniveau, geloof en de ideologische verschillen in mening tussen deze mensen.  
 
-Om de meningen van het publiek te peilen met betrekking tot hun ethische normen en waarden is er een vragenlijst opgesteld.
+In de literatuur was al bekend dat jongere mensen vaak geneigd zijn voorstanders te zijn van de keuzevrijheid om voor een abortus te kiezen en oudere mensen hier vaker tegen zijn. (bron: https://www.emerald.com/insight/content/doi/10.1108/01443339810788533/full/html), ook is er een positieve correlatie gevonden tussen hoogopgeleiden en de mening dat abortus een eigen keuze moet zijn. (bron: https://www.emerald.com/insight/content/doi/10.1108/01443339810788533/full/html)
 
+In tegenstelling tot het verschil in mening tussen mannen en vrouwen over andere politieke vraagstukken (bron: https://doi.org/10.1093/sp/jxs005)
+Is er, mits er rekening wordt gehouden met verschillen in religieuze overtuiging, het geslacht geen significant bijdragende factor is voor de beslissing om  voor- of tegenstander te zijn van abortus (bron:  https://doi.org/10.1111/pops.12803)
+Ondanks dat deze kwestie vooral betrekking heeft op vrouwen is er nog meer bestaand onderzoek beschikbaar dat verder bevestigd dat er weinig verschil is tussen de meningen van de verschillende geslachten. (bron: https://link.springer.com/article/10.1023/a:1021427014047)
+
+Deze bovenstaande onderzoeken zijn gebaseerd op data van Noorwegen en Amerika, voor dit onderzoek is de grote meerderheid van de data verkregen van Nederlandse inwoners die ook in Nederland zijn opgegroeid. 
+
+Om de meningen van dit publiek te peilen met betrekking tot hun ethische normen en waarden is er een vragenlijst opgesteld met als doel om 
+te achterhalen wat bijdragende factoren zijn die voor meningsverschillen kunnen zorgen, dit zijn bijvoorbeeld geloof en leeftijd. 
+
+Deze data wordt vervolgens geanalyseerd met onder andere een logistische regressie om de invloed van meerdere factoren te zien op de uitkomst van elke enquête vraag. 
+
+To-do: bibliografie maken!
 (De introductie moet tussen de 400-800 woorden bevatten.)
 
 
 # Materialen en Methoden
 ...
+
+De makers van deze enquete hebben hem naar klasgenoten, familieleden en vrienden gestuurd met de instructie om hem door te sturen naar andere Familie, kennissen en vrienden. Op 21-05-2024 zijn er 110 mensen die hem ingevuld hebben met een man vrouw verdeling van: 60/49.
+
 
 
 Deze sectie bevat tussen de 400-800 woorden.
@@ -188,7 +203,7 @@ Deze sectie bevat tussen de 400-800 woorden.
 De enquête is afgenomen door `r count(df %>% select(geslacht) %>% filter(geslacht == "Man"))` mannen en `r count(df %>% select(geslacht) %>% filter(geslacht == "Vrouw"))` vrouwen, dit zijn er `r max(df$ID)` mensen in totaal. De gemiddelde leeftijd is `r round(mean(df$Wat.is.uw.leeftijd.), digits=1)` jaar. De leeftijden van de mensen zijn niet normaal verdeeld, zoals zichtbaar op figuur 1 is de verdeling bimodaal.
 Van de leeftijd van de mannen is de mediaan: `r summary(man_leeftijd)[3]`, het gemiddelde `r round(summary(man_leeftijd)[4], digits = 1)` en de standaard deviatie: `r round(sd(man_leeftijd), digits = 1)`.
 Van de leeftijd van de vrouwen is de mediaan: `r summary(vrouw_leeftijd)[3]`, het gemiddelde `r round(summary(vrouw_leeftijd)[4], digits = 1)` en de standaard deviatie: `r round(sd(vrouw_leeftijd), digits = 1)`.
-Er waren niet genoeg metingen (`r (count(df %>% select(geslacht) %>% filter(geslacht == "Wil ik liever niet melden")))`meting).
+Er waren niet genoeg metingen (`r (count(df %>% select(geslacht) %>% filter(geslacht == "Wil ik liever niet melden")))` meting).
 
 
 ```{r warning=FALSE, fig.cap='Leeftijd van de mensen die de enquete ingevuld hebben geplot tegen geslacht' }
@@ -205,6 +220,45 @@ leeftijd_geslacht <- ggplot(df_test, aes(x= Wat.is.uw.leeftijd., y = geslacht)) 
 ggarrange(leeftijd_geslacht)
 
 ```
+
+
+
+```{r provictie verdeling, warning=FALSE, fig.cap='Verdeling van de afkomst van de mensen die de enquete ingevuld hebben.'}
+
+# Maak tabel met aantal mensen per provincie.
+x <- table(abortus$afkomst)
+x <- sort(x, decreasing = T)
+provincie_aantal <- data.frame(x)
+
+
+# Reken de percentages uit: 
+provincie_aantal$fraction = provincie_aantal$Freq / sum(provincie_aantal$Freq)
+provincie_aantal$percentage = round(provincie_aantal$fraction *100, digits =1)
+provincie_aantal$ymax = cumsum(provincie_aantal$fraction)
+provincie_aantal$ymin = c(0, head(provincie_aantal$ymax, n=-1))
+provincie_aantal$labelp = (provincie_aantal$ymax+provincie_aantal$ymin)/2
+provincie_aantal$label = (paste(provincie_aantal$percentage, "% ", provincie_aantal$Var1))
+
+# Verander de naam van de provincie colom van Var1 naar "provincies":
+provincie_aantal <- provincie_aantal %>%
+    rename(provincies = Var1)
+
+
+# Maak het grafiekje:
+ggplot(provincie_aantal,aes(ymax=ymax, ymin=ymin, xmax=13, xmin=3)) +
+     geom_rect(color = "black",aes(fill=provincies)) +
+     geom_label_repel(x = 13, aes(y=labelp, label= label), size=3, max.overlaps = 11, min.segment.length = 0) +
+     coord_polar(theta="y") + 
+     xlim(c(-13, 13)) +
+     xlab(" ") +
+     ylab(" ") +
+     theme_void()
+
+
+```
+
+Op figuur 2 is weergeven dat de grootste fractie mensen die de enquete ingevuld hebben opgegroeid zijn in Gronigen, opgevolgd door Friesland en Drenthe.
+
 
 ```{r}
 # Deze wel gebruiken?????!!?!?!?
@@ -255,14 +309,14 @@ adoptie_plot <- ggplot(data = df, mapping = aes(x = adoptie_plot_data, y = adopt
 
 
 
-vader_plot <- ggplot(data = df, mapping = aes(x = c(1:109), y = vader, fill = geslacht)) +
+vader_plot <- ggplot(data = df, mapping = aes(x = c(1:114), y = vader, fill = geslacht)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = (" "))) +
  # ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
   xlab("Percentage mensen") + # nog aapassen naar procent.
   ylab(" ")
 
-echo_plot <- ggplot(data = df, mapping = aes(x = c(1:109), y = echo, fill = geslacht)) +
+echo_plot <- ggplot(data = df, mapping = aes(x = c(1:114), y = echo, fill = geslacht)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = (" "))) +
   coord_flip() +
@@ -270,7 +324,7 @@ echo_plot <- ggplot(data = df, mapping = aes(x = c(1:109), y = echo, fill = gesl
   xlab("Percentage mensen") + # nog aapassen naar procent.
   ylab(" ")
 
-bedenktijd_plot <- ggplot(data = df, mapping = aes(x = c(1:109), y = bedenktijd, fill = geslacht)) +
+bedenktijd_plot <- ggplot(data = df, mapping = aes(x = c(1:114), y = bedenktijd, fill = geslacht)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = (" "))) +
    coord_flip() +
@@ -278,11 +332,77 @@ bedenktijd_plot <- ggplot(data = df, mapping = aes(x = c(1:109), y = bedenktijd,
   xlab("Percentage mensen") + # nog aapassen naar procent.
   ylab(" ")
 
+
 ggarrange(echo_plot, bedenktijd_plot)
 vader_plot
 ```
 
+```{r chi-sq, warning=FALSE, fig.cap='P-waarde score voor enkele enquete vragen en het effect dat geslacht heeft op de keuze.'}
 
+ja_abortus <- table(df$geslacht, df$eigen_keuze_abortus)
+chi_ja_abortus <- chisq.test(ja_abortus, correct = T)
+
+abortus_als_gevolg_van_01 <- table(df$geslacht, df$Vindt.u.dat.iemand.een.abortus.mag.als.de.zwangerschap.een.gevolg.is.van.verkrachting.)
+
+# Chi-square test:
+chi_abortus_als_gevolg_van <- chisq.test(abortus_als_gevolg_van_01, correct = T)
+
+# Chi-square test:
+chi_abortus_als_gevolg_van <- chisq.test(abortus_als_gevolg_van_01, correct = T)
+
+abortus_minderjarig_keuze_01 <- table(df$geslacht, df$minderjarig)
+
+# Chi-square test:
+chi_abortus_minderjarig_keuze <- chisq.test(abortus_minderjarig_keuze_01, correct = T)
+
+abortus_zeggenschap_ouders_01 <- table(df$geslacht, df$ouders)
+# Chi-square test:
+chi_abortus_zeggenschap_ouders <- chisq.test(abortus_zeggenschap_ouders_01, correct = T)
+#df_chi_geslacht_test <- data.frame(c(chi_ja_abortus[3],chi_abortus_als_gevolg_van[3]))
+abortus_echo_01 <- table(df$geslacht, df$minderjarig)
+# Chi-square test:
+chi_abortus_echo <- chisq.test(abortus_echo_01, correct = T)
+abortus_bedenktijd_01 <- table(df$geslacht, df$bedenktijd)
+# Chi-square test:
+chi_abortus_bedenktijd <- chisq.test(abortus_bedenktijd_01, correct = T)
+abortus_adoptie_01 <- table(df$geslacht, df$adoptie)
+# Chi-square test:
+chi_abortus_adoptie <- chisq.test(abortus_adoptie_01, correct = T)
+
+abortus_zeggenschap_vader_01 <- table(df$geslacht, df$vader)
+# Chi-square test:
+chi_abortus_zeggenschap_vader <- chisq.test(abortus_zeggenschap_vader_01, correct = T)
+
+chi_test_vector_geslacht <- c(chi_ja_abortus[3],chi_abortus_als_gevolg_van[3],chi_abortus_minderjarig_keuze[3],chi_abortus_zeggenschap_ouders[3],chi_abortus_echo[3],chi_abortus_bedenktijd[3],chi_abortus_adoptie[3],chi_abortus_zeggenschap_vader[3])
+abortus_als_gevolg_van_01 <- table(df$geslacht, df$Vindt.u.dat.iemand.een.abortus.mag.als.de.zwangerschap.een.gevolg.is.van.verkrachting.)
+
+
+df_chi_geslacht <- (data.frame((chi_test_vector_geslacht)) %>% rename(
+  `Abortus toestaan` = p.value,
+  `Gevolg van verkrachtign` = p.value.1,
+  `Minderjarig kind` = p.value.2,
+  `Zeggenschap ouders` = p.value.3,
+  `Echo bekijken` = p.value.4,
+  `Bedenktijd invoeren` = p.value.5,
+  `Adoptie als alternatief` = p.value.6,
+  `Zeggenschap vader` = p.value.7
+  ))
+
+df_chi_geslacht %>% 
+  pivot_longer(cols = c(1:8)) -> df_chi_geslacht
+
+
+ggplot(data = df_chi_geslacht, mapping = aes(x = name , y = value)) +
+  geom_bar(stat = "identity",, fill = "gold", alpha = 0.5) +
+  geom_hline(yintercept=0.05, linetype="dashed", color = "red") +
+  geom_label_repel(position = position_nudge_repel(y = -0.07),aes(label = round(value,digits = 3)) ) +
+  ylab("P-waarde Chi-square test:") +
+  xlab(" ") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.6)) 
+  
+```
+Op figuur 3? zijn de p-waarden van enkele vragen vergeleken. Wanneer de waarde onder de rode lijn zit kan er met 95% waarschijnlijkheid gezegd worden dat, in dit geval, geslacht een significant bijdragende factor is. Bij de vraag: "Moet de vader zeggenschap hebben over abortus" was de p-waarde: 0.018. Voor de overige vragen speelt geslacht geen significante rol (p-waarde > 0.05).
 
 
 
