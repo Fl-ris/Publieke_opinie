@@ -363,17 +363,19 @@ Deze grafieken zijn nog niet klaar.... later nog aanpassen.
 ### Resultaten van de enquetevragen: ###
 
 ```{r, warning=FALSE, fig.cap='Vindt u dat adoptie een alternatief is voor abortus?'}
-x1 <- table(df$adoptie)
+x1 <- table(df$adoptie, df$geslacht)
 adoptie_plot_data <- data.frame(x1)
 adoptie_plot_data$fraction = adoptie_plot_data$Freq / sum(adoptie_plot_data$Freq)
 adoptie_plot_data$percentage = round(adoptie_plot_data$fraction *100, digits =1)
 
 #ggplot(data = df, mapping = aes(x = adoptie_plot_data, y = adoptie, fill = geslacht)) +
- ggplot(data = df, mapping = aes(x = ID, y = adoptie, fill = geslacht)) +
- geom_bar(stat = "identity") +
-  geom_text(aes(label = (" "))) +
-  xlab("Percentage mensen") +
-  ylab(" ") +
+ ggplot(data = adoptie_plot_data, mapping = aes(x = Var2, y = percentage, fill = Var1)) +
+ geom_bar(stat = "identity" ,
+  position ="dodge") +
+  labs(fill = "Keuze") +
+  geom_text(aes(label = (""))) +
+  xlab("Antwoorden") +
+  ylab(" Percentage antwoord") +
   theme_minimal()
 
 ```
@@ -381,13 +383,20 @@ adoptie_plot_data$percentage = round(adoptie_plot_data$fraction *100, digits =1)
 
 ```{r vader plot, warning=FALSE, fig.cap='Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?'}
 #Vindt u dat er voor abortus gekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen?
-ggplot(data = df, mapping = aes(x = ID, y = vader, fill = geslacht)) +
-  geom_bar(stat = "identity") +
-  geom_text(aes(label = (" "))) +
-  xlab("Percentage mensen") + # nog aapassen naar procent.
-  ylab(" ") +
-  theme_minimal()
+x2 <- table(df$vader, df$geslacht)
+vader_plot_data <- data.frame(x2)
+vader_plot_data$fraction = vader_plot_data$Freq / sum(vader_plot_data$Freq)
+vader_plot_data$percentage = round(vader_plot_data$fraction *100, digits =1)
 
+ggplot(data = vader_plot_data, mapping = aes(x = percentage, y = Var1, fill = Var2)) +
+  geom_bar(stat = "identity" ,
+  position ="dodge")+
+  geom_text(aes(label = (" "))) +
+  xlab("Percentage mensen") + 
+  labs(fill = "Geslacht")+
+  coord_flip() +
+  ylab("Antwoorden ") +
+  theme_minimal()
 ```
 
 
@@ -395,24 +404,38 @@ ggplot(data = df, mapping = aes(x = ID, y = vader, fill = geslacht)) +
 
 ```{r gezondheid plot, warning=FALSE, fig.cap='Antwoorden op de vraag:Vindt u dat er voor abortusgekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen?'}
 
-ggplot(data = df, mapping = aes(x = ID, y = echo, fill = geslacht)) +
-  geom_bar(stat = "identity") +
- # geom_text(aes(label = ("percentage hier"))) +
-#  coord_flip() +
-  ylab(" ") +
-  xlab("Percentage mensen") +
+x3 <- table(df$gezondheid_vrouw, df$geslacht)
+gezondheid_vrouw_plot_data <- data.frame(x2)
+gezondheid_vrouw_plot_data$fraction = gezondheid_vrouw_plot_data$Freq / sum(gezondheid_vrouw_plot_data$Freq)
+gezondheid_vrouw_plot_data$percentage = round(gezondheid_vrouw_plot_data$fraction *100, digits =1)
+
+ggplot(data = gezondheid_vrouw_plot_data, mapping = aes(x = percentage, y = Var1, fill = Var2)) +
+  geom_bar(stat = "identity" ,
+  position ="dodge")+
+  geom_text(aes(label = (" "))) +
+  xlab("Percentage mensen") + 
+  labs(fill = "Geslacht")+
+  coord_flip() +
+  ylab("Antwoorden ") +
   theme_minimal()
 ```
 ```{r bedenktijd plot, warning=FALSE, fig.cap='Antwoorden op de vraag: Vindt u dat de wettelijke bedenktijd moet terugkomen?'}
 
 
-ggplot(data = df, mapping = aes(x = ID, y = bedenktijd, fill = geslacht)) +
-  geom_bar(stat = "identity") +
-  geom_text(aes(label = (" "))) +
-   coord_flip() +
-  xlab("Percentage mensen") + # nog aapassen naar procent.
-  ylab(" ")
+x4 <- table(df$bedenktijd, df$geslacht)
+bedenktijd_plot_data <- data.frame(x4)
+bedenktijd_plot_data$fraction = bedenktijd_plot_data$Freq / sum(bedenktijd_plot_data$Freq)
+bedenktijd_plot_data$percentage = round(bedenktijd_plot_data$fraction *100, digits =1)
 
+ggplot(data = vader_plot_data, mapping = aes(x = percentage, y = Var1, fill = Var2)) +
+  geom_bar(stat = "identity" ,
+  position ="dodge")+
+  geom_text(aes(label = (""))) +
+  xlab("Percentage mensen") + 
+  labs(fill = "Geslacht")+
+  coord_flip() +
+  ylab("Antwoorden ") +
+  theme_minimal()
 ```
 
 
@@ -645,7 +668,7 @@ Voeg aan het eind een woord-telling in:
 ```{r wordcount, message=FALSE}
 #install.packages(devtools)
 #devtools::install_github("benmarwick/wordcountaddin", type = "source", dependencies = TRUE)
-wordcountaddin:::text_stats()
+#wordcountaddin:::text_stats()
 ```
 
 # Referenties
