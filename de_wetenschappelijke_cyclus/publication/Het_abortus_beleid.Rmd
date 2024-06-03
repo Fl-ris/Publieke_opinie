@@ -572,6 +572,45 @@ ggplot(data = df_chi_geslacht, mapping = aes(x = name , y = value)) +
 ```
 Op figuur 3 zijn de p-waarden van enkele vragen vergeleken. Wanneer de waarde onder de rode lijn zit kan er met 95% waarschijnlijkheid gezegd worden dat, in dit geval, geslacht een significant bijdragende factor is. Bij de vraag: "Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?" was de p-waarde: 0.018. Voor de overige vragen speelt geslacht geen significante rol (p-waarde > 0.05).
 
+```{r chi-sq, warning=FALSE, fig.cap='P-waarde score voor de enquete vragen en het effect dat leeftijd heeft op de keuze.'}
+#chi square testen maar dan op de twee leeftijd verschillen 
+abortus_aangpast <- abortus %>%
+    mutate(leeftijd_boven_onder_24 = ifelse(leeftijd > 25, "boven", "onder"))
+
+Boven_onder_Ouderzegschap <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$ouderszegenschap)
+chi_leeftijd_Ouderzegschap <-chisq.test(Boven_onder_Ouderzegschap, correct = T)
+
+Boven_onder_kidskeuze <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Kindskeuze)
+chi_leeftijd_kids_eigen_keuze<-chisq.test(Boven_onder_kidskeuze, correct = T)
+
+Boven_onder_Wel_geen <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil.)
+chi_leeftijd_eigen_keuze_alegemeen <-chisq.test(Boven_onder_Wel_geen, correct = T)
+
+Boven_onder_Vader<-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.)
+chi_leeftijd_vaderszeggenschap <-chisq.test(Boven_onder_Vader, correct = T)
+
+Boven_onder_Keuze_Gevaar_moeder <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.er.voor.abortus.gekozen.mag.worden.als.de.gezondheid.van.de.vrouw.door.de.zwangerschap.in.gevaar.kan.komen.)
+chi_leeftijd_keuze_Gevaar_moeder <-chisq.test(Boven_onder_Keuze_Gevaar_moeder, correct = T)
+
+Boven_onder_Keuze_verkachting <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.iemand.een.abortus.mag.als.de.zwangerschap.een.gevolg.is.van.verkrachting.)
+chi_leeftijd_keuze_verkrachting <-chisq.test(Boven_onder_Keuze_verkachting, correct = T)
+
+Boven_onder_Keuze_zonder_reden <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$De.vrouw.het.kind.niet.wil.houden.om.niet.gespecificeerde.redenen)
+chi_leeftijd_keuze_zonder_reden <-chisq.test(Boven_onder_Keuze_zonder_reden, correct = T)
+
+Boven_onder_Keuze_Echo <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Moet.het.wettelijk.verplicht.worden.voor.vrouwen.die.een.abortus.willen.om.een.echo.van.de.foetus.te.zien.voordat.een.abortus.toegestaan.is.)
+chi_leeftijd_keuze_echo <-chisq.test(Boven_onder_Keuze_Echo, correct = T)
+
+Boven_onder_Keuze_bedenktijd <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.de.wettelijke.bedenktijd.moet.terugkomen.)
+chi_leeftijd_keuze_bedenktijd <-chisq.test(Boven_onder_Keuze_bedenktijd, correct = T)
+
+Boven_onder_Keuze_adoptie <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.adoptie.een.alternatief.is.voor.abortus.)
+chi_leeftijd_keuze_adoptie <-chisq.test(Boven_onder_Keuze_adoptie, correct = T)
+
+Boven_onder_Keuze_vader <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.)
+chi_leeftijd_keuze_vader <-chisq.test(Boven_onder_Keuze_vader, correct = T)
+
+```
 
 
 # Logistische regressies:
