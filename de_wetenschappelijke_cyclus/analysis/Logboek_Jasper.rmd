@@ -37,13 +37,12 @@ Begonnen we met de enquête na alle goedkeuringen.
 ## 8 mei 
 Meerdere mensen gevraagd om het in te vullen.
 
-## 9 mei tot ......
-<<<<<<< HEAD
+## 9 mei tot 3 juni
+
 enquête open laten staan en allemaal meet waarden binnen krijgen en bedenken waar het nog meer hebben kunnen uit delen
 
 ## 14 mei
-Ik moet laten zien wat de gemiddelde leeftijd is van onze meetwaarde. 
-```{r, include=FALSE}
+```{r, echo=FALSE}
 # Libraries
 library(data.tree)
 library(ggraph)
@@ -56,20 +55,11 @@ library(rgexf)
 library(ggrepel)
 # Voor statistische analyses:
 library("pwr")
+
 ```
+We gaan al bezig met het uitwerken van de meetwaarde op dit moment. zodat we later alleen de data hoeven te updaten. En zo kunnen we alvast bezig en blijven we niet stil zitten.<br>
 Hier worden wat namen veranderd want anders krijg je namen als *Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil* en dat is veel te lang.
-=======
-enquête open laten staan en allemaal meet waarden binnen krijgen en bedenken waar het nog meer hebben kunnen uit delen
-
-## 14 mei
-Ik moet laten zien wat de gemiddelde leeftijd is van onze meetwaarde. 
-```{r}
-library(tidyverse)
-library(dplyr)
-
-```
-
-
+We willen het nog wel kunnen lezen blijven en is het handig altijd goeie naamgeving
 ```{r}
 
 abortus <- read.csv("abortus_dataset.csv",
@@ -113,14 +103,13 @@ head(abortus)
 
 ```
 
-
+Ik ga even kijken de gemiddelde leeftijd kijken van onze ingevulde mensen. En kijken naar de verdeling van dit. Wat Q1 is of Q2 is als voorbeeld.
 ```{r}
-
 summary(abortus$leeftijd)
-
-
 ```
-Hier kijken we even wat de q1 en q3 
+Hier ga ik een grafiek maken om te kijken of de leeftijd normaal verdeeld is. 
+>H0 de leeftijd heeft geen significat verschil op de mennig over zeggenenschap van de ouders bij de leeftijd groep van onder 25 <br>
+
 ```{r}
 
 leeftijd <- data.frame(abortus$leeftijd)
@@ -128,11 +117,10 @@ leeftijd <- data.frame(abortus$leeftijd)
 ggplot(leeftijd, aes(x=abortus$leeftijd)) + geom_histogram(aes(y =after_stat(density)), color = "black")+geom_density(alpha = .2, fill= "red")
 ```
 
-<<<<<<< HEAD
+
 Hier zie dat het niet helemaal normaal verdeelt is, dit komt omdat het eerst is verspreid onder de mede studenten en aan hun ouders.
 Hierdoor krijg je in sommige gebieden meer invullingen. In de grafriek zie je ook dat het ook terug komen.
-=======
-/n
+
 Hier zie dat het niet helemaal normaal verdeelt is maar kunnen wel een test doen
 
 
@@ -141,14 +129,8 @@ shapiro.test(abortus$leeftijd)
 
 ```
 
-<<<<<<< HEAD
+
 Hier zie zeker dat de leeftijd van onze invuller niet normaal verdeelt is.
-
-
-## 15 mei.
-Ik laat zien waar onze invuller vandaan komt in een donut chart.
-=======
-Hier zie zeker dat de leeftijd van onze invullers niet normaal verdeelt is.
 
 
 ## 15 mei.
@@ -416,5 +398,11 @@ ggplot(data = df_chi_leeftijd, mapping = aes(x = name , y = value)) +
 Na lang gezeur is het gelukt om een figuur te maken om te kijken een significant te laten zien. 
 In de grafiek lijkt te zijn dat Zeggenschap ouders er niet in staat. <br>
 Dit is echter niet waar want het getal is te klein om te zien namelijk 0.003084398. Daar zit dis een groot verschil in. Dit is ook wel logisch omdat de ouders vinden dat kinderen niet kunnen kiezen en de kinderen vinden dat de ouders er geen mening over mogen hebben. 
+## 2 Juni 
+Bezig gegaan met de paper met de introductie zodat het gedaan is en zorgt voor een  betere taalgebruik tijdens het schrijven.
+## 3 juni 
+De introductie was al geschreven door 1 van de team genoten terwijl het mijn werk was.<br>
+Ben vervolgens bezig geweest om alle grafieken om gezet in de paper naar percentage in plaats van aantallen.<br>
+Ik ga ook mijn laatste grafiek toevoegen aan de paper om nog beter te vergelijken met verschil waar je naar kijkt. <br>
 
 
