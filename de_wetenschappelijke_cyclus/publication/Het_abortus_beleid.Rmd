@@ -307,7 +307,7 @@ p1 <- ggplot(df, aes(x= Wat.is.uw.leeftijd.)) +
 
 p1
 ```
-
+Zoals op figuur ... afgebeeld is zijn er twee pieken, een rondt de 20 en een rondt de 50 jaar oud. Met behulp van de Shapiro-Wilk test is bevestigd dat deze data niet normaal verdeeld is. (Waarschijnlijkheid Shapiro-Wilk test: p-waarde: 5.044 × 10-6)
 ```{r warning=FALSE, fig.cap='Leeftijd van de mensen die de enquete ingevuld hebben geplot tegen geslacht', message=FALSE, warning=FALSE }
 
 ggplot(df, aes(x= Wat.is.uw.leeftijd., y = geslacht)) +
@@ -397,7 +397,7 @@ Deze grafieken zijn nog niet klaar.... later nog aanpassen.
 
 ### Resultaten van de enquetevragen: ###
 
-```{r, warning=FALSE, message=FALSE, fig.cap='Vindt u dat adoptie een alternatief is voor abortus?', fig.asp=.75, out.width='50%', fig.align='left'}
+```{r, warning=FALSE, message=FALSE, fig.cap='Vindt u dat adoptie een alternatief is voor abortus?', fig.asp=.75, out.width='50%', fig.align='center'}
 x1 <- table(df$adoptie, df$geslacht)
 adoptie_plot_data <- data.frame(x1)
 adoptie_plot_data$fraction = adoptie_plot_data$Freq / sum(adoptie_plot_data$Freq)
@@ -405,8 +405,8 @@ adoptie_plot_data$percentage = round(adoptie_plot_data$fraction *100, digits =1)
 
 #ggplot(data = df, mapping = aes(x = adoptie_plot_data, y = adoptie, fill = geslacht)) +
  ggplot(data = adoptie_plot_data, mapping = aes(x = Var2, y = percentage, fill = Var1)) +
- geom_bar(stat = "identity" ,
-  position ="dodge") +
+ geom_bar(stat = "identity" , position ="dodge") +
+geom_label_repel(position = position_dodge(width = 1), min.segment.length = 0,aes(label = (round(percentage,digits = 3))) ) +
   labs(fill = "Keuze") +
   geom_text(aes(label = (""))) +
   xlab("Antwoorden") +
@@ -416,7 +416,7 @@ adoptie_plot_data$percentage = round(adoptie_plot_data$fraction *100, digits =1)
 ```
 
 
-```{r vader plot, warning=FALSE, message=F, fig.cap='Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?', fig.asp=.75, out.width='50%', fig.align='right'}
+```{r vader plot, warning=FALSE, message=FALSE, fig.cap='Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?', fig.asp=.75, out.width='50%', fig.align='center'}
 #Vindt u dat er voor abortus gekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen?
 x2 <- table(df$vader, df$geslacht)
 vader_plot_data <- data.frame(x2)
@@ -426,6 +426,8 @@ vader_plot_data$percentage = round(vader_plot_data$fraction *100, digits =1)
 ggplot(data = vader_plot_data, mapping = aes(x = percentage, y = Var1, fill = Var2)) +
   geom_bar(stat = "identity" ,
   position ="dodge")+
+  geom_label_repel(position = position_dodge(width = 1), min.segment.length = 0,aes(label = (round(percentage,digits = 3))) ) +
+
   geom_text(aes(label = (" "))) +
   xlab("Percentage mensen") + 
   labs(fill = "Geslacht")+
@@ -433,7 +435,7 @@ ggplot(data = vader_plot_data, mapping = aes(x = percentage, y = Var1, fill = Va
   ylab("Antwoorden ") +
   theme_minimal()
 
-plot_layout(ncol = 2)
+#plot_layout(ncol = 2)
 ```
 
 
@@ -442,13 +444,15 @@ plot_layout(ncol = 2)
 ```{r gezondheid plot, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag:Vindt u dat er voor abortusgekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen?'}
 
 x3 <- table(df$gezondheid_vrouw, df$geslacht)
-gezondheid_vrouw_plot_data <- data.frame(x2)
+gezondheid_vrouw_plot_data <- data.frame(x3)
 gezondheid_vrouw_plot_data$fraction = gezondheid_vrouw_plot_data$Freq / sum(gezondheid_vrouw_plot_data$Freq)
 gezondheid_vrouw_plot_data$percentage = round(gezondheid_vrouw_plot_data$fraction *100, digits =1)
 
 ggplot(data = gezondheid_vrouw_plot_data, mapping = aes(x = percentage, y = Var1, fill = Var2)) +
   geom_bar(stat = "identity" ,
   position ="dodge")+
+  geom_label_repel(position = position_dodge(width = 1), min.segment.length = 0,aes(label = (round(percentage,digits = 3))) ) +
+
   geom_text(aes(label = (" "))) +
   xlab("Percentage mensen") + 
   labs(fill = "Geslacht")+
@@ -465,26 +469,26 @@ bedenktijd_plot_data$fraction = bedenktijd_plot_data$Freq / sum(bedenktijd_plot_
 bedenktijd_plot_data$percentage = round(bedenktijd_plot_data$fraction *100, digits =1)
 
 ggplot(data = bedenktijd_plot_data, mapping = aes(x = percentage, y = Var1, fill = Var2)) +
-  geom_bar(stat = "identity" ,
-  position ="dodge")+
-  geom_text(aes(label = (""))) +
+  geom_bar(stat = "identity" ,position ="dodge")+
+ # geom_text(aes(label = (""))) +
   xlab("Percentage mensen") + 
   labs(fill = "Geslacht")+
   coord_flip() +
   ylab("Antwoorden ") +
   theme_minimal()
 ```
+### Vragen op een schaal van "zeer oneens" tot "zeer eens" ###
 
 
-```{r echo plot, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag:Vindt u dat er voor abortusgekozen mag worden als de vrouw niet in staat is voor het kind te zorgen vanwege financile beperkingen?'}
+```{r echo plot, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag:Vindt u dat er voor abortus gekozen mag worden als de vrouw niet in staat is voor het kind te zorgen vanwege financile beperkingen?'}
 x5 <- table(df$levensgevaar_vrouw_o, df$geslacht)
 vrouw_0_plot_data <- data.frame(x5)
 vrouw_0_plot_data$fraction = vrouw_0_plot_data$Freq / sum(vrouw_0_plot_data$Freq)
 vrouw_0_plot_data$percentage = round(vrouw_0_plot_data$fraction *100, digits =1)
-vrouw_0_plot_data
+#vrouw_0_plot_data
 
 ggplot(data = vrouw_0_plot_data, mapping = aes(x = percentage, y =Var1)) +
-  geom_bar(stat = "identity",  fill = "blue", alpha = 0.3) +
+  geom_bar(stat = "identity",  fill = "blue", alpha = 0.5) +
   facet_wrap(~Var2)+
   geom_text(aes(label = (" "))) +
   xlab("Percentage mensen") + 
@@ -492,7 +496,7 @@ ggplot(data = vrouw_0_plot_data, mapping = aes(x = percentage, y =Var1)) +
    theme_minimal()
 ```
 
-### Schaal data (naam veranderen)
+
 
 ```{r abortus, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag: Vindt u dat iemand een abortus mag als de zwangerschap een gevolg is van verkrachting?'}
 
@@ -502,7 +506,7 @@ veroorzaakt_o_plot_data$fraction = veroorzaakt_o_plot_data$Freq / sum(veroorzaak
 veroorzaakt_o_plot_data$percentage = round(veroorzaakt_o_plot_data$fraction *100, digits =1)
 
 ggplot(data = veroorzaakt_o_plot_data, mapping = aes(x = percentage, y =Var1)) +
-  geom_bar(stat = "identity",  fill = "blue", alpha = 0.3) +
+  geom_bar(stat = "identity",  fill = "blue", alpha = 0.5) +
   facet_wrap(~Var2)+
   geom_text(aes(label = (" "))) +
   xlab("Percentage mensen") + 
@@ -518,7 +522,7 @@ financieel_o_plot_data$fraction = financieel_o_plot_data$Freq / sum(financieel_o
 financieel_o_plot_data$percentage = round(financieel_o_plot_data$fraction *100, digits =1)
 
 ggplot(data = financieel_o_plot_data, mapping = aes(x = percentage, y =Var1)) +
-  geom_bar(stat = "identity",  fill = "blue", alpha = 0.3) +
+  geom_bar(stat = "identity",  fill = "blue", alpha = 0.5) +
   facet_wrap(~Var2)+
   geom_text(aes(label = (" "))) +
   xlab("Percentage mensen") + 
@@ -696,7 +700,48 @@ lr_man_vrouw_gezondheid_ouders <- glm(df_logistische_regressie$ouders ~ leeftijd
 ```{r}
 summary(lr_man_vrouw_vader)
 ```
+```{r Power test}
 
+tabel <- table(abortus$geslacht ,abortus$eigen_keuze_abortus) # tabel met mannen en vrouwen en hun keuze of abortus toegestaan moet worden of niet. 
+
+#prop.table(abortus$Wat.is.uw.geslacht..)
+tabel2 <- prop.table(tabel)
+
+#gem_leeftijd_vrouwen %>%
+# filter(abortus$Wat.is.uw.geslacht.., abortus$geslacht == "Vrouw")
+
+
+
+ja_abortus <- (ifelse(abortus$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn. 
+
+
+#(res <- t.test(ja_abortus, mu = 52 , alternative = "two.sided") )
+
+# Reken de proportie mannen uit die voorstanders van abortus zijn:
+man_ja_abortus <- df %>% 
+  filter(geslacht == "Man")
+prop_man_ja_abortus <- prop.table(table(ifelse(df$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)))
+
+
+
+# Bereken het zelfde voor de vrouwen:
+vrouw_ja_abortus <- df %>% 
+  filter(geslacht == "Vrouw")
+prop_vrouw_ja_abortus <- prop.table(table(ifelse(df$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)))
+
+
+
+# effect sterkte h uitrekenen met de twee ja/nee proporties (tussen mannen en vrouwen)
+h <- ES.h(prop_man_ja_abortus[2], prop_man_ja_abortus[1]) # Er werkt iets niet goed...
+
+
+power1 <- pwr.t.test(sig.level = 0.05, power = 0.8, n = 109 ,alternative = "two.sided") # test, andere h uitrekenen.
+power2 <- pwr.t.test(d = 0.5,sig.level = 0.05, power = 0.8, alternative = "two.sided") # test, andere h uitrekenen.
+
+
+```
+Om met een effect sterkte van 0.5 het verschil tussen de twee geslachten aan te tonen zijn er `r round(power2$n, digits = 0)` mensen nodig (van elke groep).
+En met de 109 mensen die we nu hebben is de effect sterkte: `r round(power1$d, digits = 2)`
 
 
 ## **nog verbeteren...:**
@@ -754,6 +799,23 @@ Op figuur .... zijn de met de logistische regressie berekende waarden laten zien
 
 
 # Discussie en Conclusies
+
+## Conclusie: ##
+Volgens de power-test zijn er niet genoeg mensen om met een effect sterkte van 0.5 (Cohen's D) middelgroot verschil aan te tonen. Met de 114 mensen die we in totaal hebben is de effect sterkte 0.39, dit is groot genoeg om grote verschillen aan te tonen. 
+
+Vervolgens is er een Shapiro-Wilk test uitgevoerd om na te gaan of de data normaal verdeeld is, hiervoor zijn de leeftijden van de mensen gebruikt die de enquête ingevuld hebben. Hieruit bleek dat de data niet normaal verdeeld is maar bimodaal is. 
+Er is een Chi-square test gedaan om het verband tussen geslacht en de keuze op de enquete vragen te vinden. Hieruit was gebleken dat het geslacht alleen op de vraag of de biologische vader zeggenschap zou moeten hebben over de abortus een statistische significante factor was, de p-waarde hiervan is namelijk: 0.018. Op de andere vragen had het geslacht geen significante invloed. 
+
+Met behulp van een logistische regressie is de invloed van alle factoren tegelijk berekend. Het resultaat hiervan was dat Voor de vraag of minderjarigen zelf zeggenschap mogen hebben over een abortus geloof een statistisch significante voorspeller was van de beslissing met een p-waarde van: 0.0019. 
+
+En voor de vraag of de biologische vader zeggenschap zou moeten hebben waren beide leeftijd (p-waarde:0.018521) en geslacht(p-waarde: 0.000648) statistische significante "predictors" van de uitkomst, geloof net niet met een p-waarde van 0.050357.
+De overkoepelende onderzoeksvraag kan hiermee dus beantwoord worden, of onderzochte onafhankelijke variabelen zoals: leeftijd, geloof en opleidingsniveau invloed hebben op de mening over abortus is afhankelijk van de vraag, dit is niet het zelfde voor elke vraag maar er kan geconcludeerd worden dat deze factoren wel degelijk invloed hebben op de mening. 
+
+
+## Discussie: ##
+De verdeling van de leeftijd data kan mogelijk verklaard worden door dat de leeftijdsgenoten van de makers van dit artikel rondt de 20 jaar oud zijn en hun ouders in de 50 jaar oud zijn, dit zijn de twee pieken in de leeftijdsverdeling. 
+
+Geslacht heeft geen statistisch significante invloed op de keuze of abortus toegestaan zou moeten worden, dit resultaat komt dus overeen met wat als eerder onderzocht was (bron: https://link.springer.com/article/10.1023/a:1021427014047)
 
 Deze sectie bevat tussen de 400-800 woorden.
 
