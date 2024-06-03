@@ -661,3 +661,9 @@ donutchart_geloof
 
 Je ziet in de bovenstaande plot 2 ringen. In de middelste ring is weergegeven wat de religieuze overtuiging van de respondenten zijn. Je ziet dat 80.8% aangeeft niet een religieuze overtuiging te hebben. Verder geeft 10.6% aan christelijk te zijn, 1.9% islamitisch en 6.7% ergens anders in te geloven (een geloof die niet bij de meegegeven opties stond). In de buitenste ring is weergegeven wat deze mensen hebben geantwoord op de vraag of iemand zelf moet kunnen kiezen of die een abortus wil. Je ziet hier dat 100% van de respondenten die aangeven niet een religieuze overtuiging te hebben ook zeggen dat iemand zelf moet kunnen kiezen of die een abortus wil. Ook 100% van de islamitische respondenten is voor de eigen keuze over abortus. Verder is 27% van de christenen tegen de eigen keuze over abortus en ook 14% van de mensen die aangeven ergens anders in te geloven is tegen de eigen keuze over abortus.
 
+## Maandag 3 juni
+```{r}
+# alle libraries die gebruikt worden
+(.packages())
+```
+
