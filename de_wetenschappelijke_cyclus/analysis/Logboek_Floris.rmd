@@ -104,7 +104,7 @@ Enkele vragen hiervan zijn afgeleid van het volgende document: https://news.gall
 De enquête is vervolgens in Microsoft Forms gemaakt met de bovenstaande vragen. 
  
 
-## **Automatisch gegenereerde testdata** ##
+### Automatisch gegenereerde testdata ###
 
 Voordat de data van de enquete verzameld was hebben we testdata gemaakt met behulp van R.
 Dit heeft als doel om te oefenen met de gebruikte statistische analyse methoden die ook gebruikt gaan worden voor echte data. 
@@ -115,7 +115,9 @@ Dit heeft als doel om te oefenen met de gebruikte statistische analyse methoden 
 ## Verspreiden van de enquete ##
 De makers van deze enquete hebben hem naar klasgenoten, familieleden en vrienden gestuurd met de instructie om hem door te sturen naar andere kenissen en vrienden. Op 21-05-2024 zijn er 110 mensen die hem ingevuld hebben met een man vrouw verdeling van: 60/49.
 
-De data verwerken:
+## Methode 
+
+
 Huidige working directory: `r getwd()`
 
 ```{r .csv inlezen }
@@ -478,7 +480,7 @@ shapiro_test <- shapiro.test(abortus$Wat.is.uw.leeftijd.)
 shapiro_test
 
 ```
-De p-waarde is: 2.097e-05 (`r shapiro_test$p.value`)
+De p-waarde is: 5.044 × 10-6 (`r shapiro_test$p.value`)
 dat betekend dat er wel een significant verschil is tussen een nomale verdeling en deze leeftijd data. 
 Omdat de data niet normaal verdeeld is zal een niet-parametrische analyse nodig zijn. 
 Voorbeelden van deze non parametrische zijn: de Kruskal-Wallis test en de Chi-square en de two way z test.
@@ -1165,7 +1167,7 @@ lr_man_vrouw_gezondheid_vrouw <- glm(df_logistische_regressie$gezondheid_vrouw ~
 lr_man_vrouw_gezondheid_ouders <- glm(df_logistische_regressie$ouders ~ leeftijd_onder_30 + geslacht + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond. + gelovig_01, data = df_logistische_regressie, family = binomial)
 
 
-#summary(lr_man_vrouw_zeggenschap_minderjarig) # geloof significant
+summary(lr_man_vrouw_zeggenschap_minderjarig) # geloof significant
 #summary(lr_man_vrouw_vader) # leeftijd en geslacht significant, geloof bijna
 #summary(logistische_regressie) # niets significant
 #summary(lr_man_vrouw_echo) # geloof significant
@@ -1222,23 +1224,29 @@ De bovenstaande twee chunks worden niet meer gebruikt omdat de modellen met beid
 
 De odds ratio wordt gebruikt om te laten zien hoeveel invloed de predictors individueel hebben wanneer de anderen niet veranderen. 
 
-```{r }
+```{r Log-odds}
 
 # Zodat het niet in wetenschappelijke notatie weergeven wordt als het onder de 999 is. 
 options(scipen = 999)
 
 # Bereken de coefficienten (log e)
 coefficienten_van_lr_man_eigen_keuze_abortus <- coef(lr_man_eigen_keuze_abortus)
+coefficienten_van_lr_man_vader <- coef(lr_man_vader)
+
+
+
 
 # Verander de coefficienten naar procentuele verandering:
 odds_ratio_lr_man_eigen_keuze_abortus <- ( 1 - (exp(coefficienten_van_lr_man_eigen_keuze_abortus))) * 100
+odds_ratio_van_lr_man_vader <- exp(coefficienten_van_lr_man_vader)
 
 
 list(odds_ratio_lr_man_eigen_keuze_abortus)
 odds_ratio_lr_man_eigen_keuze_abortus <- data.frame(odds_ratio_lr_man_eigen_keuze_abortus)# %>% rename(                                                      aa = Wat.is.uw.leeftijd.
 #)
 
-odds_ratio_lr_man_eigen_keuze_abortus
+odds_ratio_van_lr_man_vader
+#odds_ratio_lr_man_eigen_keuze_abortus
 
 
 
