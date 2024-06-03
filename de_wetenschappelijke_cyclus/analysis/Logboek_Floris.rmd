@@ -3,8 +3,8 @@ title: 'Logboek: Publieke Opinie'
 author: "Floris Menninga"
 date: "2024-04-22"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r libraries, results='hold'}
 # Libraries
 library(data.tree)
-library(ggraph)
+#library(ggraph)
 library(igraph)
 library(tidyverse)
 library(viridis)
@@ -129,7 +129,7 @@ summary(abortus)
 #str(abortus)
 ```
 
-```{r Leeftijdsverdeling, echo=T }
+```{r Leeftijdsverdeling, echo=T, eval=F }
 
 df_test <- df %>% select(geslacht, Wat.is.uw.leeftijd.)
 
@@ -285,10 +285,10 @@ df <- data.frame(abortus)
 
 
 ```{r Leeftijdsverdeling geslacht}
-df_test <- df %>% select(geslacht, Wat.is.uw.leeftijd.)
+#df_test <- df %>% select(geslacht, Wat.is.uw.leeftijd.)
 
 # test
-ggplot(df_leeftijd, aes(x= df_test$Wat.is.uw.leeftijd., y = df_test$geslacht)) +
+ggplot(df, aes(x= df$Wat.is.uw.leeftijd., y = df$geslacht)) +
   geom_boxplot(fill = "blue", alpha = 0.3, varwidth = T) +
   xlab("Leeftijd (Jaren)") +
   ylab("Geslacht") +
@@ -1254,8 +1254,8 @@ er een andere uitkoms gekozen wordt (bijvoorbeeld een ander antwoord op de vraag
 newdata1 <- data.frame(geslacht = c("Man", "Vrouw"), Wat.is.uw.leeftijd. = c(20,22), keuze = c("Wel abortus toestaan","Wel abortus toestaan"))
 
 # Voorspelling van de bovenstaande twee test observaties aan de hand van de gemaakte logistische regressie:
-voorspelde_waarde_1 <- predict.lm(logistische_regressie, newdata = newdata1, type = "response")
-voorspelde_waarde_1
+#voorspelde_waarde_1 <- predict.lm(logistische_regressie, newdata = newdata1, type = "response")
+#voorspelde_waarde_1
 
 ```
 Met behulp van de predict.lm() functie worden de twee test observaties (net als in de originele dataset) aan de hand van de gemaakte logistische regressie. De nummers moeten nog omgezet worden naar een Ja/Nee antwoord op de vraag: Abortus toestaan.
@@ -1325,7 +1325,7 @@ lr_voorspelling_man_vrouw_vader <- lr_voorspelling_man_vrouw_vader[order(lr_voor
 lr_voorspelling_man_vrouw_vader$rank <- 1:nrow(lr_voorspelling_man_vrouw_vader)
 
 
-ggplot(data = lr_voorspelling_man_vrouw_vader, aes(x = rank, y = lr_voorspelling_man_vrouw_vader$lr_man_vrouw_vader.fitted.values)) +
+test_lr <- ggplot(data = lr_voorspelling_man_vrouw_vader, aes(x = rank, y = lr_voorspelling_man_vrouw_vader$lr_man_vrouw_vader.fitted.values)) +
   geom_point(aes(color=df_logistische_regressie$geslacht ,size=df_logistische_regressie$Wat.is.uw.leeftijd., alpha = 0.9)) +
   geom_ribbon(aes(ymin = (rank),
     ymax = (rank), fill = rank), alpha = 0.2) +
@@ -1345,69 +1345,23 @@ Als introductie van de verkregen data moeten er een paar grafieken weergeven wor
 menensen die de enquete ingevuld hebben weergeven is. 
 
 ```{r eval=F}
-x1 <- table(df$adoptie)
+
+x1 <- table(df$adoptie, df$geslacht)
 adoptie_plot_data <- data.frame(x1)
 adoptie_plot_data$fraction = adoptie_plot_data$Freq / sum(adoptie_plot_data$Freq)
 adoptie_plot_data$percentage = round(adoptie_plot_data$fraction *100, digits =1)
 
+#ggplot(data = df, mapping = aes(x = adoptie_plot_data, y = adoptie, fill = geslacht)) +
+ ggplot(data = adoptie_plot_data, mapping = aes(x = Var2, y = percentage, fill = Var1)) +
+ geom_bar(stat = "identity" ,
+  position ="dodge") +
+  labs(fill = "Keuze") +
+  geom_text(aes(label = (""))) +
+  xlab("Antwoorden") +
+  ylab(" Percentage antwoord") +
+  theme_minimal()
 
-
-
-
-#adoptie_plot <- 
-ggplot(data = df, mapping = aes(x = adoptie_plot_data, y = adoptie, fill = geslacht)) +
-  geom_bar(stat = "identity") +
-  #geom_text(aes(label = (" "))) +
- # ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
-  xlab("Percentage mensen") +
-  ylab(" ")
-
-
-adoptie_plot
-
-vader_plot <- ggplot(data = df, mapping = aes(x = c(1:114), y = vader, fill = geslacht)) +
-  geom_bar(stat = "identity") +
-  geom_text(aes(label = (" "))) +
- # ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
-  xlab("Percentage mensen") + # nog aapassen naar procent.
-  ylab(" ")
-
-echo_plot <- ggplot(data = df, mapping = aes(x = c(1:114), y = echo, fill = geslacht)) +
-  geom_bar(stat = "identity") +
-  geom_text(aes(label = (" "))) +
-#  ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
-  xlab("Percentage mensen") + # nog aapassen naar procent.
-  ylab(" ")
-
-bedenktijd_plot <- ggplot(data = df, mapping = aes(x = c(1:114), y = bedenktijd, fill = geslacht)) +
-  geom_bar(stat = "identity") +
-  geom_text(aes(label = (" "))) +
- # ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
-  xlab("Percentage mensen") + # nog aapassen naar procent.
-  ylab(" ")
-
-#ggarrange(gezondheid_plot, vader_plot, echo_plot, bedenktijd_plot)
 ```
-```{r}
-# create a dataset
-specie <- c(rep("sorgho" , 3) , rep("poacee" , 3) , rep("banana" , 3) , rep("triticum" , 3) )
-
-keuzes <- df %>% select(geslacht, Wat.is.uw.leeftijd., levensgevaar_vrouw_o, geestelijke_handicap_o, levensbedreigende_ziekte_o, veroorzaakt_o, veroorzaakt_o, niet_gespecificeerd_o, financiele_beperkingen) %>% pivot_longer()
-keuze <- df %>% select (rep(levensgevaar_vrouw_o),)  
-
-
-condition <- rep(c("normal" , "stress" , "Nitrogen") , 4)
-value <- abs(rnorm(12 , 0 , 15))
-data <- data.frame(specie,condition,value)
- 
-keuzes <- df %>% select(geslacht, Wat.is.uw.leeftijd.) %>% pivot_wider(colls = c(1:2))
-keuzes
-
-
-
-# Grouped
-ggplot(data, aes(fill=condition, y=value, x=specie)) + 
-    geom_bar(position="dodge", stat="identity")
-```
+Net zoals op de bovenstaande afbeelding moeten alle vragen gevisualiseerd worden, ook moeten proporties gebruikt worden i.p.v. absolute getallen omdat er niet even veel mannen als vrouwen zijn. 
 
 
