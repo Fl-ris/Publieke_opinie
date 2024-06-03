@@ -3,36 +3,63 @@ title: "Logboek_Jasper"
 author: "Jasper"
 date: "2024-05-13"
 output:
-  pdf_document: default
+
   html_document: default
+  pdf_document: default
+
 ---
 # inleiding
 Dit is het logboek van de volgende onder zoeksvraag: 
 
 *Is er een verschil tussen de ethische meningen van mensen van andere leeftijden, geslachten en geloof?* <br>
 Dit gaan we doen met behulp van een enqute en een  verwerking in R studio. <br>
-
+De enquête wordt  verspreid over meerdere mensen van verschillende leeftijdsgroepen. Hierdoor hopen we meerdere leeftijdsgroepen te kunnen interviewen. <br>
+De vragen waar we voor hebben gekozen zijn ja en nee vragen zonder toelichting van de invuller in te zetten. Want dat is moeilijker te verwerken dan bijvoorbeeld " wat is uw gevoel hier bij?". Dan krijg je meer niet echt duidelijke data. <br>
+We hebben wel op het eind een paar stellingen met waardes als  zeer oneens tot zeer eens. <br>
+We hebben er voor gekozen om in microsoft forms te doen omdat je dan ook een csv file van kan maken. <br>
 
 # Logboek
 ## 22 april tot 26 april
 In deze periode hebben we vooral gekeken naar wat we wouden onderzoeken en wat. <br>
-We hebben uiteindelijk gekozen voor arbortus. <br>
-Omdat dit een etische kwetsie is, maar niet zo zwaar ligt als bijvoorbeeld vluchtelingen.<br>
+We hebben uiteindelijk gekozen voor abortus. <br>
+Omdat dit een etnische kwestie is, maar niet zo zwaar ligt als bijvoorbeeld vluchtelingen.<br>
 Ook is het al vaak in het nieuws geweest.<br>
 
 ## 27 april tot 6 mei <br>
-In deze periode hebben we de informatie gezocht over het onderwerp en maakte we ookeen enqute die we hebben laten zien aan andere personen. <br>
-Het laaste deden we door onafhanelijke persoen zodat we fouten er uit konden krijgen. 
+In deze periode hebben we de informatie gezocht over het onderwerp en maakte we ook een enquête die we hebben laten zien aan andere personen. <br>
+Het laatste deden we door onafhankelijke persoon zodat we fouten er uit konden krijgen. 
 Fouten zoals een te sturende vraag of een onduidelijke vraag. <br>
-De verbeter punten waren: <br>
+En wat we achterkwamen was bijvoorbeeld over de bedenk tijd die veranderd is. Dus wel intersesaant om te kijken wat de menig er over is <br>
 
 ## 7 mei
-Begonnen we met de enqute na alle goedkeureingen.
+Begonnen we met de enquête na alle goedkeuringen.
+
 ## 8 mei 
 Meerdere mensen gevraagd om het in te vullen.
 
 ## 9 mei tot ......
-enqute open laten staan en allemaal meet waarden binnen krijgen en bedeken waar het nog meer hebben kunnen uit delen
+<<<<<<< HEAD
+enquête open laten staan en allemaal meet waarden binnen krijgen en bedenken waar het nog meer hebben kunnen uit delen
+
+## 14 mei
+Ik moet laten zien wat de gemiddelde leeftijd is van onze meetwaarde. 
+```{r, include=FALSE}
+# Libraries
+library(data.tree)
+library(ggraph)
+library(igraph)
+library(tidyverse)
+library(viridis)
+library(ggplot2)
+library(dplyr) 
+library(rgexf)
+library(ggrepel)
+# Voor statistische analyses:
+library("pwr")
+```
+Hier worden wat namen veranderd want anders krijg je namen als *Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil* en dat is veel te lang.
+=======
+enquête open laten staan en allemaal meet waarden binnen krijgen en bedenken waar het nog meer hebben kunnen uit delen
 
 ## 14 mei
 Ik moet laten zien wat de gemiddelde leeftijd is van onze meetwaarde. 
@@ -41,6 +68,7 @@ library(tidyverse)
 library(dplyr)
 
 ```
+
 
 ```{r}
 
@@ -62,8 +90,11 @@ abortus$geloof <- factor(x = abortus$Wat.is.uw.religieuze.overtuiging..,
 
 
 abortus$geslacht <- factor(x = abortus$Wat.is.uw.geslacht..,
-                           levels = c("Man", "Vrouw"),
-                           labels = c("Man", "Vrouw"))
+
+                           levels = c("Man", "Vrouw", "Wil ik liever niet melden"),
+                           labels = c("Man", "Vrouw", "Wil ik liever niet melden"))
+                           
+
 # Voor de vraag: Wat is uw religieuze overtuiging?
 
 abortus$afkomst <- factor(x = abortus$In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht., 
@@ -97,19 +128,32 @@ leeftijd <- data.frame(abortus$leeftijd)
 ggplot(leeftijd, aes(x=abortus$leeftijd)) + geom_histogram(aes(y =after_stat(density)), color = "black")+geom_density(alpha = .2, fill= "red")
 ```
 
+<<<<<<< HEAD
+Hier zie dat het niet helemaal normaal verdeelt is, dit komt omdat het eerst is verspreid onder de mede studenten en aan hun ouders.
+Hierdoor krijg je in sommige gebieden meer invullingen. In de grafriek zie je ook dat het ook terug komen.
+=======
 /n
 Hier zie dat het niet helemaal normaal verdeelt is maar kunnen wel een test doen
+
 
 ```{r}
 shapiro.test(abortus$leeftijd)
 
 ```
 
+<<<<<<< HEAD
+Hier zie zeker dat de leeftijd van onze invuller niet normaal verdeelt is.
+
+
+## 15 mei.
+Ik laat zien waar onze invuller vandaan komt in een donut chart.
+=======
 Hier zie zeker dat de leeftijd van onze invullers niet normaal verdeelt is.
 
 
 ## 15 mei.
 Ik laat zien waar onze invullers vandaan komen in een donut chart.
+
 
 ```{r}
 
@@ -138,6 +182,19 @@ ggplot(renamed_city_count, aes(ymax=ymax, ymin=ymin, xmax=13, xmin=3, fill=Provi
      coord_polar(theta="y") + 
      xlim(c(-13, 13)) 
 ```
+<<<<<<< HEAD
+<br>
+Hier kan je zien dat de meeste mensen uit de noordelijke regio komen. Dus uit Drenthe, Friesland en Groningen 
+Dit is logisch omdat we de enqute hebben uit gezet in de noordelijke provincies.
+<br>
+Ook een boxplot gemaakt over de verdeling van de leeftijd (meer als oefening)
+```{r}
+ggplot(leeftijd, aes(x = abortus$leeftijd)) + geom_boxplot()
+```
+<br> 
+## 16 mei
+Ik ga laten zien het verschil in mening over "Vindt u dat de ouders zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen?" tussen jongeren (21 jaar en jonger want deze personen zijn officieel nog niet volwassen is) en ouderen (22 jaar en ouder)
+=======
 
 Hier kan je zien dat de meeste mensen uit de noordelijke regios komen. \n
 Dus uit Drenthe, Friesland en Groningen \n
@@ -148,15 +205,83 @@ ggplot(leeftijd, aes(x = abortus$leeftijd)) + geom_boxplot()
 ```
 ## 16 mei
 Ik ga laten zien het verschil in mening over "Vindt u dat de ouders zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen?" tussen jongeren (21 jaar en jonger want deze personen zijn oficeel nog niet volwassen is) en ouderen (22 jaar en ouder)
+
 ```{r}
 
 abortus %>%
     select(leeftijd, ouderszegenschap) %>%
+    mutate(leeftijd_boven_onder_21 = ifelse(leeftijd > 21, "boven", "onder")) %>%
+
     mutate(leeftijd_boven_onder_21 = ifelse(leeftijd >= 21, "boven", "onder")) %>%
+
     ggplot(mapping = aes(x = ouderszegenschap, fill = leeftijd_boven_onder_21)) +
     geom_bar(position = "dodge")
 
 
+```
+
+<<<<<<< HEAD
+Dit is geen goeie plot om te laten zien wat de verschillen zijn in antwoorden. Hier laat je nu het aantal keer zien dat het is ingevuld. Hierdoor lijkt het dat ja heel vaak word in gevuld terwijl het gewoon minder vaak is ingevuld door iemand onder de leeftijd van 21 jaar <br>
+Ik ga nog bedenken wat een goeie manier is om het te laten zijn en een goei vergelijking te kunnen maken.
+
+## 21 Mei
+Ik ga even met iets anders bezig het lukt niet echt.  
+De keuze dat we hebben gemaakt voor de leeftijd van 21 jaar want over de helle wereld is 21 jaar de oudste leeftijd van de wereld. We hadden ook kunnen kiezen voor 18 jaar. Want in Nederland is dat de grens. Maar als je kijkt naar Amerika is er een onderzoek geweest naar de conectie met de legale leeftijd van drinken en auto ongelukken. Hier is naar voren gekomen dat hoe lager de leeftijd hoe meer auto ongelukken er zijn. Hier kan je bijvoorbeeld uit concluderen dat deze mensen nog niet verantwoordelijk genoeg zijn om met alcohol om te gaan,
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6876521/
+## 22 mei 
+Ik ga de tabel van 16 mei om zetten naar percentage. zo dat het wel klopt en niet op aantallen gaat.
+ 
+```{r}
+#hier maak ik een splitsing van de leeftijden boven en onder 
+Spiltsing_leeftijd <-abortus %>%
+    select(leeftijd, ouderszegenschap, geslacht) %>%
+    mutate(leeftijd_boven_onder_24 = ifelse(leeftijd > 25, "boven", "onder"))
+#Hier maak ik een tabel van de leeftijd boven de 25 
+table_Boven_25 <- prop.table(table(Spiltsing_leeftijd$leeftijd_boven_onder_24[Spiltsing_leeftijd$leeftijd_boven_onder_24 == "boven"], Spiltsing_leeftijd$ouderszegenschap[Spiltsing_leeftijd$leeftijd_boven_onder_24 == "boven"]))
+#Hier maak ik een tabel voor de leeftijd tot en met de leeftijd van 25
+table_Onder_25<- prop.table(table(Spiltsing_leeftijd$leeftijd_boven_onder_24[Spiltsing_leeftijd$leeftijd_boven_onder_24 == "onder"], Spiltsing_leeftijd$ouderszegenschap[Spiltsing_leeftijd$leeftijd_boven_onder_24 == "onder"]))
+#hier worden de twee tabellen samengevoegd
+table_onder_boven_samen <- rbind(table_Onder_25,table_Boven_25)
+#hier wordt de grafiek gemaakt van de twee de laaste tabel 
+as.data.frame.table(table_onder_boven_samen) %>%
+    ggplot(aes(x = Var1,y = Freq,  fill = Var2)) +
+    geom_col(position = "dodge")+
+    guides(color = guide_legend(title = "Wat is de mening")) +
+    labs(title = "Ouderzeggenschap over miderjarge", 
+         y = "Voorkomen keuze in de groep in poprties", 
+         x = "Leeftijd boven of onder de 21")
+Spiltsing_leeftijd
+
+```
+
+Hier zie je dus dat de mening erg verschild over zeggenschaps. 
+jongeren hebben willen nee en ouderen zeggen ja
+
+## 23 mei 
+De grafiek van boven mooi maken en testen gaan uit voeren op de de laatste grafiek.
+De grafriek is goed gelukt nu dus dat is klaar. 
+##  27 mei 
+Ik ga een chi square test doen. Of het geslacht mee telt voor mensen onder de leeftijd van 25 over het onderwerp mening van ouders <br>
+De leeftijd van 25 is gekomen omdat de hersenen tussen de leeftijd van 20 en 25 jaar volgroeid is. Daarom is de vorige figuur ook verander naar de leeftijd van 25 jaar. 
+>H0 de leeftijd heeft geen significat verschil op de mennig over zeggenenschap van de ouders bij de leeftijd groep van onder 25 <br>
+
+```{r}
+
+# 1 voor de mensen de voorstander zijn, 0 als 
+#ze tegen zijn.
+
+# Chi-square test:
+#chi tesit over de leeftidijd onder de 25 over zeggen schap van de ouders
+chi_abortus_minderjarig_keuze_onder <- chisq.test(table_Onder_25,  correct = T)
+chi_abortus_minderjarig_keuze_onder
+
+```
+Uit deze chi square test kunnen we concluderen dat er geen significant verschil is tussen de mening van de mensen, van verschilde geslacht en onder de leeftijd 25 over hun mening over of de ouders hun mening mee telt bij abortus. 
+Dat is ook wel logisch om te zien als je de figuur hier boven ziet.
+```{r}
+#chi tesit over de leeftidijd boven de 25 over zeggen schap van de ouders
+chi_abortus_minderjarig_keuze_boven <- chisq.test(table_Boven_25, correct = T)
+chi_abortus_minderjarig_keuze_boven
 ```
 
 
@@ -174,7 +299,122 @@ abortus %>%
     mutate(leeftijd_boven_onder_21 = ifelse(leeftijd >= 21, "boven", "onder")) %>%
     ggplot(mapping = aes(x = ouderszegenschap, fill = leeftijd_boven_onder_21)) +
     geom_bar(position = "dodge")
+
 ```
 
+
+
+<<<<<<< HEAD
+
+## 28 mei 
+Met de paper bezig geweest de introductie geschreven en met de powepoint bezig geweest
+
+## 29 mei
+De vorige Chi sqare test is fout gegaan, ik heb gekeken of onder de leefiftij van 25 een significant verschil zit en boven de leeftijd van 25 en dat was er beide niet,  hier onder is ie nu wel goed.
+
+```{r}
+#heen chi test tussen de verschillende twee groepen.
+Boven_onder_Ouderzegschap <-table(Spiltsing_leeftijd$leeftijd_boven_onder_24, Spiltsing_leeftijd$ouderszegenschap)
+(chi_leeftijd_Ouderzegschap <-chisq.test(Boven_onder_Ouderzegschap, correct = T))
+
+```
+Hier uit is te zien dat er wel een significant verschil is tussen de verschillende leeftijd groepen. <br>
+Hier onder hebben we de de manier van de chis square test veranderd. 
+```{r}
+#oefening 
+tabel_ofen <- table(abortus$geslacht, abortus$eigen_keuze_abortus)
+
+chisq.test(tabel_ofen)
+
+```
+Er wordt nu telkens een chisp.test te doen op elke vraag.
+```{r}
+
+abortus_aangpast <- abortus %>%
+    mutate(leeftijd_boven_onder_24 = ifelse(leeftijd > 25, "boven", "onder"))
+
+Boven_onder_kidskeuze <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Kindskeuze)
+(chi_leeftijd_kids_eigen_keuze<-chisq.test(Boven_onder_kidskeuze, correct = T))
+```
+```{r}
+Boven_onder_Wel_geen <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil.)
+ (chi_leeftijd_eigen_keuze_alegemeen <-chisq.test(Boven_onder_Wel_geen, correct = T))
+
+```
+```{r}
+Boven_onder_Vader<-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.)
+(chi_leeftijd_vaderszeggenschap <-chisq.test(Boven_onder_Vader, correct = T))
+```
+## 30 mei 
+Ik a bezig met meer Chi squar testen zo dat ik ze zo meteen in een grafriek kan stoppen om in 1 keer te kunnenlaten zien waar een sinficant verschil is 
+
+```{r}
+Boven_onder_Keuze_Gevaar_moeder <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.er.voor.abortus.gekozen.mag.worden.als.de.gezondheid.van.de.vrouw.door.de.zwangerschap.in.gevaar.kan.komen.)
+(chi_leeftijd_keuze_Gevaar_moeder <-chisq.test(Boven_onder_Keuze_Gevaar_moeder, correct = T))
+```
+```{r}
+Boven_onder_Keuze_verkachting <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.iemand.een.abortus.mag.als.de.zwangerschap.een.gevolg.is.van.verkrachting.)
+(chi_leeftijd_keuze_verkrachting <-chisq.test(Boven_onder_Keuze_verkachting, correct = T))
+```
+```{r}
+Boven_onder_Keuze_zonder_reden <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$De.vrouw.het.kind.niet.wil.houden.om.niet.gespecificeerde.redenen)
+(chi_leeftijd_keuze_zonder_reden <-chisq.test(Boven_onder_Keuze_zonder_reden, correct = T))
+```
+```{r}
+Boven_onder_Keuze_Echo <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Moet.het.wettelijk.verplicht.worden.voor.vrouwen.die.een.abortus.willen.om.een.echo.van.de.foetus.te.zien.voordat.een.abortus.toegestaan.is.)
+(chi_leeftijd_keuze_echo <-chisq.test(Boven_onder_Keuze_Echo, correct = T))
+```
+```{r}
+Boven_onder_Keuze_bedenktijd <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.de.wettelijke.bedenktijd.moet.terugkomen.)
+(chi_leeftijd_keuze_bedenktijd <-chisq.test(Boven_onder_Keuze_bedenktijd, correct = T))
+```
+```{r}
+Boven_onder_Keuze_adoptie <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.adoptie.een.alternatief.is.voor.abortus.)
+(chi_leeftijd_keuze_adoptie <-chisq.test(Boven_onder_Keuze_adoptie, correct = T))
+
+```
+```{r}
+Boven_onder_Keuze_vader <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.)
+chi_leeftijd_keuze_vader <-chisq.test(Boven_onder_Keuze_vader, correct = T)
+chi_leeftijd_keuze_vader
+```
+
+
+Hier onder word de plot gemaakt
+```{r}
+# hier worden alle waardes van de chi testen bij elkaar geveogd
+chi_test_vector_leeftijd <- c(chi_leeftijd_eigen_keuze_alegemeen[3], chi_leeftijd_keuze_verkrachting[3], chi_leeftijd_kids_eigen_keuze[3],chi_leeftijd_Ouderzegschap[3], chi_leeftijd_keuze_echo[3],chi_leeftijd_keuze_bedenktijd[3],chi_leeftijd_keuze_adoptie[3],chi_leeftijd_vaderszeggenschap[3])
+# Hier worden ze weer hernoemd.
+df_chi_leeftijd <- (data.frame((chi_test_vector_leeftijd)) %>% rename(
+  `Abortus toestaan` = p.value,
+  `Gevolg van verkrachtign` = p.value.1,
+  `Minderjarig kind` = p.value.2,
+  `Zeggenschap ouders` = p.value.3,
+  `Echo bekijken` = p.value.4,
+  `Bedenktijd invoeren` = p.value.5,
+  `Adoptie als alternatief` = p.value.6,
+  `Zeggenschap vader` = p.value.7
+  ))
+```
+
+
+```{r}
+# hier wordt er een gafriek van gemaakt
+
+df_chi_leeftijd %>% 
+  pivot_longer(cols = c(1:8)) -> df_chi_leeftijd
+ggplot(data = df_chi_leeftijd, mapping = aes(x = name , y = value)) +
+  geom_bar(stat = "identity") +
+  geom_hline(yintercept=0.05, linetype="dashed", color = "red") +
+  ylab("P-waarde Chi-square test:") +
+  xlab(" ") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.6)) 
+
+```
+## 1 Juni
+Na lang gezeur is het gelukt om een figuur te maken om te kijken een significant te laten zien. 
+In de grafiek lijkt te zijn dat Zeggenschap ouders er niet in staat. <br>
+Dit is echter niet waar want het getal is te klein om te zien namelijk 0.003084398. Daar zit dis een groot verschil in. Dit is ook wel logisch omdat de ouders vinden dat kinderen niet kunnen kiezen en de kinderen vinden dat de ouders er geen mening over mogen hebben. 
 
 

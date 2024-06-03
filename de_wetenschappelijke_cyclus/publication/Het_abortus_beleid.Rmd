@@ -9,6 +9,7 @@ lang: nl # dit zorgt er voor dat "abstract" "samenvatting" gaat heten
 
 abstract: |
   To-do: Bibliografie maken (template invullen), thema gelijk maken (theme_minimal()) en aan het eind de abstract schrijven, dit moet een samenvatting zijn van alles dat bersproken is. 
+    In dit verslag kunt u lezen over ons onderzoek die wij hebben gedaan voor het schoolvak de weteschapeijlke cycles. Hiervoor moesten wij een onderzoek doen naar een eigen geokzen onderwerp zodat we weten hoe de wetenschapelijke cycles werkt en hoe je een goed onderziek doet. Wij hebben gekozen om onderzoek te doen met behulp van een enqute of de mennig over etnische vraagstukken veranderd op een bepaalde leeftijd of dat verschillende mensen leeftijdsgroepen er anders naar kijken. Onze enqute gaat dus over arbortus omdat het niet zo zwaar beladen is als vluchtelingen is en ook wel in het nieuws is geweest. 
     
 
 bibliography: Het_abortus_beleid.bib # naam van je .bib file. Deze moet hetzelfde zijn als je Rmd bestandsnaam
@@ -44,9 +45,9 @@ library(ggrepel)
 library(ggridges)
 
 
-library("ggpubr")
+#library("ggpubr")
 # Voor statistische analyses:
-library("pwr")
+#library("pwr")
 
 #Laad dataset:
 abortus <- read.csv("../analysis/abortus_dataset.csv", na.strings = "NA")
