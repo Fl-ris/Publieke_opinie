@@ -71,17 +71,21 @@ Dit kan met de 'ggraph' package.
 
 ## Woensdag 15 mei
 Data inlezen.
-```{r}
-data <- read.csv('abortus_dataset.csv')
+```{r data inlezen}
+
+# file <- "dataset.csv"
+# data <- readr::read_csv(file)
+#data <- read.csv(file)
+data <- read.csv('dataset_nieuw.csv')
 # head(data)
 ```
 
-```{r}
+```{r summary}
 # summary(data)
 ```
 Kolommen duidelijkere namen gegeven en onnodige kolommen verwijderd.
 (stellingen nog niet veranderd!)
-```{r}
+```{r data renamed}
 library(dplyr)
 data_renamed <- data %>%
     rename(
@@ -109,7 +113,7 @@ data_renamed <- data %>%
 
 (later "Anders" en "Wil ik liever niet zeggen" toevoegen!)
 factor gender toevoegen.
-```{r eval=FALSE}
+```{r factor oefenen, eval=FALSE}
 library(dplyr)
 data_renamed$Gender <- factor(x = data$gender, 
                       levels = c("Vrouw","Man"),
@@ -123,7 +127,7 @@ er gaat iets fout.
 
 Oefenen: 
 Gemiddelde leeftijd enquêtes berekend en cat():
-```{r}
+```{r oefening 1}
 (gemiddelde_leeftijd <- mean(data_renamed$Leeftijd))
 cat(sprintf("de gemiddelde leeftijd van de enquête is: %.2f ik ben iris %.3f/n", gemiddelde_leeftijd, gemiddelde_leeftijd))
 ```
@@ -132,14 +136,15 @@ Verder kun je met 'cat(sprintf())'  een variabele in je tekst zetten. Door midde
 
 
 Oefenen histogram maken:
-```{r}
+```{r aantal per leeftijd}
 library(ggplot2)
 ggplot(data_renamed, aes(x=Leeftijd, fill = Gender)) + 
     labs(title = "Aantal per leeftijd") +
     scale_fill_brewer(palette = "Dark2") +
     geom_histogram(position = "dodge") +
     stat_bin(aes(label = ifelse(after_stat(count)>0, after_stat(count),"")),
-             geom = "text", position = "dodge", vjust = -.4)
+             geom = "text", position = "dodge", vjust = -.4) +
+    theme_minimal()
              
 
 ```
@@ -164,7 +169,7 @@ Hoeveel van deze antwoorden komen van mannen en hoeveel van vrouwen? Zou het zo 
 (Proberen met stacked barplot, y-as: aantal antwoorden, x-as = Mannen, Vrouwen, legenda/kleuren balkjes: Ja, Nee, Weet ik niet)
 
 
-```{r}
+```{r oefening 2}
 library(ggplot2)
 
 ggplot(data_renamed, aes(fill=Biologische_vader_zeggenschap, x=Gender, y=Leeftijd)) + 
@@ -189,19 +194,19 @@ hiermee kun ik volgens mij vervolgens een plot maken zoals ik eerst had bedacht.
 
 
 Maakt een tabel van de vraag(biologische vader zeggenschap) en de gender:
-```{r}
+```{r tabel gender en zeggenschap}
 (tabel <- table(data_renamed$Gender, data_renamed$Biologische_vader_zeggenschap))
 ```
 maakt van de tabel hierboven procenten:
-```{r}
+```{r proptabel gender en zeggenschap}
 (prop_tabel <- prop.table(table(data_renamed$Gender, data_renamed$Biologische_vader_zeggenschap)))
 ```
 De chisq-test is om te kijken of er een significant verschil zit tussen de mannen en vrouwen in antwoorden:
-```{r}
+```{r test gender en zeggenschap}
 (chisq.test(tabel))
 ```
-De p-value die hieruit komt is '0.01954'. Dit is lager dan 0.05, dus is er een significant verschil aangetoond. 
-```{r}
+De p-value die hieruit komt is '0.01798'. Dit is lager dan 0.05, dus is er een significant verschil aangetoond.
+```{r barplot gender en zeggenschap 1}
 library(ggplot2)
 
 
@@ -221,7 +226,7 @@ In de bovenstaande plot zie je weergegeven per gender hoeveel procent er heeft g
 
 ## Dinsdag 21 mei
 Inlezen power analyse;
-power wordt bepaalt door steekproefomvang(hoeveel antwoorden nodig), effectgrootte(verband tussen twee variabelen, bijvoorbeeld verschil in gemiddelden) en significantieniveau(hoe groot is de kans dat een resultaat door toeval is bepaalt).
+power wordt bepaalt door steekproefomvang(hoeveel antwoorden nodig), effectgrootte (verband tussen twee variabelen, bijvoorbeeld verschil in gemiddelden) en significantie niveau (hoe groot is de kans dat een resultaat door toeval is bepaalt).
 Met een poweranalyse bepaal je de steekproefomvang(dus hoeveel antwoorden er nodig zijn voor een betrouwbaar resultaat).
 Powerniveau moet boven de 80% zitten. 
 Voor een poweranalyse zijn drie factoren nodig om de vierde te berekenen.
@@ -230,7 +235,7 @@ Steekproefomvang(de onbekende)
 Significantieniveau(meestal 5% (of 1%))
 Verwachte effectgrootte(?, zelf inschatten dmv eerder onderzoek)
 
-Door het significantieniveau tussen de 5% en de 1% te veranderen heb je invloed op de kans op een type-| fout en een type-|| fout.
+Door het significantie niveau tussen de 5% en de 1% te veranderen heb je invloed op de kans op een type-| fout en een type-|| fout.
 (BRON: Bhandari, P. (2022, 1 september). Statistische power (statistical power) en poweranalyses. Scribbr. https://www.scribbr.nl/statistiek/statistische-power/)
 (In Floris zijn logboek is een power analyse uitgevoerd.)
 
@@ -258,17 +263,17 @@ uitzoeken:
 - hoeveel procent antwoord nee
 
 
-```{r}
+```{r tabel geloof en abortus}
 (tabel_geloof_vraag6 <- (table(data_renamed$Abortus_keuze, data_renamed$Religie)))
 ```
 In de tabel hierboven zie je hoeveel mensen die ja/nee hebben geantwoord bij vraag 6 (Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?) een religieuze overtuiging heeft.
 
-```{r}
+```{r proptabel geloof en abortus}
 (proptabel_geloof_vraag6 <- prop.table(table(data_renamed$Abortus_keuze, data_renamed$Religie)))
 ```
-Uit de tabel hierboven kun je zien dat 80% van de mensen die de enquête hebben ingevuld niet gelooft. Al deze mensen hebben bij vraag 6 ingevuld dat je zelf voor een abortus mag kiezen.
+Uit de tabel hierboven kun je zien dat ongeveer 82% van de mensen die de enquête hebben ingevuld niet gelooft. Al deze mensen hebben bij vraag 6 ingevuld dat je zelf voor een abortus mag kiezen.
 
-```{r}
+```{r barplot geloof en abortus 1}
 data_renamed %>%
     select(Religie, Abortus_keuze) %>%
     mutate(Gelovig=ifelse(Religie == "Niet gelovig", "Niet gelovig", "Wel gelovig")) %>%
@@ -277,7 +282,7 @@ data_renamed %>%
 ```
 Dit is een mooie plot, maar de proportie klopt nu nog niet.
 
-```{r}
+```{r barplot geloof en abortus 2}
 tewmp <- data_renamed %>%
     select(Religie, Abortus_keuze) %>%
     mutate(Gelovig=ifelse(Religie == "Niet gelovig", "Niet gelovig", "Wel gelovig"))
@@ -291,7 +296,7 @@ In de bovenstaande plot zie je de verdeling weergegeven van mensen die wel gelov
 
 ## Donderdag 23 mei
 Verbeteren plot van gisteren:
-```{r}
+```{r barplot geloof en abortus 3 (juiste)}
 tijdelijke_data <- data_renamed %>%
     select(Religie, Abortus_keuze) %>%
     mutate(Gelovig=ifelse(Religie == "Niet gelovig", "Niet gelovig", "Wel gelovig"))
@@ -312,7 +317,7 @@ Achtergrond informatie geloof en abortus:
 Volgens het christendom is er vanaf het moment van de bevruchting nieuw leven ontstaan. Hierom zijn er veel christenen die tegen abortus zijn. In 'tabel_geloof_vraag6' (zie hieronder nog eens weergegeven) zie je dat van de 11 christenen er 3 tegen abortus zijn. 
 In de koran (bevat de regels van de islam) wordt abortus niet expliciet verboden. Wel wordt er in omschreven dat het verboden is om abortus te plegen zodra er sprake is van leven. Volgens de Islam is dit 120 dagen na de bevruchting. Dit is rond de vier maanden. Een abortus mag je plegen tot de 24e week na de bevruchting. Dit is rond de zes maanden. Dus volgens de islam mag je wel abortus plegen, als dit binnen de vier maanden valt. In de tabel hieronder geven de twee moslims aan tegen abortus te zijn. 
 
-```{r}
+```{r print tabel geloof en abortus 1}
 tabel_geloof_vraag6
 ```
 volgens het hindoeïsme mag een vrouw geen abortus plegen, tenzij het leven van de vrouw in gevaar loopt.
@@ -321,8 +326,8 @@ Volgens het boeddhisme is er niet een voor of tegen abortus. Sommigen boeddhiste
 ## Vrijdag 24 mei
 Op aanraden van Michiel ga ik proberen de 'Barplot verdeling gender over antwoorden' aanpassen. Nu zijn man en vrouw samen honderd procent, maar het is waarschijnlijk beter af te lezen als 'man' honderd procent is en 'vrouw' ook honderd procent. 
 
-Dataframe maken van de prop_tabel:
-```{r, eval = FALSE}
+Data frame maken van de prop_tabel:
+```{r verbeteren proptabel gender en abortus 1}
 new_proptabel_dataframe <- as.data.frame(prop_tabel) %>%
     rename(
     gender = Var1,
@@ -331,7 +336,7 @@ new_proptabel_dataframe <- as.data.frame(prop_tabel) %>%
 ```
 
 Het juist verdelen van de procenten:
-```{r}
+```{r verbeteren proptabel gender en abortus 2}
  prop_tabel
  new_proptabel_dataframe <- as.data.frame(prop_tabel) %>%
      rename(
@@ -344,12 +349,12 @@ Het juist verdelen van de procenten:
 ```
 
 Hoe ziet de tabel eruit?:
-```{r}
+```{r print dataframe proptabel}
 new_proptabel_dataframe
 ```
 
 Nieuwe dataframe verwerken in plot:
-```{r}
+```{r barplot gender en zeggenschap 2}
 library(ggplot2)
 
 ggplot(new_proptabel_dataframe, aes(x = gender, y=perc, fill=antwoord_vraag)) +
@@ -371,9 +376,10 @@ Aan de presentatie gewerkt voor de Donut chart. Powerpoint gemaakt en voordeel o
 
 ## Maandag 27 mei
 Het gaat waarschijnlijk fout in het maken van de tabel. Morgen even naar kijken.
-```{r}
+```{r print proptabel gender en zeggenschap}
 new_proptabel_dataframe
 ```
+De percentages kloppen inderdaad niet in de tabel.
 
 Begin maken met intro voor bovenaan logboek:
 In dit onderzoek proberen wij te onderzoeken of er factoren zijn die invloed hebben op iemand zijn mening over abortus. We hebben een enquête met vragen gemaakt en hebben deze vervolgens rondgestuurd. De resultaten die uit deze enquête kwam hebben we met behulp van Rstudio geanalyseerd. Hierin hebben we onderzocht of factoren zoals; geslacht, onderwijsniveau, leeftijd, religieuze overtuiging en de provincie waarin iemand is opgegroeid invloed hebben op hoe mensen de vragen in de enquête hebben beantwoord. 
@@ -402,7 +408,7 @@ Doornemen nuttige resultaten. Dus de informatie die antwoord geeft op de onderzo
 - Wat moet er in de Discussie/ conclusie?
 Interpretatie van de resultaten. Hierin zul je de onderzoeksvraag beantwoorden en aangeven of de hypothese klopt (waarom wel/niet?). Komt het resultaat overeen met eerdere onderzoeken? Als de resultaten niet voldoen aan onze verwachtingen, leg dan uit of hier verklaringen voor zijn. Heeft dit onderzoek bijgedragen aan de maatschappij? Wat zou je meegeven voor vervolgonderzoek?
 
-```{r}
+```{r juste proptabel gender en zeggenschap}
 new_proptabel_dataframe <- data_renamed %>% 
     group_by(Gender, Biologische_vader_zeggenschap) %>%
     summarize(count = n(), .groups = "drop") %>%
@@ -414,7 +420,7 @@ new_proptabel_dataframe
 Het lag inderdaad aan de tabel. Michiel heeft me hierbij geholpen. Morgen de grafiek aanpassen.
 
 ## Dinsdag 28 mei
-```{r}
+```{r barplot gender en zeggenschap 3 (juiste)}
 library(ggplot2)
 
 ggplot(new_proptabel_dataframe, aes(x =Gender, y=perc, fill=Biologische_vader_zeggenschap)) +
@@ -427,14 +433,14 @@ ggplot(new_proptabel_dataframe, aes(x =Gender, y=perc, fill=Biologische_vader_ze
     theme_minimal() +
     scale_fill_brewer(palette = "Dark2")
 ```
-Nu is de grafiek zo dat de antwoorden van de mannen samen honderd procent is en dat de antwoorden van de vrouwen ook samen honderd procent is. Nu is de grafiek iets minder misleidend, omdat er iets meer mannen dan vrouwen de enquête hebben ingevuld.
+Nu is de grafiek zo dat de antwoorden van de mannen samen honderd procent is en dat de antwoorden van de vrouwen ook samen honderd procent is en dat de grafiek van de mensen die het liever niet wouden zeggen ook 100% is. Nu is de grafiek iets minder misleidend, omdat het nu in proportie is en er iets meer mannen dan vrouwen de enquête hebben ingevuld.
 
 Gemiste kans: Als we het onderzoek opnieuw zouden doen, zouden we een vraag moeten toevoegen die vraagt of mensen een dochter hebben. Dan kunnen we onderzoeken of (voornamelijk) mannen met een dochter sneller voor abortus zullen zijn dan mannen zonder een dochter.
 
 
 Pie-donut variatie proberen:
 Ik ga de tabel over de religieuze overtuiging en of mensen voor of tegen de eigen keuze over abortus zijn opnieuw gebruiken hier.
-```{r}
+```{r donut data}
 data_donut <- as.data.frame(tabel_geloof_vraag6) %>%
     rename(
         antwoord_vraag = Var1,
@@ -443,7 +449,7 @@ data_donut
 ```
 
 "webr" installed:
-```{r}
+```{r donut geloof en abortus 1}
 library(ggplot2)
 library(webr)
 library(dplyr)
@@ -456,9 +462,9 @@ PieDonut(data_donut, aes(religieuze_overtuiging, antwoord_vraag, count=Freq),
          pieLabelSize = 2 # grootte tekst binnenste ring (geloof)
          )
 ```
-Je ziet in de bovenstaande PieDonut dat van de mensen die geantwoord hebben op de vraag(binnenste ring) er 80.8% niet gelovig is, 10.6% christelijk, 6.7% anders en de Islam geeft hij nog niet goed weer. Ik vermoed dat het vak misschien te klein is om het percentage weer te geven? in de buitenste ring zie je dat van de niet gelovige mensen 100% vindt dat abortus een eigen keuze moet zijn en zo voor elk geloof. Ook hier wordt er in de kleinere vakken niet het percentage weergegeven.
+Je ziet in de bovenstaande PieDonut dat van de mensen die geantwoord hebben op de vraag(binnenste ring) er 81.58% niet gelovig is, 9.65% christelijk, 6.14% anders en de Islam en boeddhisme geeft hij nog niet goed weer. Ik vermoed dat het vak misschien te klein is om het percentage weer te geven? in de buitenste ring zie je dat van de niet gelovige mensen 100% vindt dat abortus een eigen keuze moet zijn en zo voor elk geloof. Ook hier wordt er in de kleinere vakken niet het percentage weergegeven.
 
-```{r}
+```{r donut geloof en abortus 2}
 library(ggplot2)
 library(webr)
 library(dplyr)
@@ -468,14 +474,18 @@ PieDonut(data_donut, aes(religieuze_overtuiging, antwoord_vraag, count=Freq),
             showRatioDonut = TRUE, # percentage buitenste cirkel (mening abortus)
             showRatioPie = TRUE, # percentage in de binnenste cirkel (geloof)
          showPieName = FALSE, # haalt de enorme naam in het midden weg, mooier
-         pieLabelSize = 1.8, # grootte tekst binnenste ring (geloof)
-         donutLabelSize = 2,
-           showRatioThreshold = getOption("PieDonut.showRatioThreshold", 0.0) # percentages gefixt
+         pieLabelSize = 1.5, # grootte tekst binnenste ring (geloof)
+         donutLabelSize = 1.5,
+           showRatioThreshold = getOption("PieDonut.showRatioThreshold", 0.0) # percentages gefikst
          )
 ```
 In de PieDonut functie staat in de default blijkbaar dat hij vanaf 2% de label niet weergeeft. Deze heb ik op 0 gezet en nu geeft hij alle percentages mooi weer.
 
-De bovenstaande Donut chart staat nu ook als een variatie in onze presentatie.
+In de bovenstaande plot wordt er in de binnenste plot weergegeven hoeveel procent van de respondenten welke religieuze overtuigingen hebben. 81.58% van de respondenten geeft aan niet een religieuze overtuiging te hebben. Verder geeft 9.65% aan in het christendom te geloven, 1.75% in de islam, 0.88% in het boeddhisme en 6.14% geeft aan een religieuze overtuiging te hebben die wij niet als optie hebben meegegeven in de enquête. 
+Vervolgens wordt er in de buitenste ring weergegeven of de respondenten voor of tegen de eigen keuze over abortus zijn per geloof. Dus van de 81.58% mensen die niet een religieuze overtuiging hebben is 100% voor de eigen keuze over abortus.
+Verder is van de Christelijke respondenten 73% voor de eigen keuze over abortus en 27% tegen abortus. Van de islamitische en de Boeddhistische respondenten is 100% voor de eigen mening over abortus. En van de respondenten die aangaven ergens anders in te geloven is er 86% voor de eigen keuze van abortus en 14% tegen.
+
+Een oudere versie van de bovenstaande Donut chart staat nu ook als een variatie in onze presentatie.
 
 
 ## Woensdag 29 mei
@@ -490,35 +500,34 @@ Morgen een chisq.test doen op de geloof plot.
 
 ## Donderdag 30 mei
 Tabel een naam geven:
-```{r}
+```{r struggles test geloof en abortus 1}
 geloof_tabel_test <- data_renamed %>%
     select(Religie, Abortus_keuze) %>%
     mutate(Gelovig=ifelse(Religie == "Niet gelovig", "Niet gelovig", "Wel gelovig"))
-geloof_tabel_test
 ```
 Een chisq.test moet op cijfers, dus de geloof_tabel_test is de verkeerde tabel om te gebruiken in dit geval. Dit is de goede:
-```{r}
+```{r print tabel geloof en abortus 2}
 tabel_geloof_vraag6
 ```
 
 Voer de test erop uit:
-```{r}
+```{r struggles test geloof en abortus 2}
 chisq.test(tabel_geloof_vraag6)
 ```
-De p-waarde is '7.088e-05'. Dit is lager dan 0.05, dus is er een significant verschil aangetoond. 
+De p-waarde is '7.149e-05'. Dit is lager dan 0.05, dus is er een significant verschil aangetoond?
 
 Maar deze klopt nog niet.
 De geloven moeten nog samen genomen worden tot een 'wel gelovig'.
-```{r}
+```{r print tabel geloof en abortus}
 tabel_geloof_vraag6
 ```
 
-```{r}
+```{r print dataframe geloof en abortus}
 data.frame(tabel_geloof_vraag6)
 ```
 !!!!!!
 De tabel moet opgedeeld worden in een kolom met mensen die wel geloven en mensen die niet geloven.
-```{r}
+```{r struggles test geloof en abortus 3, eval=FALSE}
 poging101 <- data.frame(tabel_geloof_vraag6) %>%
     mutate(gelovig=ifelse(Var2 == "Niet gelovig", resultaat_if, de_else))
 
@@ -529,7 +538,7 @@ poging101 <- data.frame(tabel_geloof_vraag6) %>%
 ```
 Het lukt niet.
 
-```{r}
+```{r struggles test geloof en abortus 4, eval=FALSE}
 library(tidyr)
 # data frame van maken
 (tabel_geloof_vraag6 <- (table(data_renamed$Abortus_keuze, data_renamed$Religie)))
@@ -547,8 +556,8 @@ Morgen verder.
 
 
 ## Vrijdag 31 mei
-Ik ga zelf een data frame maken. Zodra er vernieuwde gegevens zijn moeten we dus dit dat frame met de hand aanpassen.
-```{r}
+Ik ga zelf een data frame maken. Zodra er vernieuwde gegevens zijn moeten we dus dit dat frame met de hand aanpassen. (dit is op oude data gedaan, dus nog niet volledig, alleen voor het oefenen)
+```{r struggles test geloof en abortus 5}
 library(dplyr)
 
 # data frame op basis van tabel_geloof_vraag6
@@ -563,8 +572,8 @@ rownames(data_frame_geloof) <- c("Ja", "Nee")
 
 data_frame_geloof
 ```
-En nu de gekoven samenvoegen tot een.
-```{r}
+En nu de gekozen samenvoegen tot een.
+```{r struggles test geloof en abortus 6, eval=FALSE}
 # optellen alle geloven
 nieuwe_dataframe_geloof <- tabel_geloof_vraag6 %>%
     mutate(Gelovig = tabel_geloof_vraag6$Anders + tabel_geloof_vraag6$`Christendom ` + tabel_geloof_vraag6$Islam) %>%
@@ -573,25 +582,26 @@ nieuwe_dataframe_geloof <- tabel_geloof_vraag6 %>%
 
 nieuwe_dataframe_geloof
 ```
-```{r}
+```{r struggles test geloof en abortus 7, eval=FALSE}
 table_van_dataframe_geloof <- table(nieuwe_dataframe_geloof)
 table_van_dataframe_geloof
 ```
 Ik kwam er net achter dat ik al de juiste data frame heb.. Dit had zoveel sneller gekund, maar goed.
+Dit is met de juiste nieuwste data.
 Ik hoef hier alleen nog een tabel van te maken:
-```{r}
+```{r test geloof en abortus (tabel)}
 (nu_echt_tabel_geloof <- table(geloof_tabel_test$Abortus_keuze, geloof_tabel_test$Gelovig))
 ```
 En dan nu de test:
-```{r}
+```{r test geloof en abortus (juiste)}
 chisq.test(nu_echt_tabel_geloof)
 ```
-De p-waarde ligt boven de 0.05, dus is er aangetoond dat er een significant verschil zit in mensen hun mening over abortus tussen mensen die wel en niet een religieuze overtuiging hebben.
+De p-waarde is '0.0002855'. Dit ligt boven de 0.05, dus is er aangetoond dat er een significant verschil zit in mensen hun mening over abortus tussen mensen die wel en niet een religieuze overtuiging hebben.
 
 
 ## Zondag 2 juni
 Grafieken en omschrijvingen voor de resultaten:
-```{r}
+```{r barplot gender en zeggenschap(resultaten)}
 library(ggplot2)
 
 ggplot(new_proptabel_dataframe, aes(x =Gender, y=perc, fill=Biologische_vader_zeggenschap)) +
@@ -609,11 +619,11 @@ theme(plot.caption = element_text(hjust = 0, face = "italic"))
 ```
 In de bovenstaande plot zie je per gender in procenten weergegeven wat mensen hebben geantwoord op de vraag: 'Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?'
 Je ziet hier dat er gemiddeld meer vrouwen zijn die vinden dat mannen hier geen zeggenschap over hebben. Ook zijn er meer mannen die vinden dat de vader hier wel zeggenschap over moet hebben.
-Uit een Chi-squared test blijkt dat er een significant verschil zit tussen hoe mannen en vrouwen deze vraag beantwoorden. De p-waarde die hieruit kwam is namelijk ‘0.01954’ en dit ligt onder de '0.05'.
+Uit een Chi-squared test blijkt dat er een significant verschil zit tussen hoe mannen en vrouwen deze vraag beantwoorden. De p-waarde die hieruit kwam is namelijk ‘0.01798’ en dit ligt onder de '0.05'.
 
 
 
-```{r}
+```{r barplot geloof en abortus (resulaten)}
 tijdelijke_data <- data_renamed %>%
     select(Religie, Abortus_keuze) %>%
     mutate(Gelovig=ifelse(Religie == "Niet gelovig", "Niet gelovig", "Wel gelovig"))
@@ -632,15 +642,15 @@ as.data.frame(x)%>%
 In de bovenstaande plot zie je de verdeling weergegeven van mensen die wel geloven en niet geloven en wat deze hebben geantwoord op de vraag of mensen zelf mogen kiezen of ze een abortus willen.
 
 Je ziet in de plot hierboven dat alle mensen die hebben aangegeven niet een religieuze overtuiging te hebben bij vraag 6 ook hebben aangegeven dat iemand zelf moet kunnen kiezen of die een abortus wil. Bij de mensen die hebben ingevuld wel een religieuze overtuiging te hebben is er een deel die heeft aangegeven dat iemand niet zelf moet kunnen kiezen of die een abortus wil.
-Uit de Chi-squared test komt dan ook dat er een significant verschil zit tussen mensen die wel aangeven een religieuze overtuiging te hebben en mensen die aangeven dat niet te hebben. De p-waarde die hieruit kwam is '0.0004108' en dit ligt onder de '0.05'.
+Uit de Chi-squared test komt dan ook dat er een significant verschil zit tussen mensen die wel aangeven een religieuze overtuiging te hebben en mensen die aangeven dat niet te hebben. De p-waarde die hieruit kwam is '0.0002855' en dit ligt onder de '0.05'.
 
 
-```{r}
+```{r donut geloof en abortus (resultaten)}
 library(ggplot2)
 library(webr)
 library(dplyr)
 
-donutchart_geloof <- PieDonut(data_donut, aes(religieuze_overtuiging, antwoord_vraag, count=Freq),
+PieDonut(data_donut, aes(religieuze_overtuiging, antwoord_vraag, count=Freq),
         # percentage buitenste cirkel (mening abortus)
         showRatioDonut = TRUE,
         # percentage in de binnenste cirkel (geloof)
@@ -652,18 +662,21 @@ donutchart_geloof <- PieDonut(data_donut, aes(religieuze_overtuiging, antwoord_v
          donutLabelSize = 2,
          # percentages gefikst
           showRatioThreshold = getOption("PieDonut.showRatioThreshold", 0.0) 
-         ) +
-    labs(caption = "Figuur x: test101, pls doe het")
-
-donutchart_geloof
+         )
+   # + labs(caption = "Figuur x: test101, pls doe het")
+    
 ```
-! zodra ik een caption probeer toe te voegen wordt de binnenste ring niet meer weergegeven. ! "titel: correlatie geloof en mening abortus"
 
-Je ziet in de bovenstaande plot 2 ringen. In de middelste ring is weergegeven wat de religieuze overtuiging van de respondenten zijn. Je ziet dat 80.8% aangeeft niet een religieuze overtuiging te hebben. Verder geeft 10.6% aan christelijk te zijn, 1.9% islamitisch en 6.7% ergens anders in te geloven (een geloof die niet bij de meegegeven opties stond). In de buitenste ring is weergegeven wat deze mensen hebben geantwoord op de vraag of iemand zelf moet kunnen kiezen of die een abortus wil. Je ziet hier dat 100% van de respondenten die aangeven niet een religieuze overtuiging te hebben ook zeggen dat iemand zelf moet kunnen kiezen of die een abortus wil. Ook 100% van de islamitische respondenten is voor de eigen keuze over abortus. Verder is 27% van de christenen tegen de eigen keuze over abortus en ook 14% van de mensen die aangeven ergens anders in te geloven is tegen de eigen keuze over abortus.
+! zodra ik een caption probeer toe te voegen wordt de binnenste ring niet meer weergegeven, titel op andere manier toevoegen in paper. ! "titel: correlatie geloof en mening abortus"
+
+In de bovenstaande plot wordt er in de binnenste plot weergegeven hoeveel procent van de respondenten welke religieuze overtuigingen hebben. 81.58% van de respondenten geeft aan niet een religieuze overtuiging te hebben. Verder geeft 9.65% aan in het christendom te geloven, 1.75% in de islam, 0.88% in het boeddhisme en 6.14% geeft aan een religieuze overtuiging te hebben die wij niet als optie hebben meegegeven in de enquête. 
+Vervolgens wordt er in de buitenste ring weergegeven of de respondenten voor of tegen de eigen keuze over abortus zijn per geloof. Dus van de 81.58% mensen die niet een religieuze overtuiging hebben is 100% voor de eigen keuze over abortus.
+Verder is van de Christelijke respondenten 73% voor de eigen keuze over abortus en 27% tegen abortus. Van de islamitische en de Boeddhistische respondenten is 100% voor de eigen mening over abortus. En van de respondenten die aangaven ergens anders in te geloven is er 86% voor de eigen keuze van abortus en 14% tegen.
 
 ## Maandag 3 juni
-```{r}
+```{r libraries gebruikt}
 # alle libraries die gebruikt worden
 (.packages())
 ```
-
+Oude dataset voor nieuwste versie vervangen en hele logboek hierop aangepast.
+Ook alle code chunks namen gegeven.
