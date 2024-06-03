@@ -353,8 +353,9 @@ afkomst_leeftijd <- ggplot(df, aes(y=afkomst,
     ylab("Op gegroeid in de provincie:") +
     theme_minimal()
 
-
-ggarrange(afkomst_leeftijd, geloof_leeftijd)
+afkomst_leeftijd
+geloof_leeftijd
+#ggarrange(afkomst_leeftijd, geloof_leeftijd)
 ```
 
 Deze grafieken zijn nog niet klaar.... later nog aanpassen.
