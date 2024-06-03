@@ -353,9 +353,8 @@ afkomst_leeftijd <- ggplot(df, aes(y=afkomst,
     ylab("Op gegroeid in de provincie:") +
     theme_minimal()
 
-afkomst_leeftijd
-geloof_leeftijd
-#ggarrange(afkomst_leeftijd, geloof_leeftijd)
+
+ggarrange(afkomst_leeftijd, geloof_leeftijd)
 ```
 
 Deze grafieken zijn nog niet klaar.... later nog aanpassen.
@@ -428,7 +427,7 @@ bedenktijd_plot_data <- data.frame(x4)
 bedenktijd_plot_data$fraction = bedenktijd_plot_data$Freq / sum(bedenktijd_plot_data$Freq)
 bedenktijd_plot_data$percentage = round(bedenktijd_plot_data$fraction *100, digits =1)
 
-ggplot(data = vader_plot_data, mapping = aes(x = percentage, y = Var1, fill = Var2)) +
+ggplot(data = bedenktijd_plot_data, mapping = aes(x = percentage, y = Var1, fill = Var2)) +
   geom_bar(stat = "identity" ,
   position ="dodge")+
   geom_text(aes(label = (""))) +
@@ -440,38 +439,53 @@ ggplot(data = vader_plot_data, mapping = aes(x = percentage, y = Var1, fill = Va
 ```
 
 
-```{r echo plot, warning=FALSE, fig.cap='Antwoorden op de vraag:Vindt u dat er voor abortusgekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen?'}
-ggplot(data = df, mapping = aes(x = c(1:114), y = levensgevaar_vrouw_o, fill = geslacht)) +
-  geom_bar(stat = "identity") +
+```{r echo plot, warning=FALSE, fig.cap='Antwoorden op de vraag:Vindt u dat er voor abortusgekozen mag worden als de vrouw niet in staat is voor het kind te zorgen vanwege financile beperkingen?'}
+x5 <- table(df$levensgevaar_vrouw_o, df$geslacht)
+vrouw_0_plot_data <- data.frame(x5)
+vrouw_0_plot_data$fraction = vrouw_0_plot_data$Freq / sum(vrouw_0_plot_data$Freq)
+vrouw_0_plot_data$percentage = round(vrouw_0_plot_data$fraction *100, digits =1)
+vrouw_0_plot_data
+
+ggplot(data = vrouw_0_plot_data, mapping = aes(x = percentage, y =Var1)) +
+  geom_bar(stat = "identity",  fill = "blue", alpha = 0.3) +
+  facet_wrap(~Var2)+
   geom_text(aes(label = (" "))) +
-  labs(fill = "Geslacht") +
-#  ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
-  xlab("Percentage mensen") + # nog aapassen naar procent.
-  ylab(" ") # Geen ylabel nodig omdat er al een beschrijving bij de waardes staan. 
-  # labels beter maken.
-  # To-do: prercentage verbeteren, huidige waarden kloppen nog niet.
+  xlab("Percentage mensen") + 
+  ylab(" ") + 
+   theme_minimal()
 ```
 
 ### Schaal data (naam veranderen)
 
 ```{r abortus, warning=FALSE, fig.cap='Antwoorden op de vraag: Vindt u dat iemand een abortus mag als de zwangerschap een gevolg is van verkrachting?'}
 
-ggplot(data = df, mapping = aes(x = (ID/100), y = veroorzaakt_o)) + # geeft procent weer. 
-  geom_bar(stat = "identity",fill = "blue", alpha = 0.5) +
-  facet_wrap(~geslacht) +
-  ggtitle("Mag abortus als de zwangerschap\nresultaat is van verkrachting?") +
-  xlab("Percentage mensen") + # verifiëren of dit wel klopt...
-  ylab(" ") +
+x6 <- table(df$veroorzaakt_o, df$geslacht)
+veroorzaakt_o_plot_data<- data.frame(x6)
+veroorzaakt_o_plot_data$fraction = veroorzaakt_o_plot_data$Freq / sum(veroorzaakt_o_plot_data$Freq)
+veroorzaakt_o_plot_data$percentage = round(veroorzaakt_o_plot_data$fraction *100, digits =1)
+
+ggplot(data = veroorzaakt_o_plot_data, mapping = aes(x = percentage, y =Var1)) +
+  geom_bar(stat = "identity",  fill = "blue", alpha = 0.3) +
+  facet_wrap(~Var2)+
+  geom_text(aes(label = (" "))) +
+  xlab("Percentage mensen") + 
+  ylab(" ") + 
   theme_minimal()
 ```
 
 ```{r levensgevaar plot, warning=FALSE, fig.cap='Antwoorden op de vraag: Vindt u dat er voor abortus gekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen?'}
 
-ggplot(data = df, mapping = aes(x = ID, y = levensgevaar_vrouw_o)) + # geeft procent weer. 
-  geom_bar(stat = "identity", fill = "blue", alpha = 0.5) +
-  facet_wrap(~geslacht) +
-  xlab("Percentage mensen") +
-  ylab(" ") +
+x7 <- table(df$financiele_beperkingen, df$geslacht)
+financieel_o_plot_data<- data.frame(x7)
+financieel_o_plot_data$fraction = financieel_o_plot_data$Freq / sum(financieel_o_plot_data$Freq)
+financieel_o_plot_data$percentage = round(financieel_o_plot_data$fraction *100, digits =1)
+
+ggplot(data = financieel_o_plot_data, mapping = aes(x = percentage, y =Var1)) +
+  geom_bar(stat = "identity",  fill = "blue", alpha = 0.3) +
+  facet_wrap(~Var2)+
+  geom_text(aes(label = (" "))) +
+  xlab("Percentage mensen") + 
+  ylab(" ") + 
   theme_minimal()
 
 ```
@@ -669,7 +683,7 @@ Voeg aan het eind een woord-telling in:
 ```{r wordcount, message=FALSE}
 #install.packages(devtools)
 #devtools::install_github("benmarwick/wordcountaddin", type = "source", dependencies = TRUE)
-#wordcountaddin:::text_stats()
+wordcountaddin:::text_stats()
 ```
 
 # Referenties
