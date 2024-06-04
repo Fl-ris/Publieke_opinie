@@ -650,7 +650,6 @@ chi_leeftijd_keuze_vader <-chisq.test(Boven_onder_Keuze_vader, correct = T)
 
 ```
 
-## tijdelijke boekenlegger
 ```{r data inlezen}
 
 # file <- "dataset.csv"
@@ -686,7 +685,7 @@ data_renamed <- data %>%
 # head(data_renamed)
 ```
 
-```{r juste proptabel gender en zeggenschap}
+```{r juiste proptabel gender en zeggenschap}
 new_proptabel_dataframe <- data_renamed %>% 
     group_by(Gender, Biologische_vader_zeggenschap) %>%
     summarize(count = n(), .groups = "drop") %>%
@@ -694,7 +693,7 @@ new_proptabel_dataframe <- data_renamed %>%
     mutate(perc = count/sum(count) * 100)
 ```
 
-```{r barplot gender en zeggenschap(resultaten)}
+```{r barplot gender en zeggenschap}
 library(ggplot2)
 
 ggplot(new_proptabel_dataframe, aes(x =Gender, y=perc, fill=Biologische_vader_zeggenschap)) +
@@ -716,7 +715,7 @@ Uit een Chi-squared test blijkt dat er een significant verschil zit tussen hoe m
 
 
 
-```{r barplot geloof en abortus (resulaten)}
+```{r barplot geloof en abortus}
 tijdelijke_data <- data_renamed %>%
     select(Religie, Abortus_keuze) %>%
     mutate(Gelovig=ifelse(Religie == "Niet gelovig", "Niet gelovig", "Wel gelovig"))
@@ -729,7 +728,8 @@ as.data.frame(x)%>%
          y = "Aantal antwoorden") +
     geom_col(position = "dodge") +
     # verplaatst de tekst naar links
-    theme(plot.caption = element_text(hjust = 0, face = "italic")) 
+    theme(plot.caption = element_text(hjust = 0, face = "italic")) +
+    theme_minimal()
 ```
 In de bovenstaande plot zie je de verdeling weergegeven van mensen die wel geloven en niet geloven en wat deze hebben geantwoord op de vraag of mensen zelf mogen kiezen of ze een abortus willen.
 
@@ -924,12 +924,17 @@ Op figuur .... zijn de met de logistische regressie berekende waarden laten zien
 Volgens de power-test zijn er niet genoeg mensen om met een effect sterkte van 0.5 (Cohen's D) middelgroot verschil aan te tonen. Met de 114 mensen die we in totaal hebben is de effect sterkte 0.39, dit is groot genoeg om grote verschillen aan te tonen. 
 
 Vervolgens is er een Shapiro-Wilk test uitgevoerd om na te gaan of de data normaal verdeeld is, hiervoor zijn de leeftijden van de mensen gebruikt die de enquête ingevuld hebben. Hieruit bleek dat de data niet normaal verdeeld is maar bimodaal is. 
-Er is een Chi-square test gedaan om het verband tussen geslacht en de keuze op de enquête vragen te vinden. Hieruit was gebleken dat het geslacht alleen op de vraag of de biologische vader zeggenschap zou moeten hebben over de abortus een statistische significante factor was, de p-waarde hiervan is namelijk: 0.018. Op de andere vragen had het geslacht geen significante invloed. 
+Er is een Chi-square test gedaan om het verband tussen geslacht en de keuze op de enquête vragen te vinden. Hieruit was gebleken dat het geslacht alleen op de vraag of de biologische vader zeggenschap zou moeten hebben over de abortus een statistische significante factor was, de p-waarde hiervan is namelijk: 0.018. Op de andere vragen had het geslacht geen significante invloed. Mannen zouden hierover een andere mening kunnen hebben, omdat een vrouw zich eerder in deze situatie inleeft als de vrouw en een man eerder als de man. De man zal dus eerder aangeven dat hij inspraak heeft over de keuze voor een abortus dan dat een vrouw dit zal doen.
 
-Met behulp van een logistische regressie is de invloed van alle factoren tegelijk berekend. Het resultaat hiervan was dat Voor de vraag of minderjarigen zelf zeggenschap mogen hebben over een abortus geloof een statistisch significante voorspeller was van de beslissing met een p-waarde van: 0.0019. 
+Met behulp van een logistische regressie is de invloed van alle factoren tegelijk berekend. Het resultaat hiervan was dat voor de vraag of minderjarigen zelf zeggenschap mogen hebben over een abortus geloof een statistisch significante voorspeller was van de beslissing met een p-waarde van: 0.0019. 
 
-En voor de vraag of de biologische vader zeggenschap zou moeten hebben waren beide leeftijd (p-waarde:0.018521) en geslacht(p-waarde: 0.000648) statistische significante "predictors" van de uitkomst, geloof net niet met een p-waarde van 0.050357.
-De overkoepelende onderzoeksvraag kan hiermee dus beantwoord worden, of onderzochte onafhankelijke variabelen zoals: leeftijd, geloof en opleidingsniveau invloed hebben op de mening over abortus is afhankelijk van de vraag, dit is niet het zelfde voor elke vraag maar er kan geconcludeerd worden dat deze factoren wel degelijk invloed hebben op de mening. 
+En voor de vraag of de biologische vader zeggenschap zou moeten hebben waren beide leeftijd (p-waarde:0.018521) en geslacht (p-waarde: 0.000648) statistische significante "predictors" van de uitkomst, geloof net niet met een p-waarde van 0.050357.
+
+Uit ons onderzoek blijkt wel dat als je een religieuze overtuiging hebt je eerder tegen de eigen keuze over abortus zal zijn dan iemand die niet een religieuze overtuiging heeft.  Uit eerder onderzoek is ook gebleken dat een partner die een religieuze overtuiging heeft eerder de keuze voor een abortus niet zal ondersteunen dan een partner die dit niet heeft (LINK NAAR 1E ARTIKEL).
+Dit kan komen door de manier waarop sommige geloven denken over abortus. Volgens het christendom is er namelijk vanaf het moment van de bevruchting nieuw leven ontstaan en zul je dus een leven nemen als je voor een abortus kiest. Hierom zijn er veel christenen die tegen abortus zijn. Uit onze enquête komt dan ook dat 27% van de christenen tegen de eigen keuze over abortus is. Verder zijn alle moslimse en boeddhistische respondenten uit onze enquête voor de eigen keuze over abortus. Ook dit hangt samen met de overtuigingen van beide geloven. In de koran (deze bevat de regels van de islam) wordt abortus niet expliciet verboden. Wel wordt er in omschreven dat het verboden is om abortus te plegen zodra er sprake is van leven.  Volgens de Islam is dit 120 dagen na de bevruchting. Een abortus mag je plegen tot de 24e week na de bevruchting, dit is 168 dagen. Dus volgens de islam mag je wel abortus plegen, zolang dit binnen de 120 dagen valt. 
+Volgens het boeddhisme is er niet een voor of tegen abortus. Sommigen boeddhisten zeggen dat je bij abortus iemands leven neemt en dat de medische ingrijp iemand buiten de kringloop van iemand zijn leven zal plaatsen. Maar de meeste boeddhisten keuren abortus goed onder bepaalde voorwaarden; zolang de betrokkenen goed nadenken over de gevolgen van hun keuze.
+
+De overkoepelende onderzoeksvraag kan hiermee dus beantwoord worden, of onderzochte onafhankelijke variabelen zoals: leeftijd, geloof en opleidingsniveau invloed hebben op de mening over abortus is afhankelijk van de vraag, dit is niet hetzelfde voor elke vraag maar er kan geconcludeerd worden dat deze factoren wel degelijk invloed hebben op de mening.
 
 
 ## Discussie: ##
