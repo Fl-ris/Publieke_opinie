@@ -368,4 +368,7 @@ De introductie was al geschreven door 1 van de team genoten terwijl het mijn wer
 Ben vervolgens bezig geweest om alle grafieken om gezet in de paper naar percentage in plaats van aantallen.<br>
 Ik ga ook mijn laatste grafiek toevoegen aan de paper om nog beter te vergelijken met verschil waar je naar kijkt. <br>
 
+## 4juni 
+Puntjes op de i. Dus de referenties toegevoegd en het protocol bij gewerkt. 
+
 

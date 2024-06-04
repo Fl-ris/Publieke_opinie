@@ -8,12 +8,11 @@ author: |
 lang: nl # dit zorgt er voor dat "abstract" "samenvatting" gaat heten
 
 abstract: |
-  To-do: Bibliografie maken (template invullen), thema gelijk maken (theme_minimal()) en aan het eind de abstract schrijven, dit moet een samenvatting zijn van alles dat besproken is. 
-    In dit verslag kunt u lezen over ons onderzoek die wij hebben gedaan voor het schoolvak de wetenschappelijke cycles. Hiervoor moesten wij een onderzoek doen naar een eigen gekozen onderwerp zodat we weten hoe de wetenschappelijke cycles werkt en hoe je een goed onderzoek doet. Wij hebben gekozen om onderzoek te doen met behulp van een enquête of de mening over etnische vraagstukken veranderd op een bepaalde leeftijd of dat verschillende mensen leeftijdsgroepen er anders naar kijken. Onze enquête gaat dus over abortus omdat het niet zo zwaar beladen is als vluchtelingen is en ook wel in het nieuws is geweest. 
+    In dit verslag kunt u lezen over ons onderzoek die wij hebben gedaan voor het schoolvak de wetenschappelijke cycles. Hiervoor moesten wij een onderzoek doen naar een eigen gekozen onderwerp zodat we weten hoe de wetenschappelijke cycles werkt en hoe je een goed onderzoek doet. Wij hebben gekozen om onderzoek te doen met behulp van een enquête of de mening over etnische vraagstukken veranderd op een bepaalde leeftijd of dat verschillende mensen leeftijdsgroepen er anders naar kijken. 
     
 
 bibliography: Het_abortus_beleid.bib # naam van je .bib file. Deze moet hetzelfde zijn als je Rmd bestandsnaam
-
+link-citations: true
 output:
   bookdown::pdf_document2:
     keep_tex: false    # set this to true if you want to investigate the generated tex
@@ -173,11 +172,11 @@ vrouw_leeftijd <- (df_test[df_test$geslacht == 'Vrouw',]$Wat.is.uw.leeftijd.)
 
 Vragen over het abortus beleid zijn polariserende ethische kwesties. Voor dit onderzoek trachten we correlaties te vinden tussen verschillende variabelen zoals: leeftijd, geslacht, opleidingsniveau, geloof en de ideologische verschillen in mening tussen deze mensen.  
 
-In de literatuur was al bekend dat jongere mensen vaak geneigd zijn voorstanders te zijn van de keuzevrijheid om voor een abortus te kiezen en oudere mensen hier vaker tegen zijn. (Effect_of_age_gender_and_race_on_abortion_attitude) Ook is er een positieve correlatie gevonden tussen hoogopgeleiden en de mening dat abortus een eigen keuze moet zijn. (Effect_of_age_gender_and_race_on_abortion_attitude)
+In de literatuur was al bekend dat jongere mensen vaak geneigd zijn voorstanders te zijn van de keuzevrijheid om voor een abortus te kiezen en oudere mensen hier vaker tegen zijn. @Effect_of_age_gender_and_race_on_abortion_attitude Ook is er een positieve correlatie gevonden tussen hoogopgeleiden en de mening dat abortus een eigen keuze moet zijn. @Effect_of_age_gender_and_race_on_abortion_attitude
 
-In tegenstelling tot het verschil in mening tussen mannen en vrouwen over andere politieke vraagstukken (bron: The_Gender_Gap_in_Political_Preferences:_An_Empirical_Test_of_a_Political_Economy_Explanation)
-Is er, mits er rekening wordt gehouden met verschillen in religieuze overtuiging, het geslacht geen significant bijdragende factor is voor de beslissing om  voor- of tegenstander te zijn van abortus (bron: The_Gender_Gap_in_Political_Preferences:_An_Empirical_Test_of_a_Political_Economy_Explanation)
-Ondanks dat deze kwestie vooral betrekking heeft op vrouwen is er nog meer bestaand onderzoek beschikbaar dat verder bevestigd dat er weinig verschil is tussen de meningen van de verschillende geslachten. (bron: GenderEmployment_Status_and_Abortion:_A_Longitudinal_Analysis )
+In tegenstelling tot het verschil in mening tussen mannen en vrouwen over andere politieke vraagstukken @The_Gender_Gap_in_Political_Preferences_An_Empirical_Test_of_a_Political_Economy_Explanation .
+Is er, mits er rekening wordt gehouden met verschillen in religieuze overtuiging, het geslacht geen significant bijdragende factor is voor de beslissing om  voor- of tegenstander te zijn van abortus @The_Gender_Gap_in_Political_Preferences_An_Empirical_Test_of_a_Political_Economy_Explanation
+Ondanks dat deze kwestie vooral betrekking heeft op vrouwen is er nog meer bestaand onderzoek beschikbaar dat verder bevestigd dat er weinig verschil is tussen de meningen van de verschillende geslachten. @GenderEmployment_Status_and_Abortion_A_Longitudinal_Analysis
 
 Deze bovenstaande onderzoeken zijn gebaseerd op data van Noorwegen en Amerika, voor dit onderzoek is de grote meerderheid van de data verkregen van Nederlandse inwoners die ook in Nederland zijn opgegroeid. 
 
@@ -990,5 +989,3 @@ Voeg aan het eind een woord-telling in:
 ```
 
 # Referenties
-
-Een lijst van referenties wordt hier automatisch toegevoegd.
