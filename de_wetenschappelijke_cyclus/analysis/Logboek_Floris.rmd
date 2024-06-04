@@ -118,7 +118,68 @@ De makers van deze enquete hebben hem naar klasgenoten, familieleden en vrienden
 ## Methode 
 
 
-Huidige working directory: `r getwd()`
+# Materialen en Methoden
+
+Voor de enquête zijn er een aantal vragen opgesteld die een beeld moeten geven van de meningen van de mensen die hem invullen. 
+Ook zijn er persoonlijke vragen die gebruikt worden om keuzes te correleren met factoren als: geloof, leeftijd, opleidingsniveau en geslacht.
+
+Deze vragen zijn neutraal geformuleerd zodat de invuller niet onbewust geneigd is om voor de optie te kiezen waar de vraagstelling neigt te gaan. 
+De vragen kunnen verdeeld worden in drie categorieën: Persoonlijke informatie, multiple-choice en op een een schaal van zeer oneens tot zeer eens.
+ 
+De enquête bestaat uit de volgende vragen: \
+
+**Persoonlijke vragen:** \
+1. Wat is uw geslacht?\
+2. Wat is het hoogste onderwijsniveau dat u heeft afgerond?\
+3. Wat is uw leeftijd?\
+4. Wat is uw religieuze overtuiging?\
+5. In welke provincie heeft u het grootste deel van uw jeugd doorgebracht? \
+
+**Multiple choice vragen:** \
+1. Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?\
+2. Indien u bij de vorige vraag 'Nee' heeft ingevuld; \
+3. Vindt u dat er uitzonderingen zijn waarin iemand dit wel zelf moet kunnen kiezen?\
+4. Vindt u dat er voor abortus gekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen?\
+5. Vindt u dat iemand een abortus mag als de zwangerschap een gevolg is van verkrachting?\
+6. Vindt u dat een minderjarig kind de keuze moet hebben om voor een abortus te kiezen? \
+9. Moet het wettelijk verplicht worden voor vrouwen die een abortus willen om een echo van de 10. foetus te zien voordat een abortus toegestaan is?\
+11. Vindt u dat de wettelijke bedenktijd moet terugkomen?\
+12. Vindt u dat adoptie een alternatief is voor abortus?\
+13. Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus? \
+
+**Schaal zeer oneens tot zeer eens vragen:** \
+1. Hoe goed kunt u zichzelf vinden in de volgende stellingen:?
+2. Het leven van de vrouw in gevaar is. \
+3. Het kind met een geestelijke handicap geboren kan worden.
+4. Het kind met een levensbedreigende ziekte geboren kan worden.
+5. De zwangerschap veroorzaakt is door verkrachting.
+6. De vrouw het kind niet wil houden om niet gespecificeerde redenen.
+7. De vrouw niet in staat is voor het kind te zorgen vanwege financiële beperkingen.
+
+
+De vraag: Vindt u dat de wettelijke bedenktijd moet terugkomen? werd geïmplementeerd met de volgende informatie: 
+Sinds 1 januari 2023 is de verplichte minimale bedenktijd van 5 dagen vervallen. Voorheen moesten er minimaal 5 dagen zitten tussen het gesprek met een arts en de abortus zelf. Op dit moment geldt een flexibele bedenktijd die wordt bepaalt door een gesprek tussen de vrouw die abortus wil en een arts. De arts bepaalt nu op basis van dit gesprek hoelang de bedenktijd moet zijn voor de vrouw. Dit kan 0 dagen zijn, maar ook 10.
+
+En de vraag: Vindt u dat de ouders zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen? werd aangevuld met de volgende informatie:
+In de huidige situatie moet er toestemming zijn van de ouders, er zijn wel uitzonderingen. Nu mag je onder de 15 abortus te plegen met toestemming van de ouders.   
+
+Deze vragen zijn neutraal geformuleerd zodat de invuller niet onbewust geneigd is om voor de optie te kiezen waar de vraagstelling neigt te gaan. 
+Microsoft Forms is gebruikt om een enquête te maken die deze bovenstaande vragen bevat. 
+
+Voor de dataverwerking, zoals beschreven is in de drie logboeken: Logboek_Iris, Logboek_Jasper en Logboek_Floris.
+**Hiervoor zijn de volgende software versies gebruikt:**
+R version 4.4.0 (2024-04-24)
+ggraph: 2.2.1
+tidyverse: 2.0.0
+viridis: 0.6.5
+ggplot2: 3.5.1
+dplyr: 1.1.4
+rgexf: 0.16.2
+ggrepel: 0.9.5
+ggridges: 0.5.6
+pwr: 1.3.0
+gridExtra: 2.3
+
 
 ```{r .csv inlezen }
 abortus <- read.csv("abortus_dataset.csv",
@@ -975,7 +1036,7 @@ df_chi_geslacht %>%
   pivot_longer(cols = c(1:8)) -> df_chi_geslacht
 ```
 In het bovenstaande blok met code wordt er een data-frame gemaakt die alle p-waardes bevat van de hypothes die opgesteld zijn. 
-Daarna wordt de data veranderd in "tidy data" (een meting per rij en variablen als colommen).
+Daarna wordt de data veranderd in "tidy data" (een meting per rij en variabelen als kolommen).
 
 ```{r Visualizatie van P-waarden van Chi-square test}
 
@@ -1035,12 +1096,10 @@ chi_abortus_zeggenschap_vader
 ** Two-way Z-test:**
 Voor het beantwoorden van de vraag: Heeft het geslacht invloed op de keuze.... (afhankelijk van de vraag, herhalen voor alle vragen) 
 ```{r}
-library("BSDA")
+#library("BSDA")
 #df_z_test <- 
 #z_test_abortus <- z.test(df$geslacht, ja_abortus, sigma.x = sd(df$geslacht))
 ```
-
-To-do:
 
 
 ### Grafiek leeftijd/keuze:
@@ -1167,8 +1226,8 @@ lr_man_vrouw_gezondheid_vrouw <- glm(df_logistische_regressie$gezondheid_vrouw ~
 lr_man_vrouw_gezondheid_ouders <- glm(df_logistische_regressie$ouders ~ leeftijd_onder_30 + geslacht + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond. + gelovig_01, data = df_logistische_regressie, family = binomial)
 
 
-summary(lr_man_vrouw_zeggenschap_minderjarig) # geloof significant
-#summary(lr_man_vrouw_vader) # leeftijd en geslacht significant, geloof bijna
+#summary(lr_man_vrouw_zeggenschap_minderjarig) # geloof significant
+summary(lr_man_vrouw_vader) # leeftijd en geslacht significant, geloof bijna
 #summary(logistische_regressie) # niets significant
 #summary(lr_man_vrouw_echo) # geloof significant
 #summary(lr_man_vrouw_bedenktijd) # geslacht significant
@@ -1229,26 +1288,26 @@ De odds ratio wordt gebruikt om te laten zien hoeveel invloed de predictors indi
 # Zodat het niet in wetenschappelijke notatie weergeven wordt als het onder de 999 is. 
 options(scipen = 999)
 
-# Bereken de coefficienten (log e)
+# Bereken de coëfficiënten (log e)
 coefficienten_van_lr_man_eigen_keuze_abortus <- coef(lr_man_eigen_keuze_abortus)
 coefficienten_van_lr_man_vader <- coef(lr_man_vader)
+coefficienten_van_lr_man_vrouw_vader <- coef(lr_man_vrouw_vader)
 
 
-
-
-# Verander de coefficienten naar procentuele verandering:
+# Verander de coëfficiënten naar procentuele verandering:
 odds_ratio_lr_man_eigen_keuze_abortus <- ( 1 - (exp(coefficienten_van_lr_man_eigen_keuze_abortus))) * 100
 odds_ratio_van_lr_man_vader <- exp(coefficienten_van_lr_man_vader)
+odds_ratio_van_lr_man_vrouw_vader <- exp(coefficienten_van_lr_man_vrouw_vader)
 
 
-list(odds_ratio_lr_man_eigen_keuze_abortus)
-odds_ratio_lr_man_eigen_keuze_abortus <- data.frame(odds_ratio_lr_man_eigen_keuze_abortus)# %>% rename(                                                      aa = Wat.is.uw.leeftijd.
+#list(odds_ratio_lr_man_eigen_keuze_abortus)
+odds_ratio_lr_man_eigen_keuze_abortus <- data.frame(odds_ratio_lr_man_eigen_keuze_abortus)# %>% rename(                                                      test = Wat.is.uw.leeftijd.
 #)
-
-odds_ratio_van_lr_man_vader
+odds_ratio_van_lr_man_vrouw_vader <- data.frame(odds_ratio_van_lr_man_vrouw_vader)
+#odds_ratio_van_lr_man_vader
 #odds_ratio_lr_man_eigen_keuze_abortus
 
-
+odds_ratio_van_lr_man_vrouw_vader
 
 ```
 Interpretatie van deze odds ratio's: Het percentage geeft aan dat wanneer alle andere variabelen het zelfde zijn, de waarschijnlijkheid dat 
