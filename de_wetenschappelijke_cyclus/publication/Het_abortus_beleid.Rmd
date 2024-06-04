@@ -8,7 +8,7 @@ author: |
 lang: nl # dit zorgt er voor dat "abstract" "samenvatting" gaat heten
 
 abstract: |
-    In dit verslag kunt u lezen over ons onderzoek die wij hebben gedaan voor het schoolvak de wetenschappelijke cycles. Hiervoor moesten wij een onderzoek doen naar een eigen gekozen onderwerp zodat we weten hoe de wetenschappelijke cycles werkt en hoe je een goed onderzoek doet. Wij hebben gekozen om onderzoek te doen met behulp van een enquête of de mening over etnische vraagstukken veranderd op een bepaalde leeftijd of dat verschillende mensen leeftijdsgroepen er anders naar kijken. 
+    In dit verslag kunt u lezen over het onderzoek dat gedaan is voor het schoolvak de wetenschappelijke cyclus. Hiervoor moest een onderzoek gedaan worden naar een onderwerp naar keuze zodat we ervaring opdoen over het uitvoeren van wetenschappelijke onderzoek. Wij hebben gekozen om onderzoek te doen met behulp van een enquête of de mening over ethische vraagstukken te peilen en na te gaan of deze veranderd wanneer factoren zoals leeftijd, geslacht en opleidingsniveau verschillen. 
     
 
 bibliography: Het_abortus_beleid.bib # naam van je .bib file. Deze moet hetzelfde zijn als je Rmd bestandsnaam
@@ -28,12 +28,12 @@ output:
 knitr::opts_chunk$set(out.width = '100%', dpi=300) # configuratie voor figuur grootte en resolutie
 knitr::opts_chunk$set(echo = FALSE) # Deze regel zorgt ervoor GEEN ENKELE chunk getoond wordt! 
 knitr::opts_chunk$set(digits = 2)
-# Laad alle gebruikte bibliotheken hier
-library(ggplot2)
+
 ```
 
 ```{r message=FALSE, warning=FALSE}
-# Libraries
+# Laad alle gebruikte bibliotheken hier
+library(ggplot2)
 library(ggraph)
 library(tidyverse)
 library(viridis)
@@ -618,7 +618,7 @@ ggplot(data = df_chi_geslacht, mapping = aes(x = name , y = value)) +
 ```
 Op figuur 3 zijn de p-waarden van enkele vragen vergeleken. Wanneer de waarde onder de rode lijn zit kan er met 95% waarschijnlijkheid gezegd worden dat, in dit geval, geslacht een significant bijdragende factor is. Bij de vraag: "Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?" was de p-waarde: 0.018. Voor de overige vragen speelt geslacht geen significante rol (p-waarde > 0.05).
 
-```{r chi-sq 2, eval=T, warning=FALSE, message=F, fig.cap='P-waarde score voor de enquete vragen en het effect dat leeftijd heeft op de keuze.'}
+```{r chi-sq 2, warning=FALSE, message=F, fig.cap='P-waarde score voor de enquete vragen en het effect dat leeftijd heeft op de keuze.'}
 #chi square testen maar dan op de twee leeftijd verschillen 
 abortus_aangpast <- abortus %>%
     mutate(leeftijd_boven_onder_24 = ifelse(Wat.is.uw.leeftijd. > 25, "boven", "onder"))
@@ -748,7 +748,7 @@ Uit een Chi-squared test blijkt dat er een significant verschil zit tussen hoe m
 
 
 
-```{r barplot geloof en abortus}
+```{r barplot_geloof_en_abortus}
 tijdelijke_data <- data_renamed %>%
     select(Religie, Abortus_keuze) %>%
     mutate(Gelovig=ifelse(Religie == "Niet gelovig", "Niet gelovig", "Wel gelovig"))
@@ -780,7 +780,7 @@ data_donut <- as.data.frame(tabel_geloof_vraag6) %>%
         religieuze_overtuiging = Var2)
 ```
 
-```{r donut geloof en abortus (resultaten), warning=FALSE}
+```{r donut, warning=FALSE, message=FALSE, fig.cap='Geloof als factor op de mening of abortus toegestaan zou moeten worden. Buitenste ring geeft het antwoord op deze vraag weer en de binnneste ring laat het de religieuze overtuiging zien van de respondenten.'}
 library(ggplot2)
 library(webr)
 library(dplyr)
@@ -795,10 +795,8 @@ PieDonut(data_donut, aes(religieuze_overtuiging, antwoord_vraag, count=Freq),
          # grootte tekst binnenste ring (geloof)
          pieLabelSize = 1.8, 
          donutLabelSize = 2,
-         # percentages gefikst
           showRatioThreshold = getOption("PieDonut.showRatioThreshold", 0.0) 
          )
-   # + labs(caption = "Figuur x: test101, pls doe het")
     
 ```
 In de bovenstaande plot wordt er in de binnenste plot weergegeven hoeveel procent van de respondenten welke religieuze overtuigingen hebben. 81.58% van de respondenten geeft aan niet een religieuze overtuiging te hebben. Verder geeft 9.65% aan in het christendom te geloven, 1.75% in de islam, 0.88% in het boeddhisme en 6.14% geeft aan een religieuze overtuiging te hebben die wij niet als optie hebben meegegeven in de enquête. 
@@ -810,7 +808,7 @@ Verder is van de Christelijke respondenten 73% voor de eigen keuze over abortus 
 # Logistische regressies:
 Voor de enquêtevraag zijn een aantal logistische regressies uitgevoerd die leeftijd, geslacht, opleidingsniveau en geloof als "predictor" of onafhankelijke variabelen hebben. 
 
-```{r logistische regressie, warning=FALSE, fig.cap='test'}
+```{r logistische regressie, warning=FALSE, fig.cap='test', message=FALSE, results = "hide"}
 df <- df %>% 
   mutate(gelovig_01 = ifelse(df$geloof == "Niet gelovig", 0,1)) 
 
@@ -850,7 +848,7 @@ lr_man_vrouw_gezondheid_ouders <- glm(df_logistische_regressie$ouders ~ leeftijd
 
 ```
 
-```{r}
+```{r, results = "hide"}
 summary(lr_man_vrouw_vader)
 ```
 ```{r Power test}
@@ -888,18 +886,19 @@ prop_vrouw_ja_abortus <- prop.table(table(ifelse(df$eigen_keuze_abortus=="Wel ab
 h <- ES.h(prop_man_ja_abortus[2], prop_man_ja_abortus[1]) # Er werkt iets niet goed...
 
 
-power1 <- pwr.t.test(sig.level = 0.05, power = 0.8, n = 109 ,alternative = "two.sided") # test, andere h uitrekenen.
-power2 <- pwr.t.test(d = 0.5,sig.level = 0.05, power = 0.8, alternative = "two.sided") # test, andere h uitrekenen.
+power1 <- pwr.t.test(sig.level = 0.05, power = 0.8, n = 51 ,alternative = "two.sided") #
+power2 <- pwr.t.test(d = 0.5,sig.level = 0.05, power = 0.8, alternative = "two.sided") # 
 
 
 ```
 Om met een effect sterkte van 0.5 het verschil tussen de twee geslachten aan te tonen zijn er `r round(power2$n, digits = 0)` mensen nodig (van elke groep).
-En met de 109 mensen die we nu hebben is de effect sterkte: `r round(power1$d, digits = 2)`
+En met de 51 mensen die we nu hebben is de effect sterkte: `r round(power1$d, digits = 2)`. De groep met het minst aantal "deelnemers", in dit geval de vrouwen moet gebruikt worden. Van deze significantie moet uitgegaan worden voor de analyzes. 
 
 
 ## **Log-odds logistische regressie:**
 
-```{r odds ratio}
+
+```{r odds ratio, warning=FALSE,results = "hide", message=FALSE}
 # Zodat het niet in wetenschappelijke notatie weergeven wordt als het onder de 999 is. 
 options(scipen = 999)
 
@@ -914,7 +913,7 @@ odds_ratio_lr_man_vrouw_vader_df <- data.frame(odds_ratio_lr_man_vrouw_vader)
 #odds_ratio_lr_man_vrouw_vader <- data.frame(odds_ratio_lr_man_vrouw_vader) %>% row.names(
  # aaa = `(Intercept)`
 #  )
-#rownames <- rownames(odds_ratio_lr_man_vrouw_vader) 
+#rownames <- rownames(odds_ratio_lr_man_vrouw_v`ader) 
 
 #new_rownames <- c("Intercept", "Leeftijd", "Geslacht", 4:10)
 #rownames(odds_ratio_lr_man_vrouw_vader) <- new_rownames
@@ -922,13 +921,14 @@ odds_ratio_lr_man_vrouw_vader_df <- data.frame(odds_ratio_lr_man_vrouw_vader)
 
 #odds_ratio_lr_man_eigen_keuze_abortus
 
-odds_ratio_lr_man_vrouw_vader_df
+#odds_ratio_lr_man_vrouw_vader_df
 ```
+
 De log-odds van de logistische regressie over de vraag: "Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?"
 Zijn als volgt: 
 ## Visualisatie van de logistische regressie: ##
 
-```{r Visualizatie Lr vraag: Moet de vader zeggenschap hebben, warning=FALSE, fig.cap='Logistische regressie visualisatie voor de vraag: Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?'}
+```{r Visualizatie Lr vraag: Moet de vader zeggenschap hebben, warning=FALSE,results = "hide", fig.cap='Logistische regressie visualisatie voor de vraag: Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?'}
 # Lr
 lr_man_vader <- glm(vader ~ Wat.is.uw.leeftijd. + gelovig_01 + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., data = df_man, family = binomial)
 
@@ -978,9 +978,7 @@ Ook geslacht blijkt geen statistisch significante invloed te hebben op de keuze 
 
 De verdeling van de leeftijd data kan mogelijk verklaard worden door dat de leeftijdsgenoten van de makers van dit artikel rondt de 20 jaar oud zijn en hun ouders in de 50 jaar oud zijn, dit zijn de twee pieken in de leeftijdsverdeling. Verder zou de data betrouwbaarder kunnen zijn als we de enquête nog verder hadden verspreid door Nederland. Nu zitten de pieken namelijk vooral in de omgeving van Groningen en Friesland.
 
-! WAT VOOR MAATSCHAPPELIJKE IMPACT HEEFT DIT ONDERZOEK
-
-In een vervolgonderzoek raad ik aan in de enquête te vragen of de respondent een kind heeft en welke sekse dit kind heeft. Hiermee kun je onderzoeken of het hebben van een dochter invloed heeft over de mening over abortus.
+Voor een eventueel vervolgonderzoek zou er een uitgebreidere versie van de enquête gemaakt kunnen worden waarin onder andere gevraagd wordt of de respondent een kind heeft en welke sekse dit kind heeft. Hiermee kun je onderzoeken of het hebben van een dochter invloed heeft over de mening over abortus.
 
 
 
