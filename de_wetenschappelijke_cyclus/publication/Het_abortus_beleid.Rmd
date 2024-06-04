@@ -47,7 +47,6 @@ library(pwr)
 library(gridExtra)
 
 #Laad dataset:
-getwd()
 abortus <- read.csv("../analysis/abortus_dataset.csv", na.strings = "NA")
 
 
@@ -258,44 +257,44 @@ pwr: 1.3.0 \
 gridExtra: 2.3 \
 
 **Het verspreiden van de enquête:**\
-De weblink die verkregen was van Microsoft Forms, is middels digitale communicatie programma's zoals: E-mail, whatsapp, discord etc. verspreid. 
+De weblink die verkregen was van Microsoft Forms, is middels digitale communicatie zoals: E-mail, whatsapp, discord etc. verspreid. 
 
-De makers van deze enquête hebben hem naar klasgenoten, familieleden en vrienden gestuurd met de instructie om hem door te sturen naar andere Familie, kennissen en vrienden. Op deze manier zijn er in totaal 114 correspondenten geweest die hem ingevuld hebben.
+De makers van deze enquête hebben hem naar klasgenoten, familieleden en vrienden gestuurd met de instructie om hem door te sturen naar andere Familie, kennissen en vrienden. Op deze manier zijn er in totaal 114 respondenten geweest die hem ingevuld hebben.
 
 Voor alle vragen van de enquête zijn hypotheses opgesteld om de onderzoeksvraag te beantwoorden, deze onderzoeksvraag is: Is er een verschil tussen de ethiek gerelateerde meningen van mensen van andere leeftijden, geslachten, opleidingsniveaus en geloven?
 De onderstaande H0 en H1 hypotheses zijn er voor elke onafhankelijke variabele, hier zijn ze voor geslacht ingevuld maar deze zelfde vraagstelling is ook voor: leeftijd, opleidingsniveau en geloof gebruikt. 
 
 **Vraag:** Vindt u dat er voor abortus gekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen? <br>
->H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of een vrouw een abortus mag hebben wanneer haar leven in gevaar is. 
->H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of een vrouw een abortus mag hebben wanneer haar leven in gevaar is. 
+H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of een vrouw een abortus mag hebben wanneer haar leven in gevaar is. \
+H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of een vrouw een abortus mag hebben wanneer haar leven in gevaar is. \
 
 **Vraag:** Vindt u dat iemand een abortus mag als de zwangerschap een gevolg is van verkrachting? \
->H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze over het toestaan van een abortus wanneer de zwangerschap gevolg is van verkrachting.
->H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze over het toestaan van een abortus wanneer de zwangerschap gevolg is van verkrachting.
+H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze over het toestaan van een abortus wanneer de zwangerschap gevolg is van verkrachting. \
+H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze over het toestaan van een abortus wanneer de zwangerschap gevolg is van verkrachting. \
 
 **Vraag:** Vindt u dat een minderjarig kind de keuze moet hebben om voor een abortus te kiezen? \
->H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of een minderjarig kind de keuze moet hebben om voor een abortus te kiezen. 
->H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of een minderjarig kind de keuze moet hebben om voor een abortus te kiezen.
+H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of een minderjarig kind de keuze moet hebben om voor een abortus te kiezen. \
+H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of een minderjarig kind de keuze moet hebben om voor een abortus te kiezen. \
 
 **Vraag:** Vindt u dat de ouders zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen? \
->H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of de ouders van een minderjarig kind zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen? <br>
->H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of de ouders van een minderjarig kind zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen?
+H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of de ouders van een minderjarig kind zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen? \
+H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of de ouders van een minderjarig kind zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen? \
 
 **Vraag:** Moet het wettelijk verplicht worden voor vrouwen die een abortus willen om een echo van de foetus te zien voordat een abortus toegestaan is? \
->H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of ze vinden dat het wettelijk verplicht worden voor vrouwen die een abortus willen om een echo van de foetus te zien voordat een abortus toegestaan is. <br>
->H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of ze vinden dat het wettelijk verplicht worden voor vrouwen die een abortus willen om een echo van de foetus te zien voordat een abortus toegestaan is. <br >
+H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of ze vinden dat het wettelijk verplicht worden voor vrouwen die een abortus willen om een echo van de foetus te zien voordat een abortus toegestaan is. \
+H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of ze vinden dat het wettelijk verplicht worden voor vrouwen die een abortus willen om een echo van de foetus te zien voordat een abortus toegestaan is. \
 
 **Vraag:** Vindt u dat de wettelijke bedenktijd moet terugkomen? \
->H0:  Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of de wettenlijke bedenktijd terug moet komen. 
->H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of de wettenlijke bedenktijd terug moet komen.
+H0:  Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of de wettenlijke bedenktijd terug moet komen. \
+H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of de wettenlijke bedenktijd terug moet komen. \
 
 **Vraag:** Vindt u dat adoptie een alternatief is voor abortus? \
->H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of adoptie een alternatief is voor abortus. 
->H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of adoptie een alternatief is voor abortus.
+H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of adoptie een alternatief is voor abortus. \
+H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of adoptie een alternatief is voor abortus. \
 
 **Vraag:** Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus? \
->H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of de biologische vader zeggenschap moet hebben over de beslissing voor een abortus.
->H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of de biologische vader zeggenschap moet hebben over de beslissing voor een abortus.
+H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of de biologische vader zeggenschap moet hebben over de beslissing voor een abortus.
+H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of de biologische vader zeggenschap moet hebben over de beslissing voor een abortus.
 
 
 # Resultaten
@@ -304,10 +303,10 @@ Van de leeftijd van de mannen is de mediaan: `r summary(man_leeftijd)[3]`, het g
 Van de leeftijd van de vrouwen is de mediaan: `r summary(vrouw_leeftijd)[3]`, het gemiddelde `r round(summary(vrouw_leeftijd)[4], digits = 1)` en de standaard deviatie: `r round(sd(vrouw_leeftijd), digits = 1)`.
 Er waren niet genoeg metingen (`r (count(df %>% select(geslacht) %>% filter(geslacht == "Wil ik liever niet melden")))` meting).
 
-```{r warning=FALSE, fig.cap='Verdeling van de leeftijd van de mensen die de enquete ingevuld hebben', message=FALSE, warning=FALSE}
+```{r warning=FALSE, fig.cap='Verdeling van de leeftijd van de mensen die de enquete ingevuld hebben', message=FALSE, warning=FALSE,out.width='70%', fig.align='center'}
 # verdeling van de leeftijden:
 p1 <- ggplot(df, aes(x= Wat.is.uw.leeftijd.)) +
-  geom_histogram(aes(y = ..density..)) + 
+  geom_histogram(aes(y = ..density..),binwidth = 3, fill = "blue", alpha = 0.5) + 
   geom_density() +
   xlab("Leeftijd (Jaren)") +
   ylab("Dichtheid") +
@@ -315,7 +314,7 @@ p1 <- ggplot(df, aes(x= Wat.is.uw.leeftijd.)) +
 
 p1
 ```
-Zoals op figuur ... afgebeeld is zijn er twee pieken, een rondt de 20 en een rondt de 50 jaar oud. Met behulp van de Shapiro-Wilk test is bevestigd dat deze data niet normaal verdeeld is. (Waarschijnlijkheid Shapiro-Wilk test: p-waarde: 5.044 × 10-6)
+Zoals op figuur 1 afgebeeld is zijn er twee pieken, een rondt de 20 en een rondt de 50 jaar oud. Met behulp van de Shapiro-Wilk test is bevestigd dat deze data niet normaal verdeeld is. Waarschijnlijkheid dat de data niet normaal verdeeld is volgens de Shapiro-Wilk test: p-waarde: 5.044 × 10-6)
 ```{r warning=FALSE, fig.cap='Leeftijd van de mensen die de enquete ingevuld hebben geplot tegen geslacht', message=FALSE, warning=FALSE }
 
 ggplot(df, aes(x= Wat.is.uw.leeftijd., y = geslacht)) +
@@ -327,7 +326,7 @@ ggplot(df, aes(x= Wat.is.uw.leeftijd., y = geslacht)) +
 
 
 ```
-Figuur ... weergeeft dit verschil tussen de leeftijden van de mannen, vrouwen en mensen die geen geslacht opgegeven hebben. 
+Figuur 2 weergeeft dit verschil tussen de leeftijden van de mannen, vrouwen en mensen die geen geslacht opgegeven hebben. 
 
 
 
@@ -619,7 +618,7 @@ ggplot(data = df_chi_geslacht, mapping = aes(x = name , y = value)) +
 ```
 Op figuur 3 zijn de p-waarden van enkele vragen vergeleken. Wanneer de waarde onder de rode lijn zit kan er met 95% waarschijnlijkheid gezegd worden dat, in dit geval, geslacht een significant bijdragende factor is. Bij de vraag: "Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?" was de p-waarde: 0.018. Voor de overige vragen speelt geslacht geen significante rol (p-waarde > 0.05).
 
-```{r chi-sq 2, eval=F, warning=FALSE, message=F, fig.cap='P-waarde score voor de enquete vragen en het effect dat leeftijd heeft op de keuze.'}
+```{r chi-sq 2, eval=T, warning=FALSE, message=F, fig.cap='P-waarde score voor de enquete vragen en het effect dat leeftijd heeft op de keuze.'}
 #chi square testen maar dan op de twee leeftijd verschillen 
 abortus_aangpast <- abortus %>%
     mutate(leeftijd_boven_onder_24 = ifelse(Wat.is.uw.leeftijd. > 25, "boven", "onder"))
