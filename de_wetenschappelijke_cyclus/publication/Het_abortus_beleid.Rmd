@@ -8,8 +8,8 @@ author: |
 lang: nl # dit zorgt er voor dat "abstract" "samenvatting" gaat heten
 
 abstract: |
-  To-do: Bibliografie maken (template invullen), thema gelijk maken (theme_minimal()) en aan het eind de abstract schrijven, dit moet een samenvatting zijn van alles dat bersproken is. 
-    In dit verslag kunt u lezen over ons onderzoek die wij hebben gedaan voor het schoolvak de weteschapeijlke cycles. Hiervoor moesten wij een onderzoek doen naar een eigen geokzen onderwerp zodat we weten hoe de wetenschapelijke cycles werkt en hoe je een goed onderziek doet. Wij hebben gekozen om onderzoek te doen met behulp van een enqute of de mennig over etnische vraagstukken veranderd op een bepaalde leeftijd of dat verschillende mensen leeftijdsgroepen er anders naar kijken. Onze enqute gaat dus over arbortus omdat het niet zo zwaar beladen is als vluchtelingen is en ook wel in het nieuws is geweest. 
+  To-do: Bibliografie maken (template invullen), thema gelijk maken (theme_minimal()) en aan het eind de abstract schrijven, dit moet een samenvatting zijn van alles dat besproken is. 
+    In dit verslag kunt u lezen over ons onderzoek die wij hebben gedaan voor het schoolvak de wetenschappelijke cycles. Hiervoor moesten wij een onderzoek doen naar een eigen gekozen onderwerp zodat we weten hoe de wetenschappelijke cycles werkt en hoe je een goed onderzoek doet. Wij hebben gekozen om onderzoek te doen met behulp van een enquête of de mening over etnische vraagstukken veranderd op een bepaalde leeftijd of dat verschillende mensen leeftijdsgroepen er anders naar kijken. Onze enquête gaat dus over abortus omdat het niet zo zwaar beladen is als vluchtelingen is en ook wel in het nieuws is geweest. 
     
 
 bibliography: Het_abortus_beleid.bib # naam van je .bib file. Deze moet hetzelfde zijn als je Rmd bestandsnaam
@@ -121,7 +121,7 @@ abortus$vader <- factor(x =
                             labels = c("Ja", "Nee", "Weet ik niet"))
 
 # Vragen met een volgorde: 
-# namen van de variabelen eidigen met "_o" om aan te duiden dat er een volgorde in zit (order)
+# namen van de variabelen eindigen met "_o" om aan te duiden dat er een volgorde in zit (order)
 
 abortus$levensgevaar_vrouw_o <- factor(x = abortus$Het.leven.van.de.vrouw.in.gevaar.is,
                                      levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
@@ -193,34 +193,31 @@ Deze data wordt vervolgens geanalyseerd met onder andere een logistische regress
 
 # Materialen en Methoden
 
-Voor de enquete zijn er een aantal vragen opgesteld die een beeld moeten geven van de meningen van de mensen die hem invullen. 
-Ook zijn er persoonlijke vragen die gebruikt worden om keuzes te correleren met factoren als: geloof, leeftijd, opleidingsnivea en geslacht.
+Voor de enquête zijn er een aantal vragen opgesteld die een beeld moeten geven van de meningen van de mensen die hem invullen. 
+Ook zijn er persoonlijke vragen die gebruikt worden om keuzes te correleren met factoren als: geloof, leeftijd, opleidingsniveau en geslacht.
 
 Deze vragen zijn neutraal geformuleerd zodat de invuller niet onbewust geneigd is om voor de optie te kiezen waar de vraagstelling neigt te gaan. 
 De vragen kunnen verdeeld worden in drie categorieën: Persoonlijke informatie, multiple-choice en op een een schaal van zeer oneens tot zeer eens.
  
-De enquete bestaat uit de volgende vragen: \
+De enquête bestaat uit de volgende vragen: \
 
 **Persoonlijke vragen:** \
-1. Wat is uw geslacht?
-2. Wat is het hoogste onderwijsniveau dat u heeft afgerond?
-3. Wat is uw leeftijd?
-4. Wat is uw religieuze overtuiging?
+1. Wat is uw geslacht?\
+2. Wat is het hoogste onderwijsniveau dat u heeft afgerond?\
+3. Wat is uw leeftijd?\
+4. Wat is uw religieuze overtuiging?\
 5. In welke provincie heeft u het grootste deel van uw jeugd doorgebracht? \
 
 **Multiple choice vragen:** \
-1. Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?
-2. Indien u bij de vorige vraag 'Nee' heeft ingevuld; 
-3. Vindt u dat er uitzonderingen zijn waarin iemand dit wel zelf moet kunnen kiezen?
-4. Vindt u dat er voor abortus gekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen?
-
-5. Vindt u dat iemand een abortus mag als de zwangerschap een gevolg is van verkrachting?
-6. Vindt u dat een minderjarig kind de keuze moet hebben om voor een abortus te kiezen? 
-
-9. Moet het wettelijk verplicht worden voor vrouwen die een abortus willen om een echo van de 10. foetus te zien voordat een abortus toegestaan is?
-11. Vindt u dat de wettelijke bedenktijd moet terugkomen?
-
-12. Vindt u dat adoptie een alternatief is voor abortus?
+1. Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?\
+2. Indien u bij de vorige vraag 'Nee' heeft ingevuld; \
+3. Vindt u dat er uitzonderingen zijn waarin iemand dit wel zelf moet kunnen kiezen?\
+4. Vindt u dat er voor abortus gekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen?\
+5. Vindt u dat iemand een abortus mag als de zwangerschap een gevolg is van verkrachting?\
+6. Vindt u dat een minderjarig kind de keuze moet hebben om voor een abortus te kiezen? \
+9. Moet het wettelijk verplicht worden voor vrouwen die een abortus willen om een echo van de 10. foetus te zien voordat een abortus toegestaan is?\
+11. Vindt u dat de wettelijke bedenktijd moet terugkomen?\
+12. Vindt u dat adoptie een alternatief is voor abortus?\
 13. Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?
 
 **Schaal zeer oneens tot zeer eens vragen:** \
@@ -239,22 +236,22 @@ De enquete bestaat uit de volgende vragen: \
 7. De vrouw niet in staat is voor het kind te zorgen vanwege financiële beperkingen
 
 
-De vraag: Vindt u dat de wettelijke bedenktijd moet terugkomen? werd gesuplementeerd met de volgende informatie: 
+De vraag: Vindt u dat de wettelijke bedenktijd moet terugkomen? werd geïmplementeerd met de volgende informatie: 
 Sinds 1 januari 2023 is de verplichte minimale bedenktijd van 5 dagen vervallen. Voorheen moesten er minimaal 5 dagen zitten tussen het gesprek met een arts en de abortus zelf. Op dit moment geldt een flexibele bedenktijd die wordt bepaalt door een gesprek tussen de vrouw die abortus wil en een arts. De arts bepaalt nu op basis van dit gesprek hoelang de bedenktijd moet zijn voor de vrouw. Dit kan 0 dagen zijn, maar ook 10.
 
 En de vraag: Vindt u dat de ouders zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen? werd gesupplementeerd met de volgende informatie:
 In de huidige situatie moet er toestemming zijn van de ouders, er zijn wel uitzonderingen. Nu mag je onder de 15 abortus te plegen met toestemming van de ouders.   
 
 Deze vragen zijn neutraal geformuleerd zodat de invuller niet onbewust geneigd is om voor de optie te kiezen waar de vraagstelling neigt te gaan. 
-Microsoft Forms is gebruikt om een enquete te maken die deze bovenstaande vragen bevat. 
+Microsoft Forms is gebruikt om een enquête te maken die deze bovenstaande vragen bevat. 
 
 
-**Het verspreiden van de enquete:**
+**Het verspreiden van de enquête:**\
 De weblink die verkregen was van Microsoft Forms, is middels digitale communicatie programma's zoals: E-mail, whatsapp, discord etc. verspreid. 
 
-De makers van deze enquete hebben hem naar klasgenoten, familieleden en vrienden gestuurd met de instructie om hem door te sturen naar andere Familie, kennissen en vrienden. Op deze manier zijn er in totaal 114 correspondenten geweest die hem ingevuld hebben.
+De makers van deze enquête hebben hem naar klasgenoten, familieleden en vrienden gestuurd met de instructie om hem door te sturen naar andere Familie, kennissen en vrienden. Op deze manier zijn er in totaal 114 correspondenten geweest die hem ingevuld hebben.
 
-Voor alle vragen van de enquete zijn hypotheses opgesteld om de onderzoeksvraag te beantwoorden, deze onderzoeksvraag is: Is er een verschil tussen de ethiek gerelateerde meningen van mensen van andere leeftijden, geslachten, opleidingsniveaus en geloven?
+Voor alle vragen van de enquête zijn hypotheses opgesteld om de onderzoeksvraag te beantwoorden, deze onderzoeksvraag is: Is er een verschil tussen de ethiek gerelateerde meningen van mensen van andere leeftijden, geslachten, opleidingsniveaus en geloven?
 De onderstaande H0 en H1 hypotheses zijn er voor elke onafhankelijke variabele, hier zijn ze voor geslacht ingevuld maar deze zelfde vraagstelling is ook voor: leeftijd, opleidingsniveau en geloof gebruikt. 
 
 **Vraag:** Vindt u dat er voor abortus gekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen? <br>
@@ -341,7 +338,7 @@ provincie_aantal$ymin = c(0, head(provincie_aantal$ymax, n=-1))
 provincie_aantal$labelp = (provincie_aantal$ymax+provincie_aantal$ymin)/2
 provincie_aantal$label = (paste(provincie_aantal$percentage, "% ", provincie_aantal$Var1))
 
-# Verander de naam van de provincie colom van Var1 naar "provincies":
+# Verander de naam van de provincie kolom van Var1 naar "provincies":
 provincie_aantal <- provincie_aantal %>%
     rename(provincies = Var1)
 
@@ -361,7 +358,7 @@ ggplot(provincie_aantal,aes(ymax=ymax, ymin=ymin, xmax=13, xmin=3)) +
 
 
 
-Op figuur 2 is weergeven dat de grootste fractie mensen die de enquete ingevuld hebben opgegroeid zijn in Gronigen, opgevolgd door Friesland en Drenthe.
+Op figuur 2 is weergeven dat de grootste fractie mensen die de enquête ingevuld hebben opgegroeid zijn in Groningen, opgevolgd door Friesland en Drenthe.
 
 
 
@@ -677,6 +674,129 @@ ggplot(data = df_chi_leeftijd, mapping = aes(x = name , y = value)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.6))
 ```
 
+```{r data inlezen}
+
+# file <- "dataset.csv"
+# data <- readr::read_csv(file)
+#data <- read.csv(file)
+data <- read.csv('../analysis/abortus_dataset.csv')
+# head(data)
+```
+
+```{r data renamed}
+library(dplyr)
+data_renamed <- data %>%
+    rename(
+        Eindtijd = Tijd.van.voltooien,
+        Gender = Wat.is.uw.geslacht..,
+        Onderwijsniveau = Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond.,
+        Leeftijd = Wat.is.uw.leeftijd.,
+        Religie = Wat.is.uw.religieuze.overtuiging..,
+        Provincie = In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht.,
+        Abortus_keuze = Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil.,
+        Indien_nee_uitzonderingen = Indien.u.bij.de.vorige.vraag..Nee..heeft.ingevuld...Vindt.u.dat.er.uitzonderingen.zijn.waarin.iemand.dit.wel.zelf.moet.kunnen.kiezen.....,
+        Gezondheid_vrouw_gevaar_uitzondering = Vindt.u.dat.er.voor.abortus.gekozen.mag.worden.als.de.gezondheid.van.de.vrouw.door.de.zwangerschap.in.gevaar.kan.komen.,
+        Verkrachting_uitzondering = Vindt.u.dat.iemand.een.abortus.mag.als.de.zwangerschap.een.gevolg.is.van.verkrachting.,
+        minderjarige_keuze_uitzondering = Vindt.u.dat.een.minderjarig.kind.de.keuze.moet.hebben.om.voor.een.abortus.te.kiezen.....,
+        Ouders_zeggenschap_over_minderjarige_uitzondering = Vindt.u.dat.de.ouders.zeggenschap.moeten.hebben.over.of.hun.minderjarige.kind.wel.of.niet.voor.abortus.mag.kiezen...,
+        Echo_verplicht = Moet.het.wettelijk.verplicht.worden.voor.vrouwen.die.een.abortus.willen.om.een.echo.van.de.foetus.te.zien.voordat.een.abortus.toegestaan.is.,
+        Wettelijke_bedenktijd = Vindt.u.dat.de.wettelijke.bedenktijd.moet.terugkomen.,
+        Adoptie_als_alternatief = Vindt.u.dat.adoptie.een.alternatief.is.voor.abortus.,
+        Biologische_vader_zeggenschap = Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.
+    ) #%>%
+   # select(- c(Tijd.van.laatste.wijziging, E.mail, Naam))
+
+# head(data_renamed)
+```
+
+```{r juiste proptabel gender en zeggenschap}
+new_proptabel_dataframe <- data_renamed %>% 
+    group_by(Gender, Biologische_vader_zeggenschap) %>%
+    summarize(count = n(), .groups = "drop") %>%
+    group_by(Gender) %>%
+    mutate(perc = count/sum(count) * 100)
+```
+
+```{r barplot gender en zeggenschap}
+library(ggplot2)
+
+ggplot(new_proptabel_dataframe, aes(x =Gender, y=perc, fill=Biologische_vader_zeggenschap)) +
+    labs(caption = "Figuur x: Barplot met de verdeling van antwoorden over gender 
+    op de vraag of de biologische vader zeggenschap moet hebben 
+    over de beslissing voor een abortus.",
+         x = "Gender",
+         fill = "Antwoord",
+         y = "percentage") +
+    geom_bar(stat = "identity", position = "dodge", color="black")+
+    theme_minimal() +
+    scale_fill_brewer(palette = "Dark2") +
+    # verplaatst de tekst naar links
+theme(plot.caption = element_text(hjust = 0, face = "italic")) 
+```
+In de bovenstaande plot zie je per gender in procenten weergegeven wat mensen hebben geantwoord op de vraag: 'Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?'
+Je ziet hier dat er gemiddeld meer vrouwen zijn die vinden dat mannen hier geen zeggenschap over hebben. Ook zijn er meer mannen die vinden dat de vader hier wel zeggenschap over moet hebben.
+Uit een Chi-squared test blijkt dat er een significant verschil zit tussen hoe mannen en vrouwen deze vraag beantwoorden. De p-waarde die hieruit kwam is namelijk ‘0.01798’ en dit ligt onder de '0.05'.
+
+
+
+```{r barplot geloof en abortus}
+tijdelijke_data <- data_renamed %>%
+    select(Religie, Abortus_keuze) %>%
+    mutate(Gelovig=ifelse(Religie == "Niet gelovig", "Niet gelovig", "Wel gelovig"))
+x <- prop.table(table(tijdelijke_data$Gelovig, tijdelijke_data$Abortus_keuze))
+as.data.frame(x)%>%
+    ggplot(aes(x = Var1, y = Freq, fill = Var2)) +
+    labs(caption = "Figuur x: Corrolatie religie en mening abortus",
+         x = "",
+         fill = "Antwoord",
+         y = "Aantal antwoorden") +
+    geom_col(position = "dodge") +
+    # verplaatst de tekst naar links
+    theme(plot.caption = element_text(hjust = 0, face = "italic")) +
+    theme_minimal()
+```
+In de bovenstaande plot zie je de verdeling weergegeven van mensen die wel geloven en niet geloven en wat deze hebben geantwoord op de vraag of mensen zelf mogen kiezen of ze een abortus willen.
+
+Je ziet in de plot hierboven dat alle mensen die hebben aangegeven niet een religieuze overtuiging te hebben bij vraag 6 ook hebben aangegeven dat iemand zelf moet kunnen kiezen of die een abortus wil. Bij de mensen die hebben ingevuld wel een religieuze overtuiging te hebben is er een deel die heeft aangegeven dat iemand niet zelf moet kunnen kiezen of die een abortus wil.
+Uit de Chi-squared test komt dan ook dat er een significant verschil zit tussen mensen die wel aangeven een religieuze overtuiging te hebben en mensen die aangeven dat niet te hebben. De p-waarde die hieruit kwam is '0.0002855' en dit ligt onder de '0.05'.
+
+```{r tabel geloof en abortus}
+tabel_geloof_vraag6 <- (table(data_renamed$Abortus_keuze, data_renamed$Religie))
+```
+
+```{r donut data}
+data_donut <- as.data.frame(tabel_geloof_vraag6) %>%
+    rename(
+        antwoord_vraag = Var1,
+        religieuze_overtuiging = Var2)
+```
+
+```{r donut geloof en abortus (resultaten), warning=FALSE}
+library(ggplot2)
+library(webr)
+library(dplyr)
+
+PieDonut(data_donut, aes(religieuze_overtuiging, antwoord_vraag, count=Freq),
+        # percentage buitenste cirkel (mening abortus)
+        showRatioDonut = TRUE,
+        # percentage in de binnenste cirkel (geloof)
+        showRatioPie = TRUE,
+        # haalt de enorme naam in het midden weg, mooier
+         showPieName = FALSE, 
+         # grootte tekst binnenste ring (geloof)
+         pieLabelSize = 1.8, 
+         donutLabelSize = 2,
+         # percentages gefikst
+          showRatioThreshold = getOption("PieDonut.showRatioThreshold", 0.0) 
+         )
+   # + labs(caption = "Figuur x: test101, pls doe het")
+    
+```
+In de bovenstaande plot wordt er in de binnenste plot weergegeven hoeveel procent van de respondenten welke religieuze overtuigingen hebben. 81.58% van de respondenten geeft aan niet een religieuze overtuiging te hebben. Verder geeft 9.65% aan in het christendom te geloven, 1.75% in de islam, 0.88% in het boeddhisme en 6.14% geeft aan een religieuze overtuiging te hebben die wij niet als optie hebben meegegeven in de enquête. 
+Vervolgens wordt er in de buitenste ring weergegeven of de respondenten voor of tegen de eigen keuze over abortus zijn per geloof. Dus van de 81.58% mensen die niet een religieuze overtuiging hebben is 100% voor de eigen keuze over abortus.
+Verder is van de Christelijke respondenten 73% voor de eigen keuze over abortus en 27% tegen abortus. Van de islamitische en de Boeddhistische respondenten is 100% voor de eigen mening over abortus. En van de respondenten die aangaven ergens anders in te geloven is er 86% voor de eigen keuze van abortus en 14% tegen.
+
+
 
 # Logistische regressies:
 Voor de enquêtevraag zijn een aantal logistische regressies uitgevoerd die leeftijd, geslacht, opleidingsniveau en geloof als "predictor" of onafhankelijke variabelen hebben. 
@@ -773,7 +893,7 @@ En met de 109 mensen die we nu hebben is de effect sterkte: `r round(power1$d, d
 # Zodat het niet in wetenschappelijke notatie weergeven wordt als het onder de 999 is. 
 options(scipen = 999)
 
-# Laat de coefficienten zien:
+# Laat de coëfficiënten zien:
 coefficienten_van_lr_man_vrouw_vader <- coef(lr_man_vrouw_vader)
 
 # Verander de coëfficiënten naar procentuele verandering:
@@ -828,20 +948,30 @@ Op figuur .... zijn de met de logistische regressie berekende waarden laten zien
 Volgens de power-test zijn er niet genoeg mensen om met een effect sterkte van 0.5 (Cohen's D) middelgroot verschil aan te tonen. Met de 114 mensen die we in totaal hebben is de effect sterkte 0.39, dit is groot genoeg om grote verschillen aan te tonen. 
 
 Vervolgens is er een Shapiro-Wilk test uitgevoerd om na te gaan of de data normaal verdeeld is, hiervoor zijn de leeftijden van de mensen gebruikt die de enquête ingevuld hebben. Hieruit bleek dat de data niet normaal verdeeld is maar bimodaal is. 
-Er is een Chi-square test gedaan om het verband tussen geslacht en de keuze op de enquete vragen te vinden. Hieruit was gebleken dat het geslacht alleen op de vraag of de biologische vader zeggenschap zou moeten hebben over de abortus een statistische significante factor was, de p-waarde hiervan is namelijk: 0.018. Op de andere vragen had het geslacht geen significante invloed. 
+Er is een Chi-square test gedaan om het verband tussen geslacht en de keuze op de enquête vragen te vinden. Hieruit was gebleken dat het geslacht alleen op de vraag of de biologische vader zeggenschap zou moeten hebben over de abortus een statistische significante factor was, de p-waarde hiervan is namelijk: 0.018. Op de andere vragen had het geslacht geen significante invloed. 
 
-Met behulp van een logistische regressie is de invloed van alle factoren tegelijk berekend. Het resultaat hiervan was dat Voor de vraag of minderjarigen zelf zeggenschap mogen hebben over een abortus geloof een statistisch significante voorspeller was van de beslissing met een p-waarde van: 0.0019. 
+Met behulp van een logistische regressie is de invloed van alle factoren tegelijk berekend. Het resultaat hiervan was dat voor de vraag of minderjarigen zelf zeggenschap mogen hebben over een abortus geloof een statistisch significante voorspeller was van de beslissing met een p-waarde van: 0.0019. 
 
-En voor de vraag of de biologische vader zeggenschap zou moeten hebben waren beide leeftijd (p-waarde:0.018521) en geslacht(p-waarde: 0.000648) statistische significante "predictors" van de uitkomst, geloof net niet met een p-waarde van 0.050357.
-De overkoepelende onderzoeksvraag kan hiermee dus beantwoord worden, of onderzochte onafhankelijke variabelen zoals: leeftijd, geloof en opleidingsniveau invloed hebben op de mening over abortus is afhankelijk van de vraag, dit is niet het zelfde voor elke vraag maar er kan geconcludeerd worden dat deze factoren wel degelijk invloed hebben op de mening. 
+En voor de vraag of de biologische vader zeggenschap zou moeten hebben waren beide leeftijd (p-waarde:0.018521) en geslacht (p-waarde: 0.000648) statistische significante "predictors" van de uitkomst, geloof net niet met een p-waarde van 0.050357.
+
+De overkoepelende onderzoeksvraag kan hiermee dus beantwoord worden, of onderzochte onafhankelijke variabelen zoals: leeftijd, geloof en opleidingsniveau invloed hebben op de mening over abortus is afhankelijk van de vraag, dit is niet hetzelfde voor elke vraag maar er kan geconcludeerd worden dat deze factoren wel degelijk invloed hebben op de mening.
 
 
 ## Discussie: ##
-De verdeling van de leeftijd data kan mogelijk verklaard worden door dat de leeftijdsgenoten van de makers van dit artikel rondt de 20 jaar oud zijn en hun ouders in de 50 jaar oud zijn, dit zijn de twee pieken in de leeftijdsverdeling. 
+In de conclusie kwamen we erachter dat er een significant verschil zit tussen hoe mannen en vrouwen denken over het zeggenschap van de biologische vader in de keuze over abortus. Mannen gaven vaker aan dat de man wel zeggenschap zou moeten hebben en de vrouwen gaven juist vaker aan dat de man hier geen zeggenschap in zou moeten hebben. Mannen zouden hierover een andere mening kunnen hebben, omdat een man zich eerder in deze situatie inleeft als de man en een vrouw eerder als de vrouw. De man zal dus eerder aangeven dat hij inspraak heeft over de keuze voor een abortus dan dat een vrouw dit zal doen.
 
-Geslacht heeft geen statistisch significante invloed op de keuze of abortus toegestaan zou moeten worden, dit resultaat komt dus overeen met wat als eerder onderzocht was (bron: https://link.springer.com/article/10.1023/a:1021427014047)
+Uit ons onderzoek blijkt dat als je een religieuze overtuiging hebt je eerder tegen de eigen keuze over abortus zal zijn dan iemand die niet een religieuze overtuiging heeft.  Uit eerder onderzoek is ook gebleken dat een partner die een religieuze overtuiging heeft eerder de keuze voor een abortus niet zal ondersteunen dan een partner die dit niet heeft (bron: https://onlinelibrary.wiley.com/doi/10.1111/pops.12803).
+Dit kan komen door de manier waarop sommige geloven denken over abortus. Volgens het christendom is er namelijk vanaf het moment van de bevruchting nieuw leven ontstaan en zul je dus een leven nemen als je voor een abortus kiest. Hierom zijn er veel christenen die tegen abortus zijn. Uit onze enquête komt dan ook dat 27% van de christenen tegen de eigen keuze over abortus is. Verder zijn alle moslimse en boeddhistische respondenten uit onze enquête voor de eigen keuze over abortus. Ook dit hangt samen met de overtuigingen van beide geloven. In de koran (deze bevat de regels van de islam) wordt abortus niet expliciet verboden. Wel wordt er in omschreven dat het verboden is om abortus te plegen zodra er sprake is van leven.  Volgens de Islam is dit 120 dagen na de bevruchting. Een abortus mag je plegen tot de 24e week na de bevruchting, dit is 168 dagen. Dus volgens de islam mag je wel abortus plegen, zolang dit binnen de 120 dagen valt. 
+Volgens het boeddhisme is er niet een voor of tegen abortus. Sommigen boeddhisten zeggen dat je bij abortus iemands leven neemt en dat de medische ingrijp iemand buiten de kringloop van iemand zijn leven zal plaatsen. Maar de meeste boeddhisten keuren abortus goed onder bepaalde voorwaarden; zolang de betrokkenen goed nadenken over de gevolgen van hun keuze.
 
-Deze sectie bevat tussen de 400-800 woorden.
+Ook geslacht blijkt geen statistisch significante invloed te hebben op de keuze of abortus toegestaan zou moeten worden. Ook dit resultaat komt overeen met wat al eerder onderzocht was (bron: https://link.springer.com/article/10.1023/a:1021427014047).
+
+De verdeling van de leeftijd data kan mogelijk verklaard worden door dat de leeftijdsgenoten van de makers van dit artikel rondt de 20 jaar oud zijn en hun ouders in de 50 jaar oud zijn, dit zijn de twee pieken in de leeftijdsverdeling. Verder zou de data betrouwbaarder kunnen zijn als we de enquête nog verder hadden verspreid door Nederland. Nu zitten de pieken namelijk vooral in de omgeving van Groningen en Friesland.
+
+! WAT VOOR MAATSCHAPPELIJKE IMPACT HEEFT DIT ONDERZOEK
+
+In een vervolgonderzoek raad ik aan in de enquête te vragen of de respondent een kind heeft en welke sekse dit kind heeft. Hiermee kun je onderzoeken of het hebben van een dochter invloed heeft over de mening over abortus.
+
 
 
 # Online bijlagen
@@ -853,9 +983,9 @@ Voeg aan het eind een woord-telling in:
 ```{r wordcount, message=FALSE}
 #install.packages(devtools)
 #devtools::install_github("benmarwick/wordcountaddin", type = "source", dependencies = TRUE)
-wordcountaddin:::text_stats()
+# wordcountaddin:::text_stats()
 ```
 
 # Referenties
 
-Een lijst van referenties wordt hier automagisch toegevoegd.
+Een lijst van referenties wordt hier automatisch toegevoegd.
