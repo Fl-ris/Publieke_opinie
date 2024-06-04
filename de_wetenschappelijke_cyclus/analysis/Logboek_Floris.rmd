@@ -1303,7 +1303,7 @@ odds_ratio_van_lr_man_vrouw_vader <- exp(coefficienten_van_lr_man_vrouw_vader)
 #list(odds_ratio_lr_man_eigen_keuze_abortus)
 odds_ratio_lr_man_eigen_keuze_abortus <- data.frame(odds_ratio_lr_man_eigen_keuze_abortus)# %>% rename(                                                      test = Wat.is.uw.leeftijd.
 #)
-odds_ratio_van_lr_man_vrouw_vader <- data.frame(odds_ratio_van_lr_man_vrouw_vader)
+odds_ratio_van_lr_man_vrouw_vader <- data.frame(odds_ratio_van_lr_man_vrouw_vader) # maakt de tabel netter dan zonder data.frame.
 #odds_ratio_van_lr_man_vader
 #odds_ratio_lr_man_eigen_keuze_abortus
 
@@ -1311,8 +1311,10 @@ odds_ratio_van_lr_man_vrouw_vader
 
 ```
 Interpretatie van deze odds ratio's: Het percentage geeft aan dat wanneer alle andere variabelen het zelfde zijn, de waarschijnlijkheid dat 
-er een andere uitkoms gekozen wordt (bijvoorbeeld een ander antwoord op de vraag of abortus toegestaan zou moeten zijn). Een positief percentage geeft aan dat het 
-
+er een andere uitkoms gekozen wordt (bijvoorbeeld een ander antwoord op de vraag of abortus toegestaan zou moeten zijn).
+De log-odds van de logistische regressie over de vraag: "Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?"
+Zijn als volgt: 7.08 voor geslacht en 0.21 voor leeftijd (verdeeld in twee leeftijdsgroepen).
+Dit zijn de significante factoren (p-waarde < 0.05) geloof was bijna (maar niet helemaal) significant met een p-waarde van: 0.050357.
 
 ``` {r interpolatie test logistische regressie}
 
