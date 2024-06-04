@@ -325,7 +325,7 @@ Figuur ... weergeeft dit verschil tussen de leeftijden van de mannen, vrouwen en
 
 
 
-```{r provictie verdeling, warning=FALSE, fig.cap='Verdeling van de afkomst van de mensen die de enquete ingevuld hebben.', message=FALSE,}
+```{r  warning=FALSE, fig.cap='Verdelinggg van de afkomst van de mensen die de enquete ingevuld hebben.', message=FALSE,}
 
 # Maak tabel met aantal mensen per provincie.
 x <- table(abortus$afkomst)
@@ -415,8 +415,7 @@ geom_label_repel(position = position_dodge(width = 1), min.segment.length = 0,ae
 
 ```
 
-
-```{r vader plot, warning=FALSE, message=FALSE, fig.cap='Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?', fig.asp=.75, out.width='50%', fig.align='center'}
+```{r vader, warning=FALSE, message=FALSE, fig.cap='Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?', fig.asp=.75, out.width='50%', fig.align='center'}
 #Vindt u dat er voor abortus gekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen?
 x2 <- table(df$vader, df$geslacht)
 vader_plot_data <- data.frame(x2)
@@ -441,7 +440,7 @@ ggplot(data = vader_plot_data, mapping = aes(x = percentage, y = Var1, fill = Va
 
 
 
-```{r gezondheid plot, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag:Vindt u dat er voor abortusgekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen?'}
+```{r gezondheid, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag:Vindt u dat er voor abortusgekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen?'}
 
 x3 <- table(df$gezondheid_vrouw, df$geslacht)
 gezondheid_vrouw_plot_data <- data.frame(x3)
@@ -460,7 +459,7 @@ ggplot(data = gezondheid_vrouw_plot_data, mapping = aes(x = percentage, y = Var1
   ylab("Antwoorden ") +
   theme_minimal()
 ```
-```{r bedenktijd plot, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag: Vindt u dat de wettelijke bedenktijd moet terugkomen?'}
+```{r bedenktijd, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag: Vindt u dat de wettelijke bedenktijd moet terugkomen?'}
 
 
 x4 <- table(df$bedenktijd, df$geslacht)
@@ -480,7 +479,7 @@ ggplot(data = bedenktijd_plot_data, mapping = aes(x = percentage, y = Var1, fill
 ### Vragen op een schaal van "zeer oneens" tot "zeer eens" ###
 
 
-```{r echo plot, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag:Vindt u dat er voor abortus gekozen mag worden als de vrouw niet in staat is voor het kind te zorgen vanwege financile beperkingen?'}
+```{r echo, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag:Vindt u dat er voor abortus gekozen mag worden als de vrouw niet in staat is voor het kind te zorgen vanwege financile beperkingen?'}
 x5 <- table(df$levensgevaar_vrouw_o, df$geslacht)
 vrouw_0_plot_data <- data.frame(x5)
 vrouw_0_plot_data$fraction = vrouw_0_plot_data$Freq / sum(vrouw_0_plot_data$Freq)
@@ -514,7 +513,7 @@ ggplot(data = veroorzaakt_o_plot_data, mapping = aes(x = percentage, y =Var1)) +
   theme_minimal()
 ```
 
-```{r levensgevaar plot, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag: Vindt u dat er voor abortus gekozen mag worden als de vrouw niet in staat is voor het kind te zorgen vanwege financiële beperkingen'}
+```{r levensgevaar, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag: Vindt u dat er voor abortus gekozen mag worden als de vrouw niet in staat is voor het kind te zorgen vanwege financiële beperkingen'}
 
 x7 <- table(df$financiele_beperkingen, df$geslacht)
 financieel_o_plot_data<- data.frame(x7)
