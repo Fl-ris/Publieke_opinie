@@ -1,0 +1,43 @@
+
+Descriptive statistics
+=====================================================================================================
+                                                                              Dependent variable:    
+                                                                          ---------------------------
+                                                                                     echo            
+-----------------------------------------------------------------------------------------------------
+leeftijd_onder_30                                                                     0.7            
+                                                                                     (1.0)           
+                                                                                                     
+geslachtVrouw                                                                         0.9            
+                                                                                     (0.9)           
+                                                                                                     
+geslachtWil ik liever niet melden                                                    16.9            
+                                                                                  (10,754.0)         
+                                                                                                     
+Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond.HBO                          -15.1           
+                                                                                   (5,953.9)         
+                                                                                                     
+Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond.MBO                          -17.0           
+                                                                                   (5,953.9)         
+                                                                                                     
+Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond.Middelbare school            -16.4           
+                                                                                   (5,953.9)         
+                                                                                                     
+Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond.Overige                       1.6            
+                                                                                  (12,292.2)         
+                                                                                                     
+Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond.Universiteit                  1.0            
+                                                                                   (6,702.7)         
+                                                                                                     
+gelovig_01                                                                          -1.7**           
+                                                                                     (0.8)           
+                                                                                                     
+Constant                                                                             18.7            
+                                                                                   (5,953.9)         
+                                                                                                     
+-----------------------------------------------------------------------------------------------------
+Observations                                                                          114            
+Log Likelihood                                                                       -24.1           
+Akaike Inf. Crit.                                                                    68.2            
+=====================================================================================================
+Note:                                                                     *p<0.1; **p<0.05; ***p<0.01

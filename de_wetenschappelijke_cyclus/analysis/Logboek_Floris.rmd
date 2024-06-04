@@ -1,0 +1,1375 @@
+---
+title: 'Logboek: Publieke Opinie'
+author: "Floris Menninga"
+date: "2024-04-22"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libraries, results='hold'}
+# Libraries
+library(data.tree)
+#library(ggraph)
+library(igraph)
+library(tidyverse)
+library(viridis)
+library(ggplot2)
+library(dplyr) 
+library(rgexf)
+library(ggrepel)
+
+library("ggpubr")
+
+# Voor statistische analyses:
+library("pwr")
+```
+
+## **Inleiding:** ##
+
+Vragen over het abortus beleid zijn polariserende ethische kwesties. In ons onderzoek trachten we correlaties te vinden tussen verschillende variabelen zoals: leeftijd, geslacht, opleidingsniveau, geloof etc. en de ideologische verschillen in mening tussen deze mensen.  
+
+Om de meningen van het publiek te peilen met betrekking tot hun ethische normen en waarden is er een vragenlijst opgesteld 
+die de volgende vragen en stellingen bevat:
+
+<hr>
+#### Persoonlijke vragen: ####
+
+Wat is uw geslacht? 
+
+Man, Vrouw, Anders, Zeg ik liever niet. 
+
+Wat is uw leeftijd? (Jaar) 
+
+
+Bent u gelovig? (Ja/nee) 
+
+Zo ja welke geloof? 
+	Christendom, Islam, Hindoeïsme, Boeddhisme, jodendom, anders: ___ 
+
+Waar bent u geboren? (Land) 
+
+
+In Nederland? --> welke provincie? 
+
+		 
+<hr>
+#### Inhoudelijke vragen: #### 
+
+1. Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil? 
+
+1.5 Zo nee, zijn er situaties waarin dit wel het geval moet zijn? 
+
+2. Moet een kind (onder 18) de keuze hebben om een abortus te krijgen? 
+
+2.5 Moeten ouders zeggenschap hebben over of hun kind wel of niet abortus mogen plegen. 
+
+https://fiom.nl/ongewenst-zwanger/abortus/wet-regelgeving-abortus  
+
+ 
+3.  Is adoptie een alternatief voor abortus?                 
+
+4. Moet de bedenktijd terugkomen? 
+
+ 5.. Vindt u dat er abortus gepleegd mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen? 
+
+6. Vindt u dat er abortus gepleegd mag worden als de zwangerschap een gevolg is van verkrachting? 
+
+7. Moet het wettelijk verplicht voor vrouwen die een abortus willen om een echo van de foetus te zien voor een abortus toegestaan is? 
+
+8. Moet de vader zeggenschap hebben over de beslissing om een abortus te induceren? 
+
+ 
+
+Hoe goed kan u uzelf vinden in de volgende stellingen (op een schaal van 0 tot 10) 
+
+Een abortus is wenselijk wanneer: 
+
+    Het leven van de vrouw in gevaar is: (0 tot 10) 
+
+    Het kind met een geestelijke handicap (zoals het syndroom van Down) geboren zou worden. (0 tot 10) 
+
+    Het kind met een levensbedreigende ziekte geboren zou worden. (0 tot 10) 
+
+    De zwangerschap veroorzaakt was door verkrachting. (0 tot 10) 
+
+    De vrouw het kind niet wil hebben voor niet gespecificeerde redenen.  
+    
+Enkele vragen hiervan zijn afgeleid van het volgende document: https://news.gallup.com/poll/1576/abortion.aspx
+
+De enquête is vervolgens in Microsoft Forms gemaakt met de bovenstaande vragen. 
+ 
+
+### Automatisch gegenereerde testdata ###
+
+Voordat de data van de enquete verzameld was hebben we testdata gemaakt met behulp van R.
+Dit heeft als doel om te oefenen met de gebruikte statistische analyse methoden die ook gebruikt gaan worden voor echte data. 
+
+
+<hr>
+
+## Verspreiden van de enquete ##
+De makers van deze enquete hebben hem naar klasgenoten, familieleden en vrienden gestuurd met de instructie om hem door te sturen naar andere kenissen en vrienden. Op 21-05-2024 zijn er 110 mensen die hem ingevuld hebben met een man vrouw verdeling van: 60/49.
+
+## Methode 
+
+
+Huidige working directory: `r getwd()`
+
+```{r .csv inlezen }
+abortus <- read.csv("abortus_dataset.csv",
+                    na.strings = "NA")
+head(abortus)
+```
+
+```{r summary data}
+summary(abortus)
+#str(abortus)
+```
+
+```{r Leeftijdsverdeling, echo=T, eval=F }
+
+df_test <- df %>% select(geslacht, Wat.is.uw.leeftijd.)
+
+df_leeftijd <- data.frame(abortus$Wat.is.uw.leeftijd.) 
+
+# test
+ggplot(df_leeftijd, aes(x= df_test$Wat.is.uw.leeftijd., y = df_test$geslacht)) +
+  geom_boxplot()
+  xlab("Leeftijd (Jaren)") 
+
+
+# verdeling van de leeftijden:
+ggplot(df_leeftijd, aes(x= abortus$Wat.is.uw.leeftijd.)) +
+  geom_histogram(aes(y = ..density..)) + 
+  geom_density() +
+  xlab("Leeftijd (Jaren)") 
+
+
+```
+
+## Omzetten naar factoren
+In het onderstaande blok code worden factoren gemaakt van de meerkeuze vragen.
+Het eerste deel bestaat uit factoren waar geen volgorde in zit, daarna factoren met volgorde.
+
+```{r Factoren maken voor dataframe}
+
+#table(abortus$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil., useNA = "always")
+
+
+
+# voor de vraag: Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?
+abortus$eigen_keuze_abortus <- factor(x = abortus$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil.,  
+                           levels = c("Ja", "Nee"),
+                           labels = c("Wel abortus toestaan", "Geen abortus toestaan"))
+
+# Voor de vraag: Wat is uw religieuze overtuiging?
+abortus$geloof <- factor(x = abortus$Wat.is.uw.religieuze.overtuiging.., 
+                           levels = c("Christendom ", "Islam", "Hindoeïsme", "Boeddhisme", "Niet gelovig", "Anders"),
+                           labels = c("Christendom", "Islam", "Hindoeïsme", "Boeddhisme", "Niet gelovig", "Anders"))
+
+
+abortus$geslacht <- factor(x = abortus$Wat.is.uw.geslacht..,
+                           levels = c("Man", "Vrouw", "Wil ik liever niet melden"),
+                           labels = c("Man", "Vrouw", "Wil ik liever niet melden"))
+# Voor de vraag: Wat is uw religieuze overtuiging?
+
+abortus$afkomst <- factor(x = abortus$In.welke.provincie.heeft.u.het.grootste.deel.van.uw.jeugd.doorgebracht., 
+                           levels = c("Drenthe", "Flevoland", "Friesland", "Gelderland", "Groningen", "Limburg", "Noord-Brabant", "Noord-Holland", "Overijssel", "Utrecht", "Zeeland", "Zuid-Holland", "Ik ben niet in Nederland opgegroeid"),
+                           labels = c("Drenthe", "Flevoland", "Friesland", "Gelderland", "Groningen", "Limburg", "Noord-Brabant", "Noord-Holland", "Overijssel", "Utrecht", "Zeeland", "Zuid-Holland", "Buitenland"))
+
+
+abortus$onderwijsniveau <- factor(x =
+                                abortus$Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond.,
+                                  levels = c("Geen diploma ", "Middelbare school", "MBO", "HBO", "Universiteit","Overige"),
+                                  labels = c("Geen diploma", "Middelbare school", "MBO", "HBO", "Universiteit","Overige"))
+
+
+
+# Voor de vraag: Indien u bij de vorige vraag nee heeft ingevuld...
+abortus$als_nee <- factor(x = 
+                        abortus$Indien.u.bij.de.vorige.vraag..Nee..heeft.ingevuld...Vindt.u.dat.er.uitzonderingen.zijn.waarin.iemand.dit.wel.zelf.moet.kunnen.kiezen.....,
+                          levels = c("Ja", "Nee", "Niet van toepassing"),
+                          labels = c("Ja", "Nee", "Niet van toepassing"))
+
+abortus.test <- data.frame(abortus$geloof)
+
+abortus$gezondheid_vrouw <- factor(x = abortus$Vindt.u.dat.er.voor.abortus.gekozen.mag.worden.als.de.gezondheid.van.de.vrouw.door.de.zwangerschap.in.gevaar.kan.komen.,
+                                   levels = c("Ja", "Nee", "Weet ik niet"),
+                                   labels = c("Ja", "Nee", "Weet ik niet"))
+
+
+abortus$gevolg <- factor(x = abortus$De.zwangerschap.veroorzaakt.is.door.verkrachting,
+                         levels = c("Ja", "Nee"),
+                         labels = c("Ja", "Nee"))
+
+abortus$minderjarig <- factor(x = abortus$Vindt.u.dat.een.minderjarig.kind.de.keuze.moet.hebben.om.voor.een.abortus.te.kiezen.....,
+                              levels = c("Ja", "Nee", "Weet ik niet"),
+                              labels = c("Ja", "Nee", "Weet ik niet"))
+
+abortus$ouders <- factor(x = abortus$Vindt.u.dat.de.ouders.zeggenschap.moeten.hebben.over.of.hun.minderjarige.kind.wel.of.niet.voor.abortus.mag.kiezen...,
+                         levels = c("Ja", "Nee", "Weet ik niet"),
+                         labels = c("Ja", "Nee", "Weet ik niet"))
+
+abortus$echo <- factor(x = abortus$Moet.het.wettelijk.verplicht.worden.voor.vrouwen.die.een.abortus.willen.om.een.echo.van.de.foetus.te.zien.voordat.een.abortus.toegestaan.is.,
+                       levels = c("Ja", "Nee", "Weet ik niet"),
+                       labels = c("Ja", "Nee", "Weet ik niet"))
+
+abortus$bedenktijd <- factor(x = abortus$Vindt.u.dat.de.wettelijke.bedenktijd.moet.terugkomen.,
+                             levels = c("Ja", "Nee", "Weet ik niet"),
+                             labels = c("Ja", "Nee", "Weet ik niet"))
+                             
+abortus$adoptie <- factor(x = abortus$Vindt.u.dat.adoptie.een.alternatief.is.voor.abortus.,
+                          levels = c("Ja", "Nee", "Weet ik niet"),
+                          labels = c("Ja", "Nee", "Weet ik niet"))
+
+abortus$vader <- factor(x = 
+                          abortus$Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.,
+                            levels = c("Ja", "Nee", "Weet ik niet"),
+                            labels = c("Ja", "Nee", "Weet ik niet"))
+
+# Vragen met een volgorde: 
+# namen van de variabelen eidigen met "_o" om aan te duiden dat er een volgorde in zit (order)
+
+abortus$levensgevaar_vrouw_o <- factor(x = abortus$Het.leven.van.de.vrouw.in.gevaar.is,
+                                     levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                     labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                     order = TRUE)
+
+abortus$geestelijke_handicap_o <- factor(x = abortus$Het.kind.met.een.geestelijke.handicap.geboren.kan.worden,
+                                         levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                         labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                         order = TRUE)
+abortus$levensbedreigende_ziekte_o <- factor(x = abortus$Het.kind.met.een.levensbedreigende.ziekte.geboren.kan.worden,
+                                             levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                             labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                             order = TRUE)
+
+abortus$veroorzaakt_o <- factor(x = abortus$De.zwangerschap.veroorzaakt.is.door.verkrachting,
+                                levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                order = TRUE)
+
+abortus$niet_gespecificeerd_o <- factor(x = abortus$De.vrouw.het.kind.niet.wil.houden.om.niet.gespecificeerde.redenen,
+                                        levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                        labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                        order = TRUE)
+
+
+abortus$financiele_beperkingen <- factor(x = abortus$De.vrouw.niet.in.staat.is.voor.het.kind.te.zorgen.vanwege.financiële.beperkingen,
+                                         levels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                         labels = c("zeer oneens", "oneens", "beetje oneens", "neutraal", "beetje eens", "eens", "zeer eens"),
+                                         order =TRUE)
+df <- data.frame(abortus)
+
+
+# Voor de factoren met "Ja" en "Nee" als levels:
+#df <- df %>% mutate(across(c(Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.)), .fns = factor(
+#                         levels = c("Ja", "Nee"),
+ #                        labels = c("Ja", "Nee")))
+
+
+
+#test11 <- df %>%  across(ID, Wat.is.uw.geslacht..) ~ filter(geslacht == "Man")
+  
+
+
+
+#ggplot(df, aes(x=, y=abortus$Wat.is.uw.leeftijd.)) +
+ # geom_bar(stat="identity", color="blue", fill="white")
+
+```
+
+
+
+```{r Leeftijdsverdeling geslacht}
+#df_test <- df %>% select(geslacht, Wat.is.uw.leeftijd.)
+
+# test
+ggplot(df, aes(x= df$Wat.is.uw.leeftijd., y = df$geslacht)) +
+  geom_boxplot(fill = "blue", alpha = 0.3, varwidth = T) +
+  xlab("Leeftijd (Jaren)") +
+  ylab("Geslacht") +
+  theme_minimal()
+
+
+
+```
+Voor de bovenstaande grafiek is de alpha=03 waarde gekozen voor asthestische doeleinden, niet omdat er overlap kan zijn. 
+
+
+### Overzicht: abortus toestaan of niet:
+```{r tabel ja/nee abortus}
+table(abortus$eigen_keuze_abortus) # voor de vraag: Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?
+
+```
+
+
+```{r Grafiek leeftijd, echo=TRUE}
+
+# Grafiek met de verschillende geloven en de leeftijdverdeling die er bij hoort. 
+ggplot(df, aes(y=abortus$geloof,
+               x= abortus$Wat.is.uw.leeftijd.)) +
+  geom_boxplot(color = "black", fill = "gold", alpha = 0.3, varwidth=T) +
+    xlab("Leeftijd (Jaren") +
+    ylab("Geloof")
+
+```
+Verdeling van de leeftijd van de mensen die de enquete hebben ingevuld en hun ideologie. 
+
+
+```{r Grafiek leeftijd 2,}
+
+# Grafiek met leeftijden uit verschillende provincies.
+ggplot(df, aes(y=abortus$afkomst,
+               x= abortus$Wat.is.uw.leeftijd.)) +
+  geom_boxplot(color = "black", fill = "gold", alpha = 0.3, varwidth = T) +
+    xlab("Leeftijd (Jaren") +
+    ylab("Op gegroeid in de provincie:")
+
+
+
+```
+De verdeling van de leeftijden en de provincies waar deze mensen vandaan komen wordt weergegeven op deze grafiek. 
+Niet elke provincie heeft genoeg datapunten om een boxplot van te maken. 
+
+
+```{r invultijd berekening}
+
+# De invultijd per leeftijd:
+
+# Repareren: as.POSIXct functie werkt niet meer voor deze data.
+
+begin_tijd <- as.POSIXct(x = (c(abortus$Begintijd)), format = "%m-%d-%y %H:%M:%S")  # startpunt van invullen per persoon, as.POSIXct met format om de datum en tijd op de juiste manier door te geven. 
+
+# 
+eind_tijd <- as.POSIXct(x = (c(abortus$Tijd.van.voltooien)), format = "%m-%d-%y %H:%M:%S") # eindpunt  van invullen per persoon.
+
+tijd_vector <- c()
+# Om de totale tijd uit te rekenen die de mensen nodig hadden om het formulier in te vullen.
+# Het verschil tussen de eindtijd en de begintijd. 
+for (x in seq_along(abortus$Begintijd)) { # Loop door de begintijden heen..
+  #print(paste0("Begin tijd: ", begin_tijd[x]))
+  #print(paste0("eind tijd: ", eind_tijd[x])) 
+  tijd_vector[x] <- as.numeric((eind_tijd[x] - begin_tijd[x])) # Voeg toe aan tijdsvector: het verschil tussen eind_tijd en begin_tijd om totale invul tijd te krijgen.
+}
+
+# Dit kan veel makkelijker:
+tijd_vector <- eind_tijd - begin_tijd
+
+```
+De invultijd is niet belangrijk of relevant voor de onderzoeksvraag maar als test uitgevoerd om meer over R te leren. 
+
+Op 11 mei 2024 grafiek gemaakt van leeftijd / tijd nodig om de enquete in te vullen. 
+12-05-2024: Met facet_wrap() onderscheid gemaakt tussen mannen en vrouwen. (twee plots)
+
+
+```{r}
+
+tijd_vector <- data.frame(tijd_vector)
+
+ggplot(tijd_vector, aes(y=tijd_vector,
+                        x= abortus$Wat.is.uw.leeftijd.)) +
+  geom_boxplot(aes(color = abortus$geslacht, alpha=0.2)) +
+  facet_wrap(~abortus$geslacht) +
+    xlab("Leeftijd (Jaren)") +
+    ylab("Tijd om formulier in te vullen (minuten)") #+
+    #coord_flip()
+
+#summary(tijd_vector)
+#head(tijd_vector)
+
+
+```
+Bovenstaande grafiek laat de relatie tussen leeftijd en tijdnodig om het formulier in te vullen zien. 
+Dit wordt voor mannen en vrouwen gedaan. (links mannen, midden vrouwen en rechts ongespecificeerd.)
+Er was maar een persoon dat ongespecificeerd opgav dus kan daar geen boxplot van gemaakt worden maar wordt dit weergeven met een enkele stip. (links onder in de grafiek)
+
+```{r dataframe invultijd}
+
+data_frame_invultijd <- data.frame(tijd_vector, abortus$geslacht, abortus$Wat.is.uw.leeftijd.)
+
+# Voor de tijd die de mannen er over doen:
+invultijd_mannen <- data_frame_invultijd %>%
+  filter(abortus.geslacht == "Man")
+
+# Voor de tijd die de vrouwen er over doen:
+invultijd_vrouwen <- data_frame_invultijd %>%
+  filter(abortus.geslacht == "Vrouw")
+
+# Voor de tijd die de "ongespecificeerde geslacht" mensen er over doen:
+invultijd_anders <- data_frame_invultijd %>%
+  filter(abortus.geslacht == "Wil ik liever niet melden")
+
+
+
+```
+
+Gemiddeld doen de mannen er `r mean(invultijd_mannen$tijd_vector)` minuten over om de enquete in te vullen. <br>
+Dit ligt tussen de `r quantile(invultijd_mannen$tijd_vector, 0.25)` (25%) en `r quantile(invultijd_mannen$tijd_vector, 0.75)` (75%)
+
+Gemiddeld doen de vrouwen er `r mean(invultijd_vrouwen$tijd_vector)` minuten over om de enquete in te vullen. <br>
+Dit ligt tussen de `r quantile(invultijd_vrouwen$tijd_vector, 0.25)` (25%) en `r quantile(invultijd_vrouwen$tijd_vector, 0.75)` (75%)
+
+Gemiddeld doen de "Geslacht niet opgegeven mensen" er `r mean(invultijd_anders$tijd_vector)` minuten over om de enquete in te vullen. <br>
+Dit ligt tussen de `r quantile(invultijd_anders$tijd_vector, 0.25)` (25%) en `r quantile(invultijd_anders$tijd_vector, 0.75)` (75%)
+
+
+# Circular Packing test 1: 
+Test met data van het internet om het hierachrische data format beter te begrijpen.
+```{r circular packing test, eval=FALSE}
+
+
+
+# Load dataset from github
+data <- read.table("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/11_SevCatOneNumNestedOneObsPerGroup.csv", header=T, sep=";")
+data[ which(data$value==-1),"value"] <- 1
+colnames(data) <- c("Continent", "Region", "Country", "Pop")
+
+# Remove a few problematic lines
+data <- data %>% filter(Continent!="") %>% droplevels()
+
+# Change the format. This use the data.tree library. This library needs a column that looks like root/group/subgroup/..., so I build it
+library(data.tree)
+data$pathString <- paste("world", data$Continent, data$Region, data$Country, sep = "/")
+population <- as.Node(data)
+data <- data.frame(
+  root=rep("root", 15),
+  group=c(rep("group A",5), rep("group B",5), rep("group C",5)), 
+  subgroup= rep(letters[1:5], each=3),
+  subsubgroup=rep(letters[1:3], 5),
+  value=sample(seq(1:15), 15)
+)
+
+
+# root = hele populatie
+# group = geslacht
+# subgroup = profintie
+# value = de waarde van het punt wat we willen visualizeren. 
+
+
+# Change the format. This use the data.tree library. This library needs a column that looks like root/group/subgroup/..., so I build it
+
+data$pathString <- paste("world", data$group, data$subgroup, data$subsubgroup, sep = "/")
+population <- as.Node(data)
+population
+
+
+
+#graph <- tbl_graph(flare$vertices, flare$edges)
+set.seed(1)
+ggraph(graph, 'circlepack', weight = size) + 
+  geom_node_circle(aes(fill = depth), size = 0.25, n = 50) + 
+  coord_fixed()
+
+```
+
+15-05-2024:
+Om te achterhalen of de leeftijden van de mensen die de enquete ingevuld hebben normaal verdeeld zijn 
+is de Shapiro Wilk test gebruikt. 
+
+### Shapiro Wilk test:
+Deze test wordt uitgevoerd om vast te stellen of leeftijden van de mensen die de enquete ingevuld hebben normaal verdeeld is.
+```{r Shapiro test}
+
+shapiro_test <- shapiro.test(abortus$Wat.is.uw.leeftijd.)
+shapiro_test
+
+```
+De p-waarde is: 5.044 × 10-6 (`r shapiro_test$p.value`)
+dat betekend dat er wel een significant verschil is tussen een nomale verdeling en deze leeftijd data. 
+Omdat de data niet normaal verdeeld is zal een niet-parametrische analyse nodig zijn. 
+Voorbeelden van deze non parametrische zijn: de Kruskal-Wallis test en de Chi-square en de two way z test.
+
+# Power analyse: <br>
+Dit was een test, de poweranalyse wordt in chunk .. uitgevoerd.
+```{r test 1 power analyse }
+
+#pwr.t.test(n = n, d = d, sig.level = alpha, type = "one.sample", alternative = "less")
+
+```
+
+
+```{r test 2}
+
+proportie_man_vader <- df %>% select(vader) %>% filter(df$geslacht == "Man")
+proportie_man_vader_01 <- ifelse(proportie_man_vader == "Ja" , 0,1)
+
+hi <- prop.table(proportie_man_vader_01)
+
+#proportie_vrouw_vader <- 
+
+ggplot(df, aes( y = vader)) +
+  geom_bar(aes()) +
+  labs(color = "test") +
+  #scale_color_manual(name = "Cylinders") 
+#  scale_fill_discrete(name = "test") +
+  ggtitle("Moet de vader zeggenschap hebben over \nde beslissing om een abortus te induceren? ") +
+  theme_minimal()
+
+  
+```
+Omdat er niet even veel mannen als vrouwen zijn is het beter om de stemmen (ja/nee) in proporties/percentages te laten zien i.p.v. absolute aantallen. Dit moet later nog gedaan worden..
+```{r visualisatie vraag: zeggenschap vader}
+
+
+ggplot(df, aes(x= Wat.is.uw.leeftijd., y = onderwijsniveau)) +
+ # geom_point(aes(color = vader, size = 2.5), alpha = 0.5) +
+  facet_wrap(~geslacht) +
+  labs(" ") +
+  xlab("Leeftijd (Jaren)") +
+  ylab("Onderwijsniveau") +
+  geom_jitter(aes(color = vader, size = 2.5), alpha = 0.7, height = 0.05) +
+  ggtitle("Moet de vader zeggenschap hebben over \nde beslissing om een abortus te induceren?")
+
+```
+Het opleidingsniveau kan geen ge-orderde factor zijn omdat "Middelbare school" kan leiden tot meerdere andere niveaus. Ook kan "Geen diploma" betekenen dat het persoon nog te jong is om deze te hebben maar later wel in een van de andere categorieën zal horen. 
+
+
+15-05-2024:
+Bovenstaande grafiek: Moet de vader zeggenschap hebben over de abortus: Ja, Nee of geen mening.
+Het geslacht van het persoon wordt met de twee kleuren blauw en rood aangegeven en de leeftijd met de grootte van het bolletje. (zie legenda voor schaalverdeling)
+
+20-05-2024:
+
+```{r}
+# Voor vraag: Als u geen voorstander bent voor de vrijheid om voor een abortus te kiezen, zijn er gevallen waarin dit wel zou mogen?
+
+ggplot(data = df, mapping = aes(x = (ID), y = als_nee)) +
+  geom_bar(stat = "identity") +
+  geom_point()
+
+```
+
+
+```{r}
+# Voor de vraag: Vindt u dat er voor abortusgekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen? 
+library(ggridges)
+ggplot(data = df, mapping = aes(x = c(1:114), y = levensgevaar_vrouw_o, fill = geslacht)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = (" "))) +
+  ggtitle("Vindt u dat er voor abortusgekozen mag worden als de gezondheid van \nde vrouw door de zwangerschap in gevaar kan komen?") +
+  xlab("Percentage mensen") + # nog aapassen naar procent.
+  ylab(" ") # Geen ylabel nodig omdat er al een beschrijving bij de waardes staan. 
+  # labels beter maken.
+  # To-do: prercentage verbeteren, huidige waarden kloppen nog niet.
+```
+
+
+```{r}
+# Voor de vraag: Mag abortus toegestaan zijn als de zwangerschap resultaat is van verkrachting?
+
+ggplot(data = df, mapping = aes(x = (ID/100), y = veroorzaakt_o, fill = geslacht)) + # geeft procent weer. 
+  geom_bar(stat = "identity") +
+  ggtitle("Mag abortus als de zwangerschap\nresultaat is van verkrachting?") +
+  xlab("Percentage mensen") + # verifiëren of dit wel klopt...
+  ylab(" ")
+```
+
+
+```{r}
+#Voor de vraag:  
+#ggplot(data = df, mapping = aes(x = ))
+
+
+ggplot(data = df, mapping = aes(x = (c(1:114)), y = levensgevaar_vrouw_o)) + # geeft procent weer. 
+  geom_bar(stat = "identity", aes(fill = Wat.is.uw.leeftijd.)) +
+  facet_wrap(~geslacht) +
+  ggtitle("Mag abortus als het leven van de vrouw in gevaar komt tijdens\nde zwangerschap?") +
+  xlab("Percentage mensen") + # verifiëren of dit wel klopt...
+  ylab(" ")
+
+  # To-do: sorteer voorl leeftijd gradient.
+
+```
+25-05-2024:
+# Donut grafiek:
+Op de onderstaande grafieken wordt het aantal mensen per provincie gevisualiseerd.
+
+
+```{r grafiek_voor_presentatie}
+#library(ggrepel)
+
+# Maak tabel met aantal mensen per provincie.
+x <- table(abortus$afkomst)
+x <- sort(x, decreasing = T)
+provincie_aantal <- data.frame(x)
+
+
+# Reken de percentages uit: 
+provincie_aantal$fraction = provincie_aantal$Freq / sum(provincie_aantal$Freq)
+provincie_aantal$percentage = round(provincie_aantal$fraction *100, digits =1)
+provincie_aantal$ymax = cumsum(provincie_aantal$fraction)
+provincie_aantal$ymin = c(0, head(provincie_aantal$ymax, n=-1))
+provincie_aantal$labelp = (provincie_aantal$ymax+provincie_aantal$ymin)/2
+provincie_aantal$label = (paste(provincie_aantal$percentage, "% ", provincie_aantal$Var1))
+
+# Verander de naam van de provincie colom van Var1 naar "provincies":
+provincie_aantal <- provincie_aantal %>%
+    rename(provincies = Var1)
+
+
+# Maak het grafiekje:
+ggplot(provincie_aantal,aes(ymax=ymax, ymin=ymin, xmax=13, xmin=3)) +
+     geom_rect(color = "black",aes(fill=provincies)) +
+     geom_label_repel(x = 13, aes(y=labelp, label= label), size=3, max.overlaps = 11, min.segment.length = 0) +
+    # geom_label( x = 13, aes(y=labelp, label= label), size=4)+
+     ggtitle("Enquete deelnemers, verdeling over de provincies:")  +
+     coord_polar(theta="y") + 
+     xlim(c(-13, 13)) +
+     xlab(" ") +
+     ylab(" ")
+
+```
+### Tweede variant (stacked-barchart)
+
+```{r variant_van_de_bovenstaande_grafiek}
+#library(ggrepel)
+
+# Maak tabel met aantal mensen per provincie.
+x <- table(abortus$afkomst)
+x <- sort(x, decreasing = F)
+
+provincie_aantal <- data.frame(x)
+
+# Reken de percentages uit: 
+provincie_aantal$fraction = provincie_aantal$Freq / sum(provincie_aantal$Freq)
+provincie_aantal$percentage = round(provincie_aantal$fraction *100, digits =1)
+provincie_aantal$ymax = cumsum(provincie_aantal$fraction)
+provincie_aantal$ymin = c(0, head(provincie_aantal$ymax, n=-1))
+provincie_aantal$labelp = (provincie_aantal$ymax+provincie_aantal$ymin)/2
+provincie_aantal$label = (paste(provincie_aantal$percentage, "% ", provincie_aantal$Var1))
+
+# Verander de naam van de provincie colom van Var1 naar "provincies":
+renamed_provincie_aantal <- provincie_aantal %>%
+    rename(provincies = Var1)
+
+# Maak het grafiekje:
+ggplot(renamed_provincie_aantal, aes(ymax=ymax, ymin=ymin, xmax=13, xmin=3)) +
+     geom_rect(color = "black",aes(fill=provincies)) +
+     geom_label_repel(x = 13, aes(y=labelp, label= label), size=3, max.overlaps = 10, min.segment.length = 0) +
+    # geom_label( x = 13, aes(y=labelp, label= label), size=4)+
+     ggtitle("Enquete deelnemers, verdeling over de provincies:") +
+     theme_minimal() +
+     xlab(" ") +
+     ylab(" ")
+```
+De bovenstaande grafiek geeft weer hoe een donut grafiek opgebouwd is, het zijn geom_rect() blokken die op elkaar gestapeld zijn, de lijn waar een nieuw blok begint wordt bepaald met de cumulatieve som van de vector met proporties. Om er een donut van te maken zoals in chunk 23 weergeven wordt moet de lijn: coord_polar(theta="y") toegevoegd worden.
+
+## Cirkel packing grafiek test
+
+```{r Circulair packing test 1}
+# Test 2:
+
+
+edges <- data.frame(c("test", "test.test2", "test.test2.test3", "test0"))
+vertices <- data.frame(c("1", "2", "3"), c("1", "2", "3"))
+
+ 
+edgelist <- matrix(list(c("1","2","3"), c("1","2","3")),
+                    byrow=TRUE, ncol=2)
+
+edge.list(edgelist)
+
+# We need a data frame giving a hierarchical structure. Let's consider the flare dataset:
+#edges <- flare$edges
+# Usually we associate another dataset that give information about each node of the dataset:
+#vertices <- flare$vertices
+
+# Then we have to make a 'graph' object using the igraph library:
+mygraph <- graph_from_data_frame(edgelist)
+
+
+library(data.tree)
+df9 <- data.frame(name = c("land", "water", "air", "car", "bicycle", "boat", "balloon", "airplane", "helicopter", "Ford", "BMW", "Airbus"), 
+                 parent = c("root", "root", "root", "land", "land", "water", "air", "air", "air", "car", "car", "airplane"))
+tree <- FromDataFrameNetwork(df9)
+
+vv <- ToDataFrameTree(tree, 
+                level1 = function(x) x$path[2],
+                level2 = function(x) x$path[3],
+                level3 = function(x) x$path[4],
+                level_number = function(x) x$level - 1)[-1,-1]
+
+# Test
+hc <- df %>%
+  dist %>%
+  hclust
+cc <- tree(c(1:5))
+plot(hc)
+
+
+# Make the plot
+#ggraph(cc, layout = 'circlepack') + 
+ # geom_node_circle() +
+ # theme_test()
+```
+
+```{r Circulair packing test 2}
+library(ggraph)
+library(igraph)
+library(tidyverse)
+ 
+# We need a data frame giving a hierarchical structure. Let's consider the flare dataset:
+edges <- flare$edges
+#edges <- 
+ 
+# Usually we associate another dataset that give information about each node of the dataset:
+vertices <- flare$vertices
+ 
+# Then we have to make a 'graph' object using the igraph library:
+mygraph <- graph_from_data_frame( edges, vertices=vertices )
+ 
+# Make the plot
+ggraph(mygraph, layout = 'circlepack') + 
+  geom_node_circle() +
+  theme_void()
+```
+
+# Power test: (met leeftijd van de mensen)
+
+17-05-2024:
+Begin gemaakt met t.test en power test
+
+```{r Power test}
+library(dplyr)
+library(pwr)
+tabel <- table(abortus$geslacht ,abortus$eigen_keuze_abortus) # tabel met mannen en vrouwen en hun keuze of abortus toegestaan moet worden of niet. 
+
+#prop.table(abortus$Wat.is.uw.geslacht..)
+tabel2 <- prop.table(tabel)
+
+#gem_leeftijd_vrouwen %>%
+# filter(abortus$Wat.is.uw.geslacht.., abortus$geslacht == "Vrouw")
+
+
+
+ja_abortus <- (ifelse(abortus$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn. 
+
+
+#(res <- t.test(ja_abortus, mu = 52 , alternative = "two.sided") )
+
+# Reken de proportie mannen uit die voorstanders van abortus zijn:
+man_ja_abortus <- df %>% 
+  filter(geslacht == "Man")
+prop_man_ja_abortus <- prop.table(table(ifelse(df$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)))
+
+
+
+# Bereken het zelfde voor de vrouwen:
+vrouw_ja_abortus <- df %>% 
+  filter(geslacht == "Vrouw")
+prop_vrouw_ja_abortus <- prop.table(table(ifelse(df$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)))
+
+
+
+# effect sterkte h uitrekenen met de twee ja/nee proporties (tussen mannen en vrouwen)
+h <- ES.h(prop_man_ja_abortus[2], prop_man_ja_abortus[1]) # Er werkt iets niet goed...
+
+
+power1 <- pwr.t.test(sig.level = 0.05, power = 0.8, n = 109 ,alternative = "two.sided") # test, andere h uitrekenen.
+power2 <- pwr.t.test(d = 0.5,sig.level = 0.05, power = 0.8, alternative = "two.sided") # test, andere h uitrekenen.
+
+
+```
+Om met een effect sterkte van 0.5 het verschil tussen de twee geslachten aan te tonen zijn er `r round(power2$n, digits = 0)` mensen nodig (van elke groep).
+En met de 109 mensen die we nu hebben is de effect sterkte: `r round(power1$d, digits = 2)`. Dit is genoeg om een middelgroot verschil waar te nemen. 
+
+
+
+# Chi-square: <br>
+En chi-square test voor alle enquete vragen en de invloed die het geslacht op de keuzes heeft. 
+**Vraag:** Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil? <br>
+>H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze over het toestaan van de abortus.
+>H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze over het toestaan van de abortus.
+
+**23-05-2024:**
+De H0 en H1 hypotheses worden hier opgesteld voor alle vragen:
+
+**Vraag:** Vindt u dat er voor abortus gekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen? <br>
+>H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of een vrouw een abortus mag hebben wanneer haar leven in gevaar is. 
+>H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of een vrouw een abortus mag hebben wanneer haar leven in gevaar is. 
+
+**Vraag:** Vindt u dat iemand een abortus mag als de zwangerschap een gevolg is van verkrachting? <br>
+>H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze over het toestaan van een abortus wanneer de zwangerschap gevolg is van verkrachting.
+>H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze over het toestaan van een abortus wanneer de zwangerschap gevolg is van verkrachting.
+
+**Vraag:** Vindt u dat een minderjarig kind de keuze moet hebben om voor een abortus te kiezen? <br>
+>H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of een minderjarig kind de keuze moet hebben om voor een abortus te kiezen. 
+>H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of een minderjarig kind de keuze moet hebben om voor een abortus te kiezen.
+
+**Vraag:** Vindt u dat de ouders zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen? <br>
+>H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of de ouders van een minderjarig kind zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen? <br>
+>H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of de ouders van een minderjarig kind zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen?
+
+**Vraag:** Moet het wettelijk verplicht worden voor vrouwen die een abortus willen om een echo van de foetus te zien voordat een abortus toegestaan is? <br>
+>H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of ze vinden dat het wettelijk verplicht worden voor vrouwen die een abortus willen om een echo van de foetus te zien voordat een abortus toegestaan is. <br>
+>H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of ze vinden dat het wettelijk verplicht worden voor vrouwen die een abortus willen om een echo van de foetus te zien voordat een abortus toegestaan is. <br >
+
+**Vraag:** Vindt u dat de wettelijke bedenktijd moet terugkomen? <br>
+>H0:  Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of de wettenlijke bedenktijd terug moet komen. 
+>H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of de wettenlijke bedenktijd terug moet komen.
+
+**Vraag:** Vindt u dat adoptie een alternatief is voor abortus? <br>
+>H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of adoptie een alternatief is voor abortus. 
+>H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of adoptie een alternatief is voor abortus.
+
+**Vraag:** Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?
+>H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of de biologische vader zeggenschap moet hebben over de beslissing voor een abortus.
+>H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of de biologische vader zeggenschap moet hebben over de beslissing voor een abortus.
+
+27-05-2024:
+Deze zelfde hypotheses zijn ook gebruikt voor de Chi-square test met leeftijd als voorspellende variabele i.p.v. geslacht. 
+
+```{r}
+#onder21 <- filter(abortus$Wat.is.uw.leeftijd., abortus$Wat.is.uw.leeftijd. < 21)
+
+#binaire_lijst_keuze_abortus <- 
+
+#ja_abortus <- (ifelse(abortus$eigen_keuze_abortus=="Wel abortus toestaan", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
+ja_abortus <- table(df$geslacht, df$eigen_keuze_abortus)
+chi_ja_abortus <- chisq.test(ja_abortus, correct = T)
+
+
+
+ja_abortus_onder_21_df <-  df %>% 
+  filter(df$Wat.is.uw.leeftijd. <= 21)
+ja_abortus_onder_21 <- (ifelse(ja_abortus_onder_21_df$eigen_keuze_abortus=="Wel abortus toestaan", 1,0))
+#all(duplicated(abortus$geslacht)[-1L])
+
+#ja_nee_abortus_onder_21 <- chisq.test(df$geslacht, ja_abortus, correct = T)
+
+# boven de 21:
+ja_abortus_onder_21_df <-  df %>% 
+  filter(df$Wat.is.uw.leeftijd. > 21)
+ja_abortus_onder_21 <- (ifelse(ja_abortus_onder_21_df$eigen_keuze_abortus=="Wel abortus toestaan", 1,0))
+#all(duplicated(abortus$geslacht)[-1L])
+
+#ja_nee_abortus_onder_21 <- chisq.test(df$geslacht, ja_abortus, correct = T)
+
+
+#ja_nee_abortus <- t.test(ja_abortus, as.numeric(abortus$geslacht), data = abortus, alternative = "two.sided")
+
+
+# Resultaat kan bijna niet kloppen.... achterhaal wat er mis is.
+```
+
+H0 is verworpen en H1 is aangenomen omdat de p-waarde `"r" ja_nee_abortus$p.value` is. Dit is onder de 0.05 en betekend dat met 95% zekerheid gezegd kan worden dat het geen toeval is dat er een verschil tussen de twee geslachten is en hun keuze om de abortus toe te staan of te verbieden. 
+
+
+
+
+
+```{r}
+# Chi-square voor de vraag: Vindt u dat iemand een abortus mag als de zwangerschap een gevolg is van verkrachting?
+
+# Lijst van 1 en 0 maken voor Ja en Nee. 
+#abortus_als_gevolg_van_01 <- (ifelse(abortus$Vindt.u.dat.iemand.een.abortus.mag.als.de.zwangerschap.een.gevolg.is.van.verkrachting.=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
+
+
+
+abortus_als_gevolg_van_01 <- table(df$geslacht, df$Vindt.u.dat.iemand.een.abortus.mag.als.de.zwangerschap.een.gevolg.is.van.verkrachting.)
+
+# Chi-square test:
+chi_abortus_als_gevolg_van <- chisq.test(abortus_als_gevolg_van_01, correct = T)
+
+```
+
+```{r}
+# Chi-square voor de vraag: Vindt u dat een minderjarig kind de keuze moet hebben om voor een abortus te kiezen?
+
+# Lijst van 1 en 0 maken voor Ja en Nee. 
+#abortus_minderjarig_keuze_01 <- (ifelse(abortus$minderjarig=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
+
+abortus_minderjarig_keuze_01 <- table(df$geslacht, df$minderjarig)
+
+# Chi-square test:
+chi_abortus_minderjarig_keuze <- chisq.test(abortus_minderjarig_keuze_01, correct = T)
+
+```
+```{r}
+# Chi-square voor de vraag: Vindt u dat de ouders zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen?
+
+# Lijst van 1 en 0 maken voor Ja en Nee. 
+#abortus_zeggenschap_ouders_01 <- (ifelse(abortus$ouders=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
+abortus_zeggenschap_ouders_01 <- table(df$geslacht, df$ouders)
+# Chi-square test:
+chi_abortus_zeggenschap_ouders <- chisq.test(abortus_zeggenschap_ouders_01, correct = T)
+
+# Test om leeftijd mee te nemen als factor:
+#chi_abortus_als_gevolg_van_leeftijd <- chisq.test(df$Wat.is.uw.leeftijd., abortus_zeggenschap_ouders, correct = T)
+
+```
+
+```{r}
+# Chi-square voor de vraag: Moet het wettelijk verplicht worden voor vrouwen die een abortus willen om een echo van de foetus te zien voordat een abortus toegestaan is?
+
+# Lijst van 1 en 0 maken voor Ja en Nee. 
+#abortus_echo_01 <- (ifelse(abortus$minderjarig=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
+abortus_echo_01 <- table(df$geslacht, df$minderjarig)
+# Chi-square test:
+chi_abortus_echo <- chisq.test(abortus_echo_01, correct = T)
+
+```
+
+```{r}
+# Chi-square voor de vraag: Vindt u dat de wettelijke bedenktijd moet terugkomen?
+
+# Lijst van 1 en 0 maken voor Ja en Nee. 
+#abortus_bedenktijd_01 <- (ifelse(abortus$bedenktijd=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn.
+abortus_bedenktijd_01 <- table(df$geslacht, df$bedenktijd)
+# Chi-square test:
+chi_abortus_bedenktijd <- chisq.test(abortus_bedenktijd_01, correct = T)
+
+```
+
+```{r}
+# Chi-square voor de vraag: Vindt u dat adoptie een alternatief is voor abortus?
+
+# Lijst van 1 en 0 maken voor Ja en Nee. 
+#abortus_adoptie_01 <- (ifelse(abortus$adoptie=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn. 
+abortus_adoptie_01 <- table(df$geslacht, df$adoptie)
+# Chi-square test:
+chi_abortus_adoptie <- chisq.test(abortus_adoptie_01, correct = T)
+
+```
+
+```{r}
+# Chi-square voor de vraag: Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?
+
+# Lijst van 1 en 0 maken voor Ja en Nee. 
+#abortus_zeggenschap_vader_01 <- (ifelse(abortus$vader=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn. 
+abortus_zeggenschap_vader_01 <- table(df$geslacht, df$vader)
+# Chi-square test:
+chi_abortus_zeggenschap_vader <- chisq.test(abortus_zeggenschap_vader_01, correct = T)
+
+```
+## Visualisatie van de Chi-square resultaten:
+25-05-2024:
+Om een overzicht te geven van alle chi-square resulaten voor alle vragen is er een grafiek van gemaakt. 
+De rode lijn geeft significantie aan, wanneer een waarde onder deze lijn ligt (p < 0.05) is het resulaat statistische significant en wanneer de waarde er boven ligt (p > 0.05) is het resulaat niet statistisch significant. 
+Als het resulaat significant is betekend het voor deze stellingen dat er een verschil is tussen de keuze tussen de twee geslachten. 
+
+
+```{r dataframe maken voor Chi-square visualizatie}
+chi_test_vector_geslacht <- c(chi_ja_abortus[3],chi_abortus_als_gevolg_van[3],chi_abortus_minderjarig_keuze[3],chi_abortus_zeggenschap_ouders[3],chi_abortus_echo[3],chi_abortus_bedenktijd[3],chi_abortus_adoptie[3],chi_abortus_zeggenschap_vader[3])
+
+#df_chi_geslacht_test <- data.frame(c(chi_ja_abortus[3],chi_abortus_als_gevolg_van[3]))
+
+df_chi_geslacht <- (data.frame((chi_test_vector_geslacht)) %>% rename(
+  `Abortus toestaan` = p.value,
+  `Gevolg van verkrachtign` = p.value.1,
+  `Minderjarig kind` = p.value.2,
+  `Zeggenschap ouders` = p.value.3,
+  `Echo bekijken` = p.value.4,
+  `Bedenktijd invoeren` = p.value.5,
+  `Adoptie als alternatief` = p.value.6,
+  `Zeggenschap vader` = p.value.7
+  ))
+
+df_chi_geslacht %>% 
+  pivot_longer(cols = c(1:8)) -> df_chi_geslacht
+```
+In het bovenstaande blok met code wordt er een data-frame gemaakt die alle p-waardes bevat van de hypothes die opgesteld zijn. 
+Daarna wordt de data veranderd in "tidy data" (een meting per rij en variablen als colommen).
+
+```{r Visualizatie van P-waarden van Chi-square test}
+
+ggplot(data = df_chi_geslacht, mapping = aes(x = name , y = value)) +
+  geom_bar(stat = "identity",, fill = "blue", alpha = 0.5) +
+  geom_hline(yintercept=0.05, linetype="dashed", color = "red") +
+  geom_label_repel(position = position_nudge_repel(y = -0.07),aes(label = round(value,digits = 3)) ) +
+  ylab("P-waarde Chi-square test:") +
+  xlab(" ") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.6)) 
+  
+
+```
+Aan de bovenstaande grafiek te zien is er alleen een significant verschil tussen de meningen van de verschillende geslachten over de kwestie of de vader ook zeggenschap mag hebben over de abortus, dit is van alle vragen de vraag waar ik ook wel van had verwacht dat het  polariserend zou zijn. 
+
+# Chi^2 test:
+De volgende hypothese is opgesteld:
+H0: Geslacht is geen bijdragende factor in de keuze of abortus toegestaan mag zijn of niet. 
+H1: Geslacht is een bijdragende factor in de keuze of abortus toegestaan mag zijn of niet.
+
+```{r}
+# Test om te kijken hoe het werkt:
+#test_ja_abortus <- df %>% filter(geslacht == "Man")
+
+
+#test_ja_abortus <- (ifelse(test_ja_abortus$eigen_keuze_abortus=="Wel abortus toestaan" & #test_ja_abortus$geslacht == "Man", 6,0))
+#chisq.test(df$geslacht, ja_abortus ,correct = F)
+ja_abortus <- table(df$geslacht, df$eigen_keuze_abortus)
+# Chi-square test:
+chi_ja_abortus <- chisq.test(ja_abortus, correct = F)
+
+```
+De p-waarde van de Chi-square test is: `r chi_ja_abortus$p.value` dit is boven de 0.05 dus kan de nul hypothese aangenomen worden, geslacht is geen significant bijdragende factor in de keuze of abortus toegestaan mag zijn of niet. <br>
+De Chi-squered waarde is: `r round(chi_ja_abortus$statistic, digits = 2)` <br>
+
+
+```{r}
+# Test met andere variabele
+
+# Lijst van 1 en 0 maken voor Ja en Nee. 
+abortus_zeggenschap_vader_01 <- (ifelse(abortus$vader=="Ja", 1,0)) # 1 voor de mensen de voorstander zijn, 0 als ze tegen zijn. 
+
+# Chi-square test:
+chi_abortus_zeggenschap_vader <- chisq.test(df$afkomst, abortus_zeggenschap_vader_01, correct = T)
+chi_abortus_zeggenschap_vader
+
+
+
+```
+<hr>
+
+
+### To-do: voor grafieken proporties gebruiken i.p.v. absolute aantallen (om rekening te houden met verschillen en aantal "metingen" tussen mannen en vrouwen.) ###
+
+21-05-2024:
+** Two-way Z-test:**
+Voor het beantwoorden van de vraag: Heeft het geslacht invloed op de keuze.... (afhankelijk van de vraag, herhalen voor alle vragen) 
+```{r}
+library("BSDA")
+#df_z_test <- 
+#z_test_abortus <- z.test(df$geslacht, ja_abortus, sigma.x = sd(df$geslacht))
+```
+
+To-do:
+
+
+### Grafiek leeftijd/keuze:
+Op de onderstaande grafiek wordt het verband tussen leeftijd en keuze bij de vraag: wel of niet abortus toestaan weergeven.
+
+```{r}
+
+ggplot(data = df, mapping = aes(x = Wat.is.uw.leeftijd., y = ID)) +
+  geom_point(aes(color = eigen_keuze_abortus, size = Wat.is.uw.leeftijd.)) +
+  facet_wrap(~geslacht) +
+  xlab("Leeftijd (Jaren)") +
+  ylab("Index nummer (nog aanpassen naar iets anders?)") +
+  ggtitle("")
+
+
+
+```
+
+
+**29-05-2024:**
+Alle chi-square tests retroactief aangepast, nu met een tabel i.p.v. eerst alle waarden van de vragen omzetten in 1 (Eens) en 0 (Oneens).
+
+
+**30-05-2024:**
+
+# Logistische regressie: #
+Om het verband tussen meerdere predictors te zien is de logistische regressie gebruikt. 
+
+Omdat er niet genoeg mensen van elk geloof zijn wordt iedereen verdeeld in twee groepen, gelovig en niet gelovig, het is natuurlijk genuanceerder dan dat maar met deze versimpeling zal ook al wel een patroon zichtbaar gemaakt kunnen worden.
+
+
+```{r binaire lijst maken geloving of niet gelovig}
+df <- df %>% 
+  mutate(gelovig_01 = ifelse(df$geloof == "Niet gelovig", 0,1)) 
+
+```
+
+### Dataframes maken voor de logistische regressie: ###
+**In de onderstaande code chunks worden er dataframes gemaakt voor de volgende 
+tests:**
+Keuze van de man met leeftijd en opleidingsniveau als predictors,
+Keuze van de vrouw met leeftijd en opleidingsniveau als predictors,
+en Keuze van mensen met ongespecificeerd geslacht met leeftijd en opleidingsniveau als predictors.
+Van deze laatste categorie is er maar een persoon, dus kan hier de analyze niet op uitevoerd worden. 
+
+
+```{r  Dataframe voor logistische regressie maken (mannen + vrouwen)}
+# Nieuw dataframe met de relevante colommen van df.
+#df_logistische_regressie <- data.frame(ID = df$ID, geslacht =df$geslacht, leeftijd = df$Wat.is.uw.leeftijd., keuze = df$eigen_keuze_abortus, df$geloof)
+
+# Voor de kolom met 0,1 waarden voor de keuze zijn alle "Weet ik niet" antwoorden vervangen door 0 (test)
+df_logistische_regressie <- df %>% 
+  select(geslacht, Wat.is.uw.leeftijd., gelovig_01, Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., eigen_keuze_abortus, vader, bedenktijd, minderjarig, gezondheid_vrouw, ouders, echo) %>%
+  mutate(ouders = (ifelse(ouders == "Ja", 1, 0)), leeftijd_onder_30 = (ifelse(Wat.is.uw.leeftijd. <= 30, 1,0)))
+  
+
+```
+De leeftijden zijn verdeeld in twee categorien, mensen onder 30 en mensen boven de 30 jaar oud, de reden voor deze indeling is
+dat er in de verdeling van leeftijden twee pieken zijn, rond de 20 en rond de 50. Er zijn maar weinig metingen die hier tussen in zitten. 
+Het jongste persoon die niet voor vrijheid van abortus gekozen heeft is 39 jaar oud. 
+
+
+```{r  Dataframe voor logistische regressie maken (man)}
+# Dataframe voor man:
+df_man <- df %>% 
+  select(geslacht, Wat.is.uw.leeftijd., gelovig_01, Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., eigen_keuze_abortus, vader, bedenktijd, minderjarig, gezondheid_vrouw, ouders) %>% 
+  filter(geslacht == "Man")
+
+```
+Maak het dataframe voor de mannen
+
+```{r  Dataframe voor logistische regressie maken (vrouw)}
+# Dataframe voor vrouw:
+df_vrouw <- df %>% 
+  select(geslacht, Wat.is.uw.leeftijd., gelovig_01, Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., eigen_keuze_abortus, vader, bedenktijd, minderjarig, gezondheid_vrouw, ouders) %>% filter(geslacht == "Vrouw")
+```
+Maak het dataframe voor de vrouwen
+
+
+```{r  Dataframe voor logistische regressie maken (ongespecificeerd geslacht)}
+# Dataframe voor ongespecificeerd geslacht:
+df_ongespecificeerd_geslacht <- df %>% 
+  select(geslacht, Wat.is.uw.leeftijd., gelovig_01, Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., eigen_keuze_abortus, vader, bedenktijd, minderjarig, gezondheid_vrouw, ouders) %>% filter(geslacht == "Wil ik liever niet melden")
+
+```
+Maak het dataframe voor de "ongespecificeerd geslacht" mensen.
+
+
+```{r }
+# logistische_regressie voor de vraag "moet abortus een eigen keuze zijn?" met als voorspellende factoren (predictors) leeftijd, geslacht en opleidingsniveau. 
+logistische_regressie_test <- glm(df$eigen_keuze_abortus ~ df$Wat.is.uw.leeftijd. + df$geslacht + df$Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., data = df, family = binomial)
+
+
+```
+Voor de logistische_regressie voor de vraag "moet abortus een eigen keuze zijn?" met als predictors leeftijd, geslacht en opleidingsniveau gaf R een waarschuwing: Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred. 
+Mogenlijk komt dit omdat er niet genoeg metingen zijn voor elk opleidingsniveau.
+
+
+
+```{r Logistische regressie (man en vrouw)}
+
+# Logistische regressie met leeftijd, geloof, opleidingsniveau en geslacht als predictors
+logistische_regressie <- glm(eigen_keuze_abortus ~ leeftijd_onder_30 + geslacht + gelovig_01 + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond.,  data = df_logistische_regressie, family = binomial)
+
+
+
+lr_man_vrouw_vader <- glm(vader ~ leeftijd_onder_30 + geslacht + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond. + gelovig_01, data = df_logistische_regressie, family = binomial)
+
+
+# Logistische regressie voor de vraag: Moeten minderjarig kind zeggenschap hebben over eigen abortus, met als predictors: leeftijd, geslacht, onderwijsniveau en geloof
+lr_man_vrouw_zeggenschap_minderjarig <- glm(minderjarig ~ leeftijd_onder_30 + geslacht + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond. + gelovig_01, data = df_logistische_regressie, family = binomial)
+
+
+# Logistische regressie voor de vraag: Moet er een echo van de foetus laten zien worden voor er voor abortus gekozen mag worden:
+lr_man_vrouw_echo <- glm(echo ~ leeftijd_onder_30 + geslacht + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond. + gelovig_01, data = df_logistische_regressie, family = binomial)
+
+
+# Bedenktijd:
+lr_man_vrouw_bedenktijd <- glm(bedenktijd ~ leeftijd_onder_30 + geslacht + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond. + gelovig_01, data = df_logistische_regressie, family = binomial)
+
+# Logistische regressie voor de vraag: Mag er voor abortus gekozen worden als de gezondheid van de vrouw in gevaar is?
+lr_man_vrouw_gezondheid_vrouw <- glm(df_logistische_regressie$gezondheid_vrouw ~ leeftijd_onder_30 + geslacht + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond. + gelovig_01, data = df_logistische_regressie, family = binomial)
+
+lr_man_vrouw_gezondheid_ouders <- glm(df_logistische_regressie$ouders ~ leeftijd_onder_30 + geslacht + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond. + gelovig_01, data = df_logistische_regressie, family = binomial)
+
+
+summary(lr_man_vrouw_zeggenschap_minderjarig) # geloof significant
+#summary(lr_man_vrouw_vader) # leeftijd en geslacht significant, geloof bijna
+#summary(logistische_regressie) # niets significant
+#summary(lr_man_vrouw_echo) # geloof significant
+#summary(lr_man_vrouw_bedenktijd) # geslacht significant
+#summary(lr_man_vrouw_gezondheid_vrouw) # niets significant
+#summary(lr_man_vrouw_gezondheid_ouders) # Niets significant
+```
+Voor de vraag: Moet een minderjarig kind de keuze hebben om een abortus te nemen? De enige significante factor is geloof, met een p-waarde van 0.00308. 
+
+
+## Textuele resulaten logistische regressie:
+
+```{r lr zeggenschap vader}
+summary(lr_man_vrouw_vader) # leeftijd en geslacht significant, geloof bijna
+```
+Uit de bovenstaande logistische regressie blijkt dat leeftijd en geslacht significant bijdragende factoren zijn, voor deze analyse is de leeftijd van de deelnemers in twee categorieën verdeeld: boven en onder de 30, wanneer dit niet gedaan wordt is de coefficient van leeftijd nog steeds onder de 0.05 maar wel wat hoger. Geloof was net niet onder de 0.05 met 0.0503. 
+
+```{r lr zeggenschap minderjarig}
+summary(lr_man_vrouw_zeggenschap_minderjarig) # geloof significant
+```
+
+```{r lr bedenktijd}
+summary(lr_man_vrouw_bedenktijd) # geslacht significant
+```
+
+```{r lr echo}
+
+summary(lr_man_vrouw_echo) # Geloof significant
+
+```
+
+
+``` {r Logistische regressie (man)}
+# Logistische regressie voor de vraag: Moet abortus een eigen keuze zijn?
+lr_man_eigen_keuze_abortus <- glm(eigen_keuze_abortus ~ Wat.is.uw.leeftijd. + gelovig_01 + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., data = df_man, family = binomial)
+
+
+
+# Logistische regressie voor de vraag: 
+lr_man_minderjarig <- glm(minderjarig ~ Wat.is.uw.leeftijd. + gelovig_01 + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., data = df_man, family = binomial)
+
+
+#coef(lr_man_eigen_keuze_abortus)
+
+# Logistische regressie voor de vraag: Moet de biologische vader zeggenschap hebben over de abortus
+lr_man_vader <- glm(vader ~ Wat.is.uw.leeftijd. + gelovig_01 + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., data = df_man, family = binomial)
+#summary(lr_man_eigen_keuze_abortus)
+#summary(lr_man_vader)
+
+
+```
+De bovenstaande twee chunks worden niet meer gebruikt omdat de modellen met beide geslachten er in tegelijk ook werken.
+
+
+De odds ratio wordt gebruikt om te laten zien hoeveel invloed de predictors individueel hebben wanneer de anderen niet veranderen. 
+
+```{r Log-odds}
+
+# Zodat het niet in wetenschappelijke notatie weergeven wordt als het onder de 999 is. 
+options(scipen = 999)
+
+# Bereken de coefficienten (log e)
+coefficienten_van_lr_man_eigen_keuze_abortus <- coef(lr_man_eigen_keuze_abortus)
+coefficienten_van_lr_man_vader <- coef(lr_man_vader)
+
+
+
+
+# Verander de coefficienten naar procentuele verandering:
+odds_ratio_lr_man_eigen_keuze_abortus <- ( 1 - (exp(coefficienten_van_lr_man_eigen_keuze_abortus))) * 100
+odds_ratio_van_lr_man_vader <- exp(coefficienten_van_lr_man_vader)
+
+
+list(odds_ratio_lr_man_eigen_keuze_abortus)
+odds_ratio_lr_man_eigen_keuze_abortus <- data.frame(odds_ratio_lr_man_eigen_keuze_abortus)# %>% rename(                                                      aa = Wat.is.uw.leeftijd.
+#)
+
+odds_ratio_van_lr_man_vader
+#odds_ratio_lr_man_eigen_keuze_abortus
+
+
+
+```
+Interpretatie van deze odds ratio's: Het percentage geeft aan dat wanneer alle andere variabelen het zelfde zijn, de waarschijnlijkheid dat 
+er een andere uitkoms gekozen wordt (bijvoorbeeld een ander antwoord op de vraag of abortus toegestaan zou moeten zijn). Een positief percentage geeft aan dat het 
+
+
+``` {r interpolatie test logistische regressie}
+
+
+# Voorspel test met de volgende test data: (van twee personen die niet in de dataset zitten)
+newdata1 <- data.frame(geslacht = c("Man", "Vrouw"), Wat.is.uw.leeftijd. = c(20,22), keuze = c("Wel abortus toestaan","Wel abortus toestaan"))
+
+# Voorspelling van de bovenstaande twee test observaties aan de hand van de gemaakte logistische regressie:
+#voorspelde_waarde_1 <- predict.lm(logistische_regressie, newdata = newdata1, type = "response")
+#voorspelde_waarde_1
+
+```
+Met behulp van de predict.lm() functie worden de twee test observaties (net als in de originele dataset) aan de hand van de gemaakte logistische regressie. De nummers moeten nog omgezet worden naar een Ja/Nee antwoord op de vraag: Abortus toestaan.
+De waarden die verkregen zijn met de predict.lm() functie kunnen vervolgens in de onderstaande grafiek worden geplot om te zien in welke categorie ze waarschijnlijk horen. (Welk antwoord het persoon waarschijnlijk zou geven.)
+
+```{r Visualizatie Lr vraag: eigen keuze abortus (mannen + vrouwen)}
+# Maak nieuw dataframe met de waardes van de logistische regressie en de keuze die de mensen die bij deze waardes horen gemaakt hebben. 
+voorspelde_data <- data.frame(logistische_regressie$fitted.values, df$eigen_keuze_abortus)
+
+voorspelde_data <- voorspelde_data[order(voorspelde_data$logistische_regressie.fitted.values, decreasing = F),]
+
+voorspelde_data$rank <- 1:nrow(voorspelde_data)
+
+ggplot(data = voorspelde_data, aes(x = rank, y = logistische_regressie.fitted.values)) +
+  geom_point(aes(color=df$eigen_keuze_abortus, shape = df$geslacht, alpha = 0.9)) +
+  ggtitle("Eigen keuze abortus:") +
+  xlab("Index") +
+  ylab("Waarschijnlijkheid (tussen 0 en 1)")
+```
+Voor de bovenstaande logistische regressie waren er geen significante predictors, daarom is er geen trend op de grafiek zichtbaar en is deze onbruikbaar. (deze grafiek was een test)
+
+```{r Visualizatie Lr vraag: Moet de vader zeggenschap hebben (mannen)}
+
+# Maak nieuw dataframe met de waardes van de logistische regressie en de keuze die de mensen die bij deze waardes horen gemaakt hebben. 
+lr_voorspelling_vader <- data.frame(lr_man_vader$fitted.values, df_man$vader)
+
+lr_voorspelling_vader <- lr_voorspelling_vader[order(lr_voorspelling_vader$lr_man_vader.fitted.values, decreasing = F),]
+
+lr_voorspelling_vader$rank <- 1:nrow(lr_voorspelling_vader)
+
+ggplot(data = lr_voorspelling_vader, aes(x = rank, y = lr_man_vader.fitted.values)) +
+  geom_point(aes(color=df_man$vader, size = df_man$Wat.is.uw.leeftijd., alpha = 0.8)) +
+  labs(size = "Leeftijd", color = "Antwoord op vraag") +
+  ggtitle("Eigen keuze abortus:") +
+  xlab("Index") +
+  ylab("Waarschijnlijkheid (tussen 0 en 1)")
+```
+Op de visualizatie van de bovenstaande logistische regressie was leeftijd de enige significante predictor van de keuze voor abortus. 
+(P-waarde: 0.00296)
+```{r Visualizatie Lr vraag: Moet een minderjarig kind de keuze hebben om voor een abortus te kiezen? (mannen)}
+
+# Maak nieuw dataframe met de waardes van de logistische regressie en de keuze die de mensen die bij deze waardes horen gemaakt hebben. 
+lr_man_voorspelling_minderjarig <- data.frame(lr_man_minderjarig$fitted.values, df_man$minderjarig)
+
+lr_man_voorspelling_minderjarig <- lr_man_voorspelling_minderjarig[order(lr_man_voorspelling_minderjarig$lr_man_minderjarig.fitted.values, decreasing = F),]
+
+lr_man_voorspelling_minderjarig$rank <- 1:nrow(lr_man_voorspelling_minderjarig)
+
+ggplot(data = lr_man_voorspelling_minderjarig, aes(x = rank, y = lr_man_minderjarig.fitted.values)) +
+  geom_point(aes(color=df_man$minderjarig, alpha = 0.9)) +
+  ggtitle("Eigen keuze abortus:") +
+  xlab("Index") +
+  ylab("Waarschijnlijkheid (tussen 0 en 1)")
+```
+
+lr_man_vrouw_vader
+
+```{r Visualizatie Lr vraag: Moet de vader zeggenschap hebben (mannen + vrouwen)}
+
+
+
+# Maak nieuw dataframe met de waardes van de logistische regressie en de keuze die de mensen die bij deze waardes horen gemaakt hebben. 
+lr_voorspelling_man_vrouw_vader <- data.frame(lr_man_vrouw_vader$fitted.values, df_logistische_regressie$vader)
+
+lr_voorspelling_man_vrouw_vader <- lr_voorspelling_man_vrouw_vader[order(lr_voorspelling_man_vrouw_vader$df_logistische_regressie.vader, decreasing = F),]
+
+lr_voorspelling_man_vrouw_vader$rank <- 1:nrow(lr_voorspelling_man_vrouw_vader)
+
+
+test_lr <- ggplot(data = lr_voorspelling_man_vrouw_vader, aes(x = rank, y = lr_voorspelling_man_vrouw_vader$lr_man_vrouw_vader.fitted.values)) +
+  geom_point(aes(color=df_logistische_regressie$geslacht ,size=df_logistische_regressie$Wat.is.uw.leeftijd., alpha = 0.9)) +
+  geom_ribbon(aes(ymin = (rank),
+    ymax = (rank), fill = rank), alpha = 0.2) +
+    geom_line(aes(colour = rank), size = 1) +
+  ggtitle("Eigen keuze abortus:") + 
+  xlab("Index") +
+  ylab("Waarschijnlijkheid (tussen 0 en 1)")
+```
+Zoals op de bovenstaande afbeelding zichtbaar is, is er minder goed een patroon in te zien wanneer alle predictor factoren (leeftijd, geslacht, opleidingsniveau en geloof) meegenomen worden. 
+
+
+
+
+### Test visualisatie voor paper:
+31-05-2024:
+Als introductie van de verkregen data moeten er een paar grafieken weergeven worden waarop de keuzes van de 
+menensen die de enquete ingevuld hebben weergeven is. 
+
+```{r eval=F}
+
+x1 <- table(df$adoptie, df$geslacht)
+adoptie_plot_data <- data.frame(x1)
+adoptie_plot_data$fraction = adoptie_plot_data$Freq / sum(adoptie_plot_data$Freq)
+adoptie_plot_data$percentage = round(adoptie_plot_data$fraction *100, digits =1)
+
+#ggplot(data = df, mapping = aes(x = adoptie_plot_data, y = adoptie, fill = geslacht)) +
+ ggplot(data = adoptie_plot_data, mapping = aes(x = Var2, y = percentage, fill = Var1)) +
+ geom_bar(stat = "identity" ,
+  position ="dodge") +
+  labs(fill = "Keuze") +
+  geom_text(aes(label = (""))) +
+  xlab("Antwoorden") +
+  ylab(" Percentage antwoord") +
+  theme_minimal()
+
+```
+Net zoals op de bovenstaande afbeelding moeten alle vragen gevisualiseerd worden, ook moeten proporties gebruikt worden i.p.v. absolute getallen omdat er niet even veel mannen als vrouwen zijn. 
+
+
