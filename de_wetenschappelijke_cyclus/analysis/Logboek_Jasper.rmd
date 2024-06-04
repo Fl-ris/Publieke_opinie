@@ -12,34 +12,36 @@ output:
 Dit is het logboek van de volgende onder zoeksvraag: 
 
 *Is er een verschil tussen de ethische meningen van mensen van andere leeftijden, geslachten en geloof?* <br>
-Dit gaan we doen met behulp van een enqute en een  verwerking in R studio. <br>
+Dit gaan we doen met behulp van een enquête en een  verwerking in R studio. <br>
 De enquête wordt  verspreid over meerdere mensen van verschillende leeftijdsgroepen. Hierdoor hopen we meerdere leeftijdsgroepen te kunnen interviewen. <br>
 De vragen waar we voor hebben gekozen zijn ja en nee vragen zonder toelichting van de invuller in te zetten. Want dat is moeilijker te verwerken dan bijvoorbeeld " wat is uw gevoel hier bij?". Dan krijg je meer niet echt duidelijke data. <br>
 We hebben wel op het eind een paar stellingen met waardes als  zeer oneens tot zeer eens. <br>
-We hebben er voor gekozen om in microsoft forms te doen omdat je dan ook een csv file van kan maken. <br>
+We hebben er voor gekozen om in Microsoft Forms te doen omdat je dan ook een csv file van kan maken. <br>
 
 # Logboek
 ## 22 april tot 26 april
 In deze periode hebben we vooral gekeken naar wat we wouden onderzoeken en wat. <br>
 We hebben uiteindelijk gekozen voor abortus. <br>
-Omdat dit een etnische kwestie is, maar niet zo zwaar ligt als bijvoorbeeld vluchtelingen.<br>
-Ook is het al vaak in het nieuws geweest.<br>
+Omdat dit een etnische kwestie is, maar niet zo zwaar ligt als bijvoorbeeld vluchtelingen. Hierdoor hopen we dat de drempel voor sommige mensen om het in te vullen weg te nemen.<br>
+Ook is het al vaak in het nieuws geweest. Hierdoor hopen we te voorkomen dat mensen dit onderwerp zien en geen mening er over hebben en daardoor het niet meer gaan invullen<br>
 
 ## 27 april tot 6 mei <br>
 In deze periode hebben we de informatie gezocht over het onderwerp en maakte we ook een enquête die we hebben laten zien aan andere personen. <br>
 Het laatste deden we door onafhankelijke persoon zodat we fouten er uit konden krijgen. 
 Fouten zoals een te sturende vraag of een onduidelijke vraag. <br>
-En wat we achterkwamen was bijvoorbeeld over de bedenk tijd die veranderd is. Dus wel intersesaant om te kijken wat de menig er over is <br>
+En wat we achterkwamen was bijvoorbeeld over de bedenk tijd die veranderd is. Dus wel interessante om te kijken wat de menig er over is.<br>
+
 
 ## 7 mei
-Begonnen we met de enquête na alle goedkeuringen.
+Begonnen we met de enquête na alle goedkeuringen. Deze goedkeuring kwam van onze docent.<br>
+De enquête hebben we verspreid over eerst onze klas en daarna over ouders en die vrienden er van. Ook ozne eigen vrienden zin gevraagd.
 
 ## 8 mei 
-Meerdere mensen gevraagd om het in te vullen.
+Meerdere mensen gevraagd om het in te vullen. 
 
 ## 9 mei tot 3 juni
 
-enquête open laten staan en allemaal meet waarden binnen krijgen en bedenken waar het nog meer hebben kunnen uit delen
+enquête open laten staan en allemaal meet waarden binnen krijgen en bedenken waar het nog meer hebben kunnen uit delen. Ik denk er over na om bij mij op werk te verspreiden. Dit omdat het meer mensen waar je misschien normaal niet mee om gaat en daardoor een andere mening hebben dan ons. Zodat we betere meetwaarde kunnen hebben.
 
 ## 14 mei
 ```{r, echo=FALSE}
@@ -98,9 +100,6 @@ abortus <- abortus %>%
         ouderszegenschap = Vindt.u.dat.de.ouders.zeggenschap.moeten.hebben.over.of.hun.minderjarige.kind.wel.of.niet.voor.abortus.mag.kiezen... ,
         Kindskeuze = Vindt.u.dat.een.minderjarig.kind.de.keuze.moet.hebben.om.voor.een.abortus.te.kiezen.....
     )
-abortus.test <- data.frame(abortus$geloof)
-head(abortus)
-
 ```
 
 Ik ga even kijken de gemiddelde leeftijd kijken van onze ingevulde mensen. En kijken naar de verdeling van dit. Wat Q1 is of Q2 is als voorbeeld.
@@ -108,7 +107,6 @@ Ik ga even kijken de gemiddelde leeftijd kijken van onze ingevulde mensen. En ki
 summary(abortus$leeftijd)
 ```
 Hier ga ik een grafiek maken om te kijken of de leeftijd normaal verdeeld is. 
->H0 de leeftijd heeft geen significat verschil op de mennig over zeggenenschap van de ouders bij de leeftijd groep van onder 25 <br>
 
 ```{r}
 
@@ -129,22 +127,16 @@ shapiro.test(abortus$leeftijd)
 
 ```
 
-
 Hier zie zeker dat de leeftijd van onze invuller niet normaal verdeelt is.
 
 
 ## 15 mei.
-Ik laat zien waar onze invullers vandaan komen in een donut chart.
-
+Ik laat zien waar onze invuller vandaan komen in een donut chart.
 
 ```{r}
-
-# Create Data
 x <- table(abortus$afkomst)
-
 city_count <- data.frame(x)
-
-# Compute percentages
+# percentages berekenen 
 city_count$fraction = city_count$Freq / sum(city_count$Freq)
 city_count$percentage = round(city_count$fraction *100, digits =1)
 city_count$ymax = cumsum(city_count$fraction)
@@ -164,28 +156,17 @@ ggplot(renamed_city_count, aes(ymax=ymax, ymin=ymin, xmax=13, xmin=3, fill=Provi
      coord_polar(theta="y") + 
      xlim(c(-13, 13)) 
 ```
-<<<<<<< HEAD
+
 <br>
 Hier kan je zien dat de meeste mensen uit de noordelijke regio komen. Dus uit Drenthe, Friesland en Groningen 
-Dit is logisch omdat we de enqute hebben uit gezet in de noordelijke provincies.
-<br>
-Ook een boxplot gemaakt over de verdeling van de leeftijd (meer als oefening)
+Dit is logisch omdat we de enqute hebben uit gezet in de noordelijke provincies.<br>
+Ook een boxplot gemaakt over de verdeling van de leeftijd als oefening
 ```{r}
 ggplot(leeftijd, aes(x = abortus$leeftijd)) + geom_boxplot()
 ```
-<br> 
-## 16 mei
-Ik ga laten zien het verschil in mening over "Vindt u dat de ouders zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen?" tussen jongeren (21 jaar en jonger want deze personen zijn officieel nog niet volwassen is) en ouderen (22 jaar en ouder)
-=======
 
-Hier kan je zien dat de meeste mensen uit de noordelijke regios komen. \n
-Dus uit Drenthe, Friesland en Groningen \n
+## 16 mei 
 
-Ook een boxplot gemaakt over de verdeling van de leeftijd
-```{r}
-ggplot(leeftijd, aes(x = abortus$leeftijd)) + geom_boxplot()
-```
-## 16 mei
 Ik ga laten zien het verschil in mening over "Vindt u dat de ouders zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen?" tussen jongeren (21 jaar en jonger want deze personen zijn oficeel nog niet volwassen is) en ouderen (22 jaar en ouder)
 
 ```{r}
@@ -202,16 +183,16 @@ abortus %>%
 
 ```
 
-<<<<<<< HEAD
 Dit is geen goeie plot om te laten zien wat de verschillen zijn in antwoorden. Hier laat je nu het aantal keer zien dat het is ingevuld. Hierdoor lijkt het dat ja heel vaak word in gevuld terwijl het gewoon minder vaak is ingevuld door iemand onder de leeftijd van 21 jaar <br>
-Ik ga nog bedenken wat een goeie manier is om het te laten zijn en een goei vergelijking te kunnen maken.
+Ik ga nog bedenken wat een goeie manier is om het te laten zijn en een goede vergelijking te kunnen maken.
 
 ## 21 Mei
 Ik ga even met iets anders bezig het lukt niet echt.  
-De keuze dat we hebben gemaakt voor de leeftijd van 21 jaar want over de helle wereld is 21 jaar de oudste leeftijd van de wereld. We hadden ook kunnen kiezen voor 18 jaar. Want in Nederland is dat de grens. Maar als je kijkt naar Amerika is er een onderzoek geweest naar de conectie met de legale leeftijd van drinken en auto ongelukken. Hier is naar voren gekomen dat hoe lager de leeftijd hoe meer auto ongelukken er zijn. Hier kan je bijvoorbeeld uit concluderen dat deze mensen nog niet verantwoordelijk genoeg zijn om met alcohol om te gaan,
+De keuze dat we hebben gemaakt voor de leeftijd van 21 jaar want over de helle wereld is 21 jaar de oudste leeftijd van de wereld. We hadden ook kunnen kiezen voor 18 jaar. Want in Nederland is dat de grens. Maar als je kijkt naar Amerika is er een onderzoek geweest naar de connectie met de legale leeftijd van drinken en auto ongelukken. Hier is naar voren gekomen dat hoe lager de leeftijd hoe meer auto ongelukken er zijn. Hier kan je bijvoorbeeld uit concluderen dat deze mensen nog niet verantwoordelijk genoeg zijn om met alcohol om te gaan,
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6876521/
+
 ## 22 mei 
-Ik ga de tabel van 16 mei om zetten naar percentage. zo dat het wel klopt en niet op aantallen gaat.
+Ik ga de tabel van 16 mei om zetten naar percentage. zo dat het wel klopt en niet op aantallen gaat. en we zijn verwisseld van de leeftijd van 21 naar 25 jaar. Dit doen we omdat we hebben gedaan omdat je brein eigenlijk niet 100% volgroeid zijn op de leeftijd van 21. Dit gebeurt wel rond die periode. van 20 tot 25 jaar. Daarom kiezen we voor de leeftijd van de 25 jaar omdat dan volgense de wetenschap je brein helemaal vol groeit zijn en denken wij ook dat je de juitse keuzes kan maken.
  
 ```{r}
 #hier maak ik een splitsing van de leeftijden boven en onder 
@@ -231,20 +212,21 @@ as.data.frame.table(table_onder_boven_samen) %>%
     guides(color = guide_legend(title = "Wat is de mening")) +
     labs(title = "Ouderzeggenschap over miderjarge", 
          y = "Voorkomen keuze in de groep in poprties", 
-         x = "Leeftijd boven of onder de 21")
-Spiltsing_leeftijd
+         x = "Leeftijd boven of onder de 25")
+
 
 ```
 
-Hier zie je dus dat de mening erg verschild over zeggenschaps. 
-jongeren hebben willen nee en ouderen zeggen ja
+Hier zie je dus dat de mening erg verschild over zeggenschap van de ouders. <br>
+Jongeren hebben willen nee en ouderen zeggen ja, dit is ook wel logisch want pubers luisteren ook niet echt naar hun ouders en ouders weten het altijd beter zeggen ze zelf, dus is de verdeling eigenlijk best we logisch.
 
 ## 23 mei 
 De grafiek van boven mooi maken en testen gaan uit voeren op de de laatste grafiek.
-De grafriek is goed gelukt nu dus dat is klaar. 
+De grafiek is goed gelukt nu dus dat is klaar. 
+
 ##  27 mei 
 Ik ga een chi square test doen. Of het geslacht mee telt voor mensen onder de leeftijd van 25 over het onderwerp mening van ouders <br>
-De leeftijd van 25 is gekomen omdat de hersenen tussen de leeftijd van 20 en 25 jaar volgroeid is. Daarom is de vorige figuur ook verander naar de leeftijd van 25 jaar. 
+De leeftijd van 25 is gekomen omdat de hersenen tussen de leeftijd van 20 en 25 jaar volgroeid is. Daarom is de vorige figuur ook verander naar de leeftijd van 25 jaar. <br>
 >H0 de leeftijd heeft geen significat verschil op de mennig over zeggenenschap van de ouders bij de leeftijd groep van onder 25 <br>
 
 ```{r}
@@ -266,37 +248,19 @@ chi_abortus_minderjarig_keuze_boven <- chisq.test(table_Boven_25, correct = T)
 chi_abortus_minderjarig_keuze_boven
 ```
 
-
-
-## 21 Mei
-Ik ga even met iets anders bezig het lukt niet echt.  
-De keuze dat we hebben gemaakt voor de leeftijd van 21 jaar want over de helle wereld is 21 jaar de laaste leeftijd van de wereld. We hadden ook kunnen kiezen voor 18 jaar. Want in Nederland is dat de grens. Maar als je kijkt naar Amerika is er een onderzoek geweest naar de conectie met de legale leeftijd van drinken en auto ongelukken. Hier is naar voren gekomen dat hoe lager de leeftijd hoe meer auto ongelukken er zijn. Hier kan je beivorbeeld uit cloncluderen dat deze mensen nog niet verantwoordelijk genoeg zijn om met alchol om te gaan,
-https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6876521/
-## 22 mei 
-Ik ga de tabel van 16 mei om zetten naar precentage. zo dat het wel klopt en niet op aantallen gaat.
-
-```{r}
-abortus %>%
-    select(leeftijd, ouderszegenschap) %>%
-    mutate(leeftijd_boven_onder_21 = ifelse(leeftijd >= 21, "boven", "onder")) %>%
-    ggplot(mapping = aes(x = ouderszegenschap, fill = leeftijd_boven_onder_21)) +
-    geom_bar(position = "dodge")
-
-```
-
-
-
-<<<<<<< HEAD
-
 ## 28 mei 
-Met de paper bezig geweest de introductie geschreven en met de powepoint bezig geweest
+Met de paper bezig geweest de introductie geschreven en met de powerpoint bezig geweest
 
 ## 29 mei
-De vorige Chi sqare test is fout gegaan, ik heb gekeken of onder de leefiftij van 25 een significant verschil zit en boven de leeftijd van 25 en dat was er beide niet,  hier onder is ie nu wel goed.
+De vorige Chi square test is fout gegaan, ik heb gekeken of onder de leeftijd van 25 een significant verschil zit en boven de leeftijd van 25 en dat was er beide niet, en ik kijk ook niet echt dan tussen de geslachten maar alleen naar de leeftijden en wat ze hebben ingevuld.<br>
+Hieronder is de juiste chi square testen 
+
 
 ```{r}
 #heen chi test tussen de verschillende twee groepen.
-Boven_onder_Ouderzegschap <-table(Spiltsing_leeftijd$leeftijd_boven_onder_24, Spiltsing_leeftijd$ouderszegenschap)
+abortus_aangpast <- abortus %>%
+    mutate(leeftijd_boven_onder_24 = ifelse(leeftijd > 25, "boven", "onder"))
+Boven_onder_Ouderzegschap <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$ouderszegenschap)
 (chi_leeftijd_Ouderzegschap <-chisq.test(Boven_onder_Ouderzegschap, correct = T))
 
 ```
@@ -311,10 +275,6 @@ chisq.test(tabel_ofen)
 ```
 Er wordt nu telkens een chisp.test te doen op elke vraag.
 ```{r}
-
-abortus_aangpast <- abortus %>%
-    mutate(leeftijd_boven_onder_24 = ifelse(leeftijd > 25, "boven", "onder"))
-
 Boven_onder_kidskeuze <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Kindskeuze)
 (chi_leeftijd_kids_eigen_keuze<-chisq.test(Boven_onder_kidskeuze, correct = T))
 ```
@@ -394,12 +354,15 @@ ggplot(data = df_chi_leeftijd, mapping = aes(x = name , y = value)) +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.6)) 
 
 ```
+
 ## 1 Juni
 Na lang gezeur is het gelukt om een figuur te maken om te kijken een significant te laten zien. 
 In de grafiek lijkt te zijn dat Zeggenschap ouders er niet in staat. <br>
-Dit is echter niet waar want het getal is te klein om te zien namelijk 0.003084398. Daar zit dis een groot verschil in. Dit is ook wel logisch omdat de ouders vinden dat kinderen niet kunnen kiezen en de kinderen vinden dat de ouders er geen mening over mogen hebben. 
+Dit is echter niet waar want het getal is te klein om te zien namelijk 0.003084398. Daar zit dis een groot verschil in. Dit is ook wel logisch omdat de ouders vinden dat kinderen niet kunnen kiezen en de kinderen vinden dat de ouders er geen mening over mogen hebben. <br>
+
 ## 2 Juni 
-Bezig gegaan met de paper met de introductie zodat het gedaan is en zorgt voor een  betere taalgebruik tijdens het schrijven.
+Bezig gegaan met de paper met de introductie zodat het gedaan is en zorgt voor een  betere taalgebruik tijdens het schrijven. <br>
+
 ## 3 juni 
 De introductie was al geschreven door 1 van de team genoten terwijl het mijn werk was.<br>
 Ben vervolgens bezig geweest om alle grafieken om gezet in de paper naar percentage in plaats van aantallen.<br>

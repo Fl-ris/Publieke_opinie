@@ -651,6 +651,31 @@ chi_leeftijd_keuze_adoptie <-chisq.test(Boven_onder_Keuze_adoptie, correct = T)
 Boven_onder_Keuze_vader <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Moet.de.biologische.vader.zeggenschap.hebben.over.de.beslissing.voor.een.abortus.)
 chi_leeftijd_keuze_vader <-chisq.test(Boven_onder_Keuze_vader, correct = T)
 
+# hier worden alle waardes van de chi testen bij elkaar geveogd
+chi_test_vector_leeftijd <- c(chi_leeftijd_eigen_keuze_alegemeen[3], chi_leeftijd_keuze_verkrachting[3], chi_leeftijd_kids_eigen_keuze[3],chi_leeftijd_Ouderzegschap[3], chi_leeftijd_keuze_echo[3],chi_leeftijd_keuze_bedenktijd[3],chi_leeftijd_keuze_adoptie[3],chi_leeftijd_vaderszeggenschap[3])
+# Hier worden ze weer hernoemd.
+df_chi_leeftijd <- (data.frame((chi_test_vector_leeftijd)) %>% rename(
+  `Abortus toestaan` = p.value,
+  `Gevolg van verkrachtign` = p.value.1,
+  `Minderjarig kind` = p.value.2,
+  `Zeggenschap ouders` = p.value.3,
+  `Echo bekijken` = p.value.4,
+  `Bedenktijd invoeren` = p.value.5,
+  `Adoptie als alternatief` = p.value.6,
+  `Zeggenschap vader` = p.value.7
+  ))
+
+df_chi_leeftijd %>% 
+  pivot_longer(cols = c(1:8)) -> df_chi_leeftijd
+
+ggplot(data = df_chi_leeftijd, mapping = aes(x = name , y = value)) +
+  geom_bar(stat = "identity",, fill = "blue", alpha = 0.5) +
+  geom_hline(yintercept=0.05, linetype="dashed", color = "red") +
+  geom_label_repel(position = position_nudge_repel(y = -0.07),aes(label = round(value,digits = 3)) ) +
+  ylab("P-waarde Chi-square test:") +
+  xlab(" ") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.6))
 ```
 
 
