@@ -530,7 +530,7 @@ ggplot(data = financieel_o_plot_data, mapping = aes(x = percentage, y =Var1)) +
 
 ```
 
-```{r, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag: Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?, met onderwijsniveau en leeftijd.'}
+```{r warning=FALSE, message=F, fig.cap='Antwoorden op de vraag: Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?, met onderwijsniveau en leeftijd.'}
 ggplot(df, aes(x= Wat.is.uw.leeftijd., y = onderwijsniveau)) +
    geom_jitter(aes(color = vader, size = 2.5), alpha = 0.5, height = 0.05) +
  # geom_point(aes(color = vader, size = 2.5), alpha = 0.5) +
@@ -600,19 +600,19 @@ df_chi_geslacht %>%
   pivot_longer(cols = c(1:8)) -> df_chi_geslacht
 
 
-ggplot(data = df_chi_geslacht, mapping = aes(x = name , y = value)) +
+chi_geslacht <- ggplot(data = df_chi_geslacht, mapping = aes(x = name , y = value)) +
   geom_bar(stat = "identity",, fill = "blue", alpha = 0.5, color = "black") +
   geom_hline(yintercept=0.05, linetype="dashed", color = "red") +
   geom_label_repel(position = position_nudge_repel(y = -0.07),aes(label = round(value,digits = 3)) ) +
-  ylab("P-waarde Chi-square test:") +
+  ylab("P-waarde Chi-square:") +
   xlab(" ") +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.6)) 
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.7)) 
   
 ```
 Op figuur 3 zijn de p-waarden van enkele vragen vergeleken. Wanneer de waarde onder de rode lijn zit kan er met 95% waarschijnlijkheid gezegd worden dat, in dit geval, geslacht een significant bijdragende factor is. Bij de vraag: "Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?" was de p-waarde: 0.018. Voor de overige vragen speelt geslacht geen significante rol (p-waarde > 0.05).
 
-```{r chi-sq 2, warning=FALSE, message=F, fig.cap='P-waarde score voor de enquete vragen en het effect dat leeftijd heeft op de keuze.'}
+```{r $chi-sq_2$, warning=FALSE, message=F, fig.cap='P-waarde score voor de enquete vragen en het effect dat geslacht (boven) en leeftijd (onder) hebben op het beantwoorden van de vragen.'}
 #chi square testen maar dan op de twee leeftijd verschillen 
 abortus_aangpast <- abortus %>%
     mutate(leeftijd_boven_onder_24 = ifelse(Wat.is.uw.leeftijd. > 25, "boven", "onder"))
@@ -667,14 +667,17 @@ df_chi_leeftijd <- (data.frame((chi_test_vector_leeftijd)) %>% rename(
 df_chi_leeftijd %>% 
   pivot_longer(cols = c(1:8)) -> df_chi_leeftijd
 
-ggplot(data = df_chi_leeftijd, mapping = aes(x = name , y = value)) +
+chi_leeftijd <- ggplot(data = df_chi_leeftijd, mapping = aes(x = name , y = value)) +
   geom_bar(stat = "identity",, fill = "blue", alpha = 0.5, color = "black") +
   geom_hline(yintercept=0.05, linetype="dashed", color = "red") +
   geom_label_repel(position = position_nudge_repel(y = -0.07),aes(label = round(value,digits = 3)) ) +
-  ylab("P-waarde Chi-square test:") +
+  ylab("P-waarde Chi-square:") +
   xlab(" ") +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.6))
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.7))
+
+
+grid.arrange(chi_geslacht, chi_leeftijd)
 
 ```
 In tegenstelling tot geslacht heeft leeftijd geen significante invloed op de beslissing of de biologische vader zeggenschap zou moeten hebben over de abortus maar is het zeggenschap van de ouders wel significant. Voor deze test zijn de leeftijden van alle respondenten verdeelt in twee groepen, iedereen onder 25 en iedereen er boven. Hier is voor gekozen omdat er twee grote pieken zijn in de leeftijdsverdeling, deze twee categorien zorgen er voor dat deze pieken elk in een andere categorie vallen, daarnaast is het menselijk brein nog niet uitontwikkeld onder de 25 jaar oud, dit kan ook een factor zijn bij het maken van beslissingen. De p-waarde van de Chi-square test van de vraag: Moeten de ouders zeggenschap hebben over de abortus van hun kind.
@@ -714,7 +717,8 @@ new_proptabel_dataframe <- data_renamed %>%
     mutate(perc = count/sum(count) * 100)
 ```
 
-```{r barplot gender en zeggenschap}
+```{r $barplot_gender_en_zeggenschap$, fig.cap='Verdeling van antwoorden over gender op de vraag of de biologische vader zeggenschap moet hebben over de beslissing voor een abortus.'}
+    
 library(ggplot2)
 
 ggplot(new_proptabel_dataframe, aes(x =Gender, y=perc, fill=Biologische_vader_zeggenschap)) +
@@ -725,10 +729,11 @@ ggplot(new_proptabel_dataframe, aes(x =Gender, y=perc, fill=Biologische_vader_ze
          fill = "Antwoord",
          y = "percentage") +
     geom_bar(stat = "identity", position = "dodge", color="black")+
-    theme_minimal() +
-    scale_fill_brewer(palette = "Dark2") +
+    theme_minimal()# +
+    #scale_fill_brewer(palette = "Dark2")# +
     # verplaatst de tekst naar links
-theme(plot.caption = element_text(hjust = 0, face = "italic")) 
+#theme(plot.caption = element_text(hjust = 0, face = "italic")) 
+
 ```
 In de bovenstaande plot zie je per gender in procenten weergegeven wat mensen hebben geantwoord op de vraag: 'Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?'
 Je ziet hier dat er gemiddeld meer vrouwen zijn die vinden dat mannen hier geen zeggenschap over hebben. Ook zijn er meer mannen die vinden dat de vader hier wel zeggenschap over moet hebben.
@@ -934,7 +939,8 @@ ggplot(data = lr_voorspelling_vader, aes(x = rank, y = lr_man_vader.fitted.value
   ylab("Waarschijnlijkheid (tussen 0 en 1)") +
   theme_minimal()
 ```
-Op figuur .... zijn de met de logistische regressie berekende waarden laten zien voor elk persoon dat de vragen ingevuld heeft samen met de keuze die dit persoon gemaakt heeft (Ja/Nee/Weet ik niet). De uitkomst van deze logistische regressie is dat 
+Op figuur 16 zijn de met de logistische regressie berekende waarden laten zien voor elk persoon dat de vragen ingevuld heeft samen met de keuze die dit persoon gemaakt heeft (Ja/Nee/Weet ik niet). De uitkomst van deze logistische regressie is dat leeftijd een significante factor is (p-waarde: 0.00153), geloof bijna met een p-waarde van: 0.05366.
+De visualisaties van de andere logistische regressies zijn weergeven in het volgende logboek: Logboek_Floris.
 ```{r}
 #(summary(lr_man_vrouw_echo)) # Geloof significant
 ```
@@ -979,7 +985,7 @@ Voeg aan het eind een woord-telling in:
 ```{r wordcount, message=FALSE}
 #install.packages(devtools)
 #devtools::install_github("benmarwick/wordcountaddin", type = "source", dependencies = TRUE)
-# wordcountaddin:::text_stats()
+wordcountaddin:::text_stats()
 ```
 
 # Referenties
