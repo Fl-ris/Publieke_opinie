@@ -8,7 +8,7 @@ author: |
 lang: nl # dit zorgt er voor dat "abstract" "samenvatting" gaat heten
 
 abstract: |
-    In dit verslag word geschteven over ons onderzoek die wij hebben gedaan voor het schoolvak de wetenschappelijke cycles. Hiervoor moesten wij een onderzoek doen naar een eigen gekozen onderwerp zodat we weten hoe de wetenschappelijke cycles werkt en hoe je een goed onderzoek doet. Wij hebben gekozen om onderzoek te doen met behulp van een enquête of de mening over etnische vraagstukken veranderd op een bepaalde leeftijd of dat verschillende mensen leeftijdsgroepen er anders naar kijken. 
+    In dit verslag word geschteven over ons onderzoek die wij hebben gedaan voor het schoolvak de wetenschappelijke cycles. Hiervoor moesten wij een onderzoek doen naar een eigen gekozen onderwerp zodat we weten hoe de wetenschappelijke cycles werkt en hoe je een goed onderzoek doet. Wij hebben gekozen om onderzoek te doen met behulp van een enquête of de mening over etnische vraagstukken veranderd op een bepaalde leeftijd of dat verschillende mensen leeftijdsgroepen er anders naar kijken. Zo zien we dat geslacht invoeld had op een aantal vraggen net als dat leeftijd had.
     
 
 bibliography: Het_abortus_beleid.bib # naam van je .bib file. Deze moet hetzelfde zijn als je Rmd bestandsnaam
