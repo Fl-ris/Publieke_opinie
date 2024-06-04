@@ -13,6 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Inleiding
 In dit onderzoek proberen wij te onderzoeken of er factoren zijn die invloed hebben op iemand zijn mening over abortus. We hebben een enquête met vragen gemaakt en hebben deze vervolgens rondgestuurd. De resultaten die uit deze enquête kwam hebben we met behulp van Rstudio geanalyseerd. Hierin hebben we onderzocht of factoren zoals; geslacht, onderwijsniveau, leeftijd, religieuze overtuiging en de provincie waarin iemand is opgegroeid invloed hebben op hoe mensen de vragen in de enquête hebben beantwoord. 
 
+## Diclaimer
+We dachten eerst dat we een gezamenlijk logboek moesten hebben. Hierdoor begint dit logboek pas op 26 april.
 
 ## Vrijdag 26 april
 Protocol geschreven en introductie voor vraag over bedenktijd:
@@ -129,7 +131,8 @@ Oefenen:
 Gemiddelde leeftijd enquêtes berekend en cat():
 ```{r oefening 1}
 (gemiddelde_leeftijd <- mean(data_renamed$Leeftijd))
-cat(sprintf("de gemiddelde leeftijd van de enquête is: %.2f ik ben iris %.3f/n", gemiddelde_leeftijd, gemiddelde_leeftijd))
+cat(sprintf("de gemiddelde leeftijd van de enquête is: %.2f ik ben iris %.3f/n", 
+            gemiddelde_leeftijd, gemiddelde_leeftijd))
 ```
 In bovenstaande code zie je dat je met mean() het gemiddeld berekent van alle getallen die in de kolom leeftijd staan.
 Verder kun je met 'cat(sprintf())'  een variabele in je tekst zetten. Door middel van '%.2f' (rond het getal af op 2 decimalen). Hiermee kan je makkelijker variabelen in je tekst plaatsen.
@@ -190,14 +193,16 @@ mannen die nee hebben ingevuld,
 vrouwen die nee hebben ingevuld,
 mannen die ik weet niet hebben ingevuld
 vrouwen die ik weet niet hebben ingevuld).
-hiermee kun ik volgens mij vervolgens een plot maken zoals ik eerst had bedacht. Dan neem je de y-as als gemiddelde aantal antwoorden in plaats van antwoorden.
+hiermee kun ik volgens mij vervolgens een plot maken zoals ik eerst had bedacht. Dan neem je de y-as als gemiddelde aantal antwoorden in plaats van antwoorden.\
+H1:Er zit een significant verschil in mannen en vrouwen hun mening over het zeggenschap van de vader.\
+H0:Er zit geen significant verschil in mannen en vrouwen hun mening over het zeggenschap van de vader.
 
 
 Maakt een tabel van de vraag(biologische vader zeggenschap) en de gender:
 ```{r tabel gender en zeggenschap}
 (tabel <- table(data_renamed$Gender, data_renamed$Biologische_vader_zeggenschap))
 ```
-maakt van de tabel hierboven procenten:
+Maakt van de tabel hierboven proportie:
 ```{r proptabel gender en zeggenschap}
 (prop_tabel <- prop.table(table(data_renamed$Gender, data_renamed$Biologische_vader_zeggenschap)))
 ```
@@ -205,7 +210,7 @@ De chisq-test is om te kijken of er een significant verschil zit tussen de manne
 ```{r test gender en zeggenschap}
 (chisq.test(tabel))
 ```
-De p-value die hieruit komt is '0.01798'. Dit is lager dan 0.05, dus is er een significant verschil aangetoond.
+De p-value die hieruit komt is '0.01798'. Dit is lager dan 0.05, dus is er een significant verschil aangetoond. Mannen en vrouwen denken dus anders over of de vader zeggenschap heeft in de keuze over een abortus.
 ```{r barplot gender en zeggenschap 1}
 library(ggplot2)
 
@@ -221,7 +226,7 @@ ggplot(as.data.frame(prop_tabel), aes(x = Var1, y=Freq, fill=Var2)) +
     scale_fill_brewer(palette = "Dark2")
 
 ```
-In de bovenstaande plot zie je weergegeven per gender hoeveel procent er heeft geantwoord wat heeft geantwoord. Je ziet hier dus ook dat er gemiddeld meer vrouwen zijn die nee hebben geantwoord.Ook zie je dat er meer mannen ja hebben geantwoord dan vrouwen. Dit kan komen doordat vrouwen zich waarschijnlijk eerder inleven in de vrouw en mannen eerder in de man. Hierdoor zie je dat mannen eerder zullen zeggen dat zij vinden dat mannen ook inspraak moeten hebben.  
+In de bovenstaande plot zie je weergegeven per gender hoeveel procent er wat heeft geantwoord. Je ziet hier dat er gemiddeld meer vrouwen zijn die nee hebben geantwoord. Ook zie je dat er meer mannen ja hebben geantwoord dan vrouwen. Dit kan komen doordat vrouwen zich waarschijnlijk eerder inleven in de vrouw en mannen eerder in de man. Hierdoor zie je dat mannen eerder zullen zeggen dat zij vinden dat de vader ook inspraak moeten hebben.  
 
 
 ## Dinsdag 21 mei
@@ -256,8 +261,12 @@ Vergelijken met geloof. Zal iemand sneller 'Nee' zeggen als deze gelooft?
 
 
 ## Woensdag 22 mei
+Uit eerder onderzoek blijkt dat geloof ervoor zorgt dat de partner de keuze voor abortus minder snel zal steunen. Komt dezelfde conclusie uit onze enquête?\
+H1: Geloof heeft invloed op de mening over abortus.\
+H0: Geloof heeft geen invloed op de mening over abortus.\
 Hoeveel procent van de mensen die gelooft antwoord bij vraag 6: 'Nee'
 uitzoeken:
+
 - hoeveel procent gelooft
 (selecteer op 'Niet gelovig' en trek dat vervolgens af van het geheel)
 - hoeveel procent antwoord nee
@@ -278,7 +287,8 @@ data_renamed %>%
     select(Religie, Abortus_keuze) %>%
     mutate(Gelovig=ifelse(Religie == "Niet gelovig", "Niet gelovig", "Wel gelovig")) %>%
     ggplot(aes(x=Gelovig, fill=Abortus_keuze)) +
-    geom_bar()
+    geom_bar() +
+    theme_minimal()
 ```
 Dit is een mooie plot, maar de proportie klopt nu nog niet.
 
@@ -290,7 +300,8 @@ x <- prop.table(table(tewmp$Gelovig, tewmp$Abortus_keuze))
 x
 as.data.frame(x)%>%
     ggplot(aes(x = Var1, y = Freq, fill = Var2)) +
-    geom_col(position = "dodge")
+    geom_col(position = "dodge") +
+    theme_minimal()
 ```
 In de bovenstaande plot zie je de verdeling weergegeven van mensen die wel geloven en niet geloven en wat deze hebben geantwoord op de vraag of mensen zelf mogen kiezen of ze een abortus willen.
 
@@ -309,7 +320,8 @@ as.data.frame(x)%>%
          x = "",
          fill = "Antwoord",
          y = "Aantal antwoorden") +
-    geom_col(position = "dodge")
+    geom_col(position = "dodge") +
+    theme_minimal()
 ```
 Je ziet in de plot hierboven dat alle mensen die hebben aangegeven niet een religieuze overtuiging te hebben bij vraag 6 ook hebben aangegeven dat iemand zelf moet kunnen kiezen of die een abortus wil. Bij de mensen die hebben ingevuld wel een religieuze overtuiging te hebben is er een deel die heeft aangegeven dat iemand niet zelf moet kunnen kiezen of die een abortus wil. Dus alle mensen die tegen vrije keuze over abortus zijn hebben een religieuze overtuiging. Dit is opvallend.
 
@@ -324,7 +336,7 @@ volgens het hindoeïsme mag een vrouw geen abortus plegen, tenzij het leven van 
 Volgens het boeddhisme is er niet een voor of tegen abortus. Sommigen boeddhisten zeggen dat je bij abortus iemands leven neemt en dat de medische ingrijp iemand buiten de kringloop van iemand zijn leven plaatsen. Maar er zijn ook boeddhisten die abortus goed keuren onder bepaalde voorwaarden. Zolang de betrokkenen goed nadenken over de gevolgen van hun keuze.
 
 ## Vrijdag 24 mei
-Op aanraden van Michiel ga ik proberen de 'Barplot verdeling gender over antwoorden' aanpassen. Nu zijn man en vrouw samen honderd procent, maar het is waarschijnlijk beter af te lezen als 'man' honderd procent is en 'vrouw' ook honderd procent. 
+Op aanraden van Michiel ga ik proberen de 'Barplot verdeling gender over antwoorden' aan te passen. Nu zijn man en vrouw samen honderd procent, maar het is waarschijnlijk beter af te lezen als 'man' honderd procent is en 'vrouw' ook honderd procent. 
 
 Data frame maken van de prop_tabel:
 ```{r verbeteren proptabel gender en abortus 1}
@@ -596,7 +608,7 @@ En dan nu de test:
 ```{r test geloof en abortus (juiste)}
 chisq.test(nu_echt_tabel_geloof)
 ```
-De p-waarde is '0.0002855'. Dit ligt boven de 0.05, dus is er aangetoond dat er een significant verschil zit in mensen hun mening over abortus tussen mensen die wel en niet een religieuze overtuiging hebben.
+De p-waarde is '0.0002855'. Dit ligt onder de 0.05, dus is er aangetoond dat er een significant verschil zit in mensen hun mening over abortus tussen mensen die wel en niet een religieuze overtuiging hebben.
 
 
 ## Zondag 2 juni
@@ -637,7 +649,8 @@ as.data.frame(x)%>%
          y = "Aantal antwoorden") +
     geom_col(position = "dodge") +
     # verplaatst de tekst naar links
-    theme(plot.caption = element_text(hjust = 0, face = "italic")) 
+    theme(plot.caption = element_text(hjust = 0, face = "italic"))  +
+    theme_minimal()
 ```
 In de bovenstaande plot zie je de verdeling weergegeven van mensen die wel geloven en niet geloven en wat deze hebben geantwoord op de vraag of mensen zelf mogen kiezen of ze een abortus willen.
 
@@ -680,3 +693,6 @@ Verder is van de Christelijke respondenten 73% voor de eigen keuze over abortus 
 ```
 Oude dataset voor nieuwste versie vervangen en hele logboek hierop aangepast.
 Ook alle code chunks namen gegeven.
+
+## Dinsdag 4 juni
+Resultaten aangevuld met wat ik zondag geschreven heb. Discussie geschreven. Logboek nagelezen.
