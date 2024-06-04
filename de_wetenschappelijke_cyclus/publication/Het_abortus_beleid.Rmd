@@ -8,7 +8,7 @@ author: |
 lang: nl # dit zorgt er voor dat "abstract" "samenvatting" gaat heten
 
 abstract: |
-    In dit verslag word geschteven over ons onderzoek die wij hebben gedaan voor het schoolvak de wetenschappelijke cycles. Hiervoor moesten wij een onderzoek doen naar een eigen gekozen onderwerp zodat we weten hoe de wetenschappelijke cycles werkt en hoe je een goed onderzoek doet. Wij hebben gekozen om onderzoek te doen met behulp van een enquête of de mening over etnische vraagstukken veranderd op een bepaalde leeftijd of dat verschillende mensen leeftijdsgroepen er anders naar kijken. Zo zien we dat geslacht invoeld had op een aantal vraggen net als dat leeftijd had.
+    In dit verslag kunt u lezen over ons onderzoek die wij hebben gedaan voor het schoolvak de wetenschappelijke cycles. Hiervoor moesten wij een onderzoek doen naar een eigen gekozen onderwerp zodat we weten hoe de wetenschappelijke cycles werkt en hoe je een goed onderzoek doet. Wij hebben gekozen om onderzoek te doen met behulp van een enquête of de mening over etnische vraagstukken veranderd op een bepaalde leeftijd of dat verschillende mensen leeftijdsgroepen er anders naar kijken. 
     
 
 bibliography: Het_abortus_beleid.bib # naam van je .bib file. Deze moet hetzelfde zijn als je Rmd bestandsnaam
@@ -42,10 +42,12 @@ library(dplyr)
 library(rgexf)
 library(ggrepel)
 library(ggridges)
-library(patchwork)
+#library(patchwork)
 library(pwr)
+library(gridExtra)
 
 #Laad dataset:
+getwd()
 abortus <- read.csv("../analysis/abortus_dataset.csv", na.strings = "NA")
 
 
@@ -187,9 +189,6 @@ Deze data wordt vervolgens geanalyseerd met onder andere een logistische regress
 
 
 
-(De introductie moet tussen de 400-800 woorden bevatten.)
-
-
 # Materialen en Methoden
 
 Voor de enquête zijn er een aantal vragen opgesteld die een beeld moeten geven van de meningen van de mensen die hem invullen. 
@@ -217,33 +216,46 @@ De enquête bestaat uit de volgende vragen: \
 9. Moet het wettelijk verplicht worden voor vrouwen die een abortus willen om een echo van de 10. foetus te zien voordat een abortus toegestaan is?\
 11. Vindt u dat de wettelijke bedenktijd moet terugkomen?\
 12. Vindt u dat adoptie een alternatief is voor abortus?\
-13. Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?
+13. Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus? \
 
 **Schaal zeer oneens tot zeer eens vragen:** \
-1. Hoe goed kunt u zichzelf vinden in de volgende stellingen?
+1. Hoe goed kunt u zichzelf vinden in de volgende stellingen:?
 
-2. Het leven van de vrouw in gevaar is
+2. Het leven van de vrouw in gevaar is. \
 
-3. Het kind met een geestelijke handicap geboren kan worden
+3. Het kind met een geestelijke handicap geboren kan worden.
 
-4. Het kind met een levensbedreigende ziekte geboren kan worden
+4. Het kind met een levensbedreigende ziekte geboren kan worden.
 
-5. De zwangerschap veroorzaakt is door verkrachting
+5. De zwangerschap veroorzaakt is door verkrachting.
 
-6. De vrouw het kind niet wil houden om niet gespecificeerde redenen
+6. De vrouw het kind niet wil houden om niet gespecificeerde redenen.
 
-7. De vrouw niet in staat is voor het kind te zorgen vanwege financiële beperkingen
+7. De vrouw niet in staat is voor het kind te zorgen vanwege financiële beperkingen.
 
 
 De vraag: Vindt u dat de wettelijke bedenktijd moet terugkomen? werd geïmplementeerd met de volgende informatie: 
 Sinds 1 januari 2023 is de verplichte minimale bedenktijd van 5 dagen vervallen. Voorheen moesten er minimaal 5 dagen zitten tussen het gesprek met een arts en de abortus zelf. Op dit moment geldt een flexibele bedenktijd die wordt bepaalt door een gesprek tussen de vrouw die abortus wil en een arts. De arts bepaalt nu op basis van dit gesprek hoelang de bedenktijd moet zijn voor de vrouw. Dit kan 0 dagen zijn, maar ook 10.
 
-En de vraag: Vindt u dat de ouders zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen? werd gesupplementeerd met de volgende informatie:
+En de vraag: Vindt u dat de ouders zeggenschap moeten hebben over of hun minderjarige kind wel of niet voor abortus mag kiezen? werd aangevuld met de volgende informatie:
 In de huidige situatie moet er toestemming zijn van de ouders, er zijn wel uitzonderingen. Nu mag je onder de 15 abortus te plegen met toestemming van de ouders.   
 
 Deze vragen zijn neutraal geformuleerd zodat de invuller niet onbewust geneigd is om voor de optie te kiezen waar de vraagstelling neigt te gaan. 
 Microsoft Forms is gebruikt om een enquête te maken die deze bovenstaande vragen bevat. 
 
+Voor de dataverwerking, zoals beschreven is in de drie logboeken: Logboek_Iris, Logboek_Jasper en Logboek_Floris.
+**Hiervoor zijn de volgende software versies gebruikt:**
+R version 4.4.0 (2024-04-24) \
+ggraph: 2.2.1 \
+tidyverse: 2.0.0 \
+viridis: 0.6.5 \
+ggplot2: 3.5.1 \ 
+dplyr: 1.1.4 \
+rgexf: 0.16.2 \
+ggrepel: 0.9.5 \
+ggridges: 0.5.6 \
+pwr: 1.3.0 \
+gridExtra: 2.3 \
 
 **Het verspreiden van de enquête:**\
 De weblink die verkregen was van Microsoft Forms, is middels digitale communicatie programma's zoals: E-mail, whatsapp, discord etc. verspreid. 
@@ -321,7 +333,7 @@ Figuur ... weergeeft dit verschil tussen de leeftijden van de mannen, vrouwen en
 
 
 
-```{r  warning=FALSE, fig.cap='Verdelinggg van de afkomst van de mensen die de enquete ingevuld hebben.', message=FALSE,}
+```{r afkomst, warning=FALSE, fig.cap='Verdeling van de afkomst van de mensen die de enquete ingevuld hebben.', message=FALSE,}
 
 # Maak tabel met aantal mensen per provincie.
 x <- table(abortus$afkomst)
@@ -362,8 +374,8 @@ Op figuur 2 is weergeven dat de grootste fractie mensen die de enquête ingevuld
 
 
 
-```{r, message=FALSE, warning=FALSE}
-# Deze wel gebruiken?????!!?!?!?
+```{r, message=FALSE, warning=FALSE, fig.cap='Afkomst tegen leeftijd geplot (onder) en geloof tegen leeftijd (boven) '}
+
 
 
 # Grafiek met de verschillende geloven en de leeftijdverdeling die er bij hoort. 
@@ -383,15 +395,11 @@ p3 <- ggplot(df, aes(y=afkomst,
     ylab("Op gegroeid in de provincie:") +
     theme_minimal()
 
-p2
-p3
 
-
-#ggarrange(afkomst_leeftijd, geloof_leeftijd)
-
+grid.arrange(p2, p3)
 ```
 
-Deze grafieken zijn nog niet klaar.... later nog aanpassen.
+
 
 
 ### Resultaten van de enquetevragen: ###
@@ -890,7 +898,8 @@ Om met een effect sterkte van 0.5 het verschil tussen de twee geslachten aan te 
 En met de 109 mensen die we nu hebben is de effect sterkte: `r round(power1$d, digits = 2)`
 
 
-## **nog verbeteren...:**
+## **Log-odds logistische regressie:**
+
 ```{r odds ratio}
 # Zodat het niet in wetenschappelijke notatie weergeven wordt als het onder de 999 is. 
 options(scipen = 999)
