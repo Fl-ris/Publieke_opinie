@@ -27,7 +27,7 @@ output:
 ```{r setup, message=FALSE, warning=FALSE, include=FALSE}
 knitr::opts_chunk$set(out.width = '100%', dpi=300) # configuratie voor figuur grootte en resolutie
 knitr::opts_chunk$set(echo = FALSE) # Deze regel zorgt ervoor GEEN ENKELE chunk getoond wordt! 
-knitr::opts_chunk$set(digits = 2)
+knitr::opts_chunk$set(digits = 2) # alles afronden op twee decimalen
 
 ```
 
@@ -37,7 +37,6 @@ library(ggplot2)
 library(ggraph)
 library(tidyverse)
 library(viridis)
-library(ggplot2)
 library(dplyr) 
 library(rgexf)
 library(ggrepel)
@@ -45,7 +44,7 @@ library(ggridges)
 #library(patchwork)
 library(pwr)
 library(gridExtra)
-
+library(webr)
 #Laad dataset:
 abortus <- read.csv("../analysis/abortus_dataset.csv", na.strings = "NA")
 
@@ -242,7 +241,7 @@ R version 4.4.0 (2024-04-24) \
 ggraph: 2.2.1 \
 tidyverse: 2.0.0 \
 viridis: 0.6.5 \
-ggplot2: 3.5.1 \ 
+ggplot2: 3.5.1 \
 dplyr: 1.1.4 \
 rgexf: 0.16.2 \
 ggrepel: 0.9.5 \
@@ -251,7 +250,7 @@ pwr: 1.3.0 \
 gridExtra: 2.3 \
 
 **Het verspreiden van de enquête:** \
-De weblink die verkregen was van Microsoft Forms, is middels digitale communicatie zoals: E-mail, whatsapp, discord etc. verspreid. 
+De weblink die verkregen was van Microsoft Forms, is middels digitale communicatiemiddelen zoals: E-mail, whatsapp, discord etc. verspreid. 
 
 De makers van deze enquête hebben hem naar klasgenoten, familieleden en vrienden gestuurd met de instructie om hem door te sturen naar andere Familie, kennissen en vrienden. Op deze manier zijn er in totaal 114 respondenten geweest die hem ingevuld hebben.
 
@@ -296,7 +295,7 @@ De enquête is afgenomen door `r count(df %>% select(geslacht) %>% filter(geslac
 Van de leeftijd van de mannen is de mediaan: `r summary(man_leeftijd)[3]`, het gemiddelde `r round(summary(man_leeftijd)[4], digits = 1)` en de standaard deviatie: `r round(sd(man_leeftijd), digits = 1)`.
 Van de leeftijd van de vrouwen is de mediaan: `r summary(vrouw_leeftijd)[3]`, het gemiddelde `r round(summary(vrouw_leeftijd)[4], digits = 1)` en de standaard deviatie: `r round(sd(vrouw_leeftijd), digits = 1)`.
 Er waren niet genoeg metingen (`r (count(df %>% select(geslacht) %>% filter(geslacht == "Wil ik liever niet melden")))` meting).
-
+Deze gegevens worden weergeven op figuur 2.
 ```{r warning=FALSE, fig.cap='Verdeling van de leeftijd van de mensen die de enquete ingevuld hebben', message=FALSE, warning=FALSE,out.width='70%', fig.align='center'}
 # verdeling van de leeftijden:
 p1 <- ggplot(df, aes(x= Wat.is.uw.leeftijd.)) +
@@ -309,7 +308,7 @@ p1 <- ggplot(df, aes(x= Wat.is.uw.leeftijd.)) +
 p1
 ```
 Zoals op figuur 1 afgebeeld is zijn er twee pieken, een rondt de 20 en een rondt de 50 jaar oud. Met behulp van de Shapiro-Wilk test is bevestigd dat deze data niet normaal verdeeld is. Waarschijnlijkheid dat de data niet normaal verdeeld is volgens de Shapiro-Wilk test: p-waarde: 5.044 × 10-6)
-```{r warning=FALSE, fig.cap='Leeftijd van de mensen die de enquete ingevuld hebben geplot tegen geslacht', message=FALSE, warning=FALSE }
+```{r warning=FALSE, fig.cap='Leeftijd van de mensen die de enquete ingevuld hebben geplot tegen geslacht', message=FALSE,out.width='70%', fig.align='center'}
 
 ggplot(df, aes(x= Wat.is.uw.leeftijd., y = geslacht)) +
   geom_boxplot(fill = "blue", alpha = 0.3, varwidth = T) +
@@ -326,7 +325,7 @@ Figuur 2 weergeeft dit verschil tussen de leeftijden van de mannen, vrouwen en m
 
 
 
-```{r afkomst, warning=FALSE, fig.cap='Verdeling van de afkomst van de mensen die de enquete ingevuld hebben.', message=FALSE,}
+```{r afkomst, warning=FALSE, fig.cap='Verdeling van de afkomst van de mensen die de enquete ingevuld hebben.', message=FALSE,out.width='70%', fig.align='center'}
 
 # Maak tabel met aantal mensen per provincie.
 x <- table(abortus$afkomst)
@@ -612,7 +611,7 @@ chi_geslacht <- ggplot(data = df_chi_geslacht, mapping = aes(x = name , y = valu
 ```
 Op figuur 3 zijn de p-waarden van enkele vragen vergeleken. Wanneer de waarde onder de rode lijn zit kan er met 95% waarschijnlijkheid gezegd worden dat, in dit geval, geslacht een significant bijdragende factor is. Bij de vraag: "Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?" was de p-waarde: 0.018. Voor de overige vragen speelt geslacht geen significante rol (p-waarde > 0.05).
 
-```{r $chi-sq_2$, warning=FALSE, message=F, fig.cap='P-waarde score voor de enquete vragen en het effect dat geslacht (boven) en leeftijd (onder) hebben op het beantwoorden van de vragen.'}
+```{r ChiSq, warning=FALSE, message=FALSE, fig.cap='P-waarde score voor de enquete vragen en het effect dat geslacht (boven) en leeftijd (onder) hebben op het beantwoorden van de vragen.'}
 #chi square testen maar dan op de twee leeftijd verschillen 
 abortus_aangpast <- abortus %>%
     mutate(leeftijd_boven_onder_24 = ifelse(Wat.is.uw.leeftijd. > 25, "boven", "onder"))
@@ -680,7 +679,7 @@ chi_leeftijd <- ggplot(data = df_chi_leeftijd, mapping = aes(x = name , y = valu
 grid.arrange(chi_geslacht, chi_leeftijd)
 
 ```
-In tegenstelling tot geslacht heeft leeftijd geen significante invloed op de beslissing of de biologische vader zeggenschap zou moeten hebben over de abortus maar is het zeggenschap van de ouders wel significant. Voor deze test zijn de leeftijden van alle respondenten verdeelt in twee groepen, iedereen onder 25 en iedereen er boven. Hier is voor gekozen omdat er twee grote pieken zijn in de leeftijdsverdeling, deze twee categorien zorgen er voor dat deze pieken elk in een andere categorie vallen, daarnaast is het menselijk brein nog niet uitontwikkeld onder de 25 jaar oud, dit kan ook een factor zijn bij het maken van beslissingen. De p-waarde van de Chi-square test van de vraag: Moeten de ouders zeggenschap hebben over de abortus van hun kind.
+In tegenstelling tot geslacht heeft leeftijd geen significante invloed op de beslissing of de biologische vader zeggenschap zou moeten hebben over de abortus maar is het zeggenschap van de ouders wel significant. Voor deze test zijn de leeftijden van alle respondenten verdeelt in twee groepen, iedereen onder 25 en iedereen er boven. Hier is voor gekozen omdat er twee grote pieken zijn in de leeftijdsverdeling, deze twee categorieën zorgen er voor dat deze pieken elk in een andere categorie vallen, daarnaast is het menselijk brein nog niet uitontwikkeld onder de 25 jaar oud, dit kan ook een factor zijn bij het maken van beslissingen. De p-waarde van de Chi-square test van de vraag: Moeten de ouders zeggenschap hebben over de abortus van hun kind.
 
 
 ```{r data renamed}
@@ -717,18 +716,15 @@ new_proptabel_dataframe <- data_renamed %>%
     mutate(perc = count/sum(count) * 100)
 ```
 
-```{r $barplot_gender_en_zeggenschap$, fig.cap='Verdeling van antwoorden over gender op de vraag of de biologische vader zeggenschap moet hebben over de beslissing voor een abortus.'}
+```{r $barplot_gender_en_zeggenschap$, fig.cap='Barplot met de verdeling van antwoorden over gender op de vraag of de biologische vader zeggenschap moet hebben over de beslissing voor een abortus.'}
     
-library(ggplot2)
 
 ggplot(new_proptabel_dataframe, aes(x =Gender, y=perc, fill=Biologische_vader_zeggenschap)) +
-    labs(caption = "Figuur x: Barplot met de verdeling van antwoorden over gender 
-    op de vraag of de biologische vader zeggenschap moet hebben 
-    over de beslissing voor een abortus.",
+    labs(
          x = "Gender",
          fill = "Antwoord",
          y = "percentage") +
-    geom_bar(stat = "identity", position = "dodge", color="black")+
+    geom_bar(stat = "identity", position = "dodge", color="black") +
     theme_minimal()# +
     #scale_fill_brewer(palette = "Dark2")# +
     # verplaatst de tekst naar links
@@ -741,20 +737,20 @@ Uit een Chi-squared test blijkt dat er een significant verschil zit tussen hoe m
 
 
 
-```{r barplot_geloof_en_abortus}
+```{r barplot_geloof_en_abortus, warning=FALSE, message=FALSE, fig.cap='Het verband tussen geloof en de keuze of abortus toegestaan mag zijn.'}
 tijdelijke_data <- data_renamed %>%
     select(Religie, Abortus_keuze) %>%
     mutate(Gelovig=ifelse(Religie == "Niet gelovig", "Niet gelovig", "Wel gelovig"))
 x <- prop.table(table(tijdelijke_data$Gelovig, tijdelijke_data$Abortus_keuze))
 as.data.frame(x)%>%
     ggplot(aes(x = Var1, y = Freq, fill = Var2)) +
-    labs(caption = "Figuur x: Corrolatie religie en mening abortus",
+    labs(
          x = "",
          fill = "Antwoord",
-         y = "Aantal antwoorden") +
+         y = "Proportie") +
     geom_col(position = "dodge") +
     # verplaatst de tekst naar links
-    theme(plot.caption = element_text(hjust = 0, face = "italic")) +
+    #theme(plot.caption = element_text(hjust = 0, face = "italic")) +
     theme_minimal()
 ```
 In de bovenstaande plot zie je de verdeling weergegeven van mensen die wel geloven en niet geloven en wat deze hebben geantwoord op de vraag of mensen zelf mogen kiezen of ze een abortus willen.
@@ -774,9 +770,7 @@ data_donut <- as.data.frame(tabel_geloof_vraag6) %>%
 ```
 
 ```{r donut, warning=FALSE, message=FALSE, fig.cap='Geloof als factor op de mening of abortus toegestaan zou moeten worden. Buitenste ring geeft het antwoord op deze vraag weer en de binnneste ring laat het de religieuze overtuiging zien van de respondenten.'}
-library(ggplot2)
-library(webr)
-library(dplyr)
+
 
 PieDonut(data_donut, aes(religieuze_overtuiging, antwoord_vraag, count=Freq),
         # percentage buitenste cirkel (mening abortus)
@@ -799,7 +793,7 @@ Verder is van de Christelijke respondenten 73% voor de eigen keuze over abortus 
 
 
 # Logistische regressies:
-Voor de enquêtevraag zijn een aantal logistische regressies uitgevoerd die leeftijd, geslacht, opleidingsniveau en geloof als "predictor" of onafhankelijke variabelen hebben. 
+Voor de enquêtevragen zijn een aantal logistische regressies uitgevoerd die leeftijd, geslacht, opleidingsniveau en geloof als "predictor" of onafhankelijke variabelen hebben. 
 
 ```{r logistische regressie, warning=FALSE, fig.cap='test', message=FALSE, results = "hide"}
 df <- df %>% 
@@ -885,40 +879,10 @@ power2 <- pwr.t.test(d = 0.5,sig.level = 0.05, power = 0.8, alternative = "two.s
 
 ```
 Om met een effect sterkte van 0.5 het verschil tussen de twee geslachten aan te tonen zijn er `r round(power2$n, digits = 0)` mensen nodig (van elke groep).
-En met de 51 mensen die we nu hebben is de effect sterkte: `r round(power1$d, digits = 2)`. De groep met het minst aantal "deelnemers", in dit geval de vrouwen moet gebruikt worden. Van deze significantie moet uitgegaan worden voor de analyzes. 
+En met de 51 mensen die we nu hebben is de effect sterkte: `r round(power1$d, digits = 2)`. De groep met het minst aantal "deelnemers", in dit geval de vrouwen moet gebruikt worden. Van deze significantie moet uitgegaan worden voor de analyses. 
 
 
-## **Log-odds logistische regressie:**
 
-
-```{r odds ratio, warning=FALSE,results = "hide", message=FALSE}
-# Zodat het niet in wetenschappelijke notatie weergeven wordt als het onder de 999 is. 
-options(scipen = 999)
-
-# Laat de coëfficiënten zien:
-coefficienten_van_lr_man_vrouw_vader <- coef(lr_man_vrouw_vader)
-
-# Verander de coëfficiënten naar procentuele verandering:
-odds_ratio_lr_man_vrouw_vader_procenten  <- ( 1 - (exp(coefficienten_van_lr_man_vrouw_vader))) * 100
-odds_ratio_lr_man_vrouw_vader <- exp(coefficienten_van_lr_man_vrouw_vader)
-
-odds_ratio_lr_man_vrouw_vader_df <- data.frame(odds_ratio_lr_man_vrouw_vader)
-#odds_ratio_lr_man_vrouw_vader <- data.frame(odds_ratio_lr_man_vrouw_vader) %>% row.names(
- # aaa = `(Intercept)`
-#  )
-#rownames <- rownames(odds_ratio_lr_man_vrouw_v`ader) 
-
-#new_rownames <- c("Intercept", "Leeftijd", "Geslacht", 4:10)
-#rownames(odds_ratio_lr_man_vrouw_vader) <- new_rownames
-
-
-#odds_ratio_lr_man_eigen_keuze_abortus
-
-#odds_ratio_lr_man_vrouw_vader_df
-```
-
-De log-odds van de logistische regressie over de vraag: "Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?"
-Zijn als volgt: 
 ## Visualisatie van de logistische regressie: ##
 
 ```{r Visualizatie Lr vraag: Moet de vader zeggenschap hebben, warning=FALSE,results = "hide", fig.cap='Logistische regressie visualisatie voor de vraag: Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?'}
@@ -939,7 +903,9 @@ ggplot(data = lr_voorspelling_vader, aes(x = rank, y = lr_man_vader.fitted.value
   ylab("Waarschijnlijkheid (tussen 0 en 1)") +
   theme_minimal()
 ```
-Op figuur 16 zijn de met de logistische regressie berekende waarden laten zien voor elk persoon dat de vragen ingevuld heeft samen met de keuze die dit persoon gemaakt heeft (Ja/Nee/Weet ik niet). De uitkomst van deze logistische regressie is dat leeftijd een significante factor is (p-waarde: 0.00153), geloof bijna met een p-waarde van: 0.05366.
+Op figuur 16 zijn de met de logistische regressie berekende waarden laten zien voor elk persoon dat de vragen ingevuld heeft samen met de keuze die dit persoon gemaakt heeft (Ja/Nee/Weet ik niet). De uitkomst van deze logistische regressie is dat leeftijd een significante factor is (p-waarde: 0.00153), geloof bijna met een p-waarde van: 0.05366. \
+
+De trend in leeftijd is ook zichtbaar op de bovenstaande visualisatie, de leeftijd van de mensen wordt weergeven met punt grootte. De "index" betekend dat de uitkomsten van de LR gesorteerd zijn van klein naar groot, daarna wordt met behulp van punt kleur weergeven wat de respondent daadwerkelijk gekozen heeft.
 De visualisaties van de andere logistische regressies zijn weergeven in het volgende logboek: Logboek_Floris.
 ```{r}
 #(summary(lr_man_vrouw_echo)) # Geloof significant
