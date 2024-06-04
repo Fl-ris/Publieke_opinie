@@ -195,41 +195,35 @@ Ook zijn er persoonlijke vragen die gebruikt worden om keuzes te correleren met 
 
 Deze vragen zijn neutraal geformuleerd zodat de invuller niet onbewust geneigd is om voor de optie te kiezen waar de vraagstelling neigt te gaan. 
 De vragen kunnen verdeeld worden in drie categorieën: Persoonlijke informatie, multiple-choice en op een een schaal van zeer oneens tot zeer eens.
- 
+
 De enquête bestaat uit de volgende vragen: \
 
 **Persoonlijke vragen:** \
-1. Wat is uw geslacht?\
-2. Wat is het hoogste onderwijsniveau dat u heeft afgerond?\
-3. Wat is uw leeftijd?\
-4. Wat is uw religieuze overtuiging?\
+1. Wat is uw geslacht? \
+2. Wat is het hoogste onderwijsniveau dat u heeft afgerond? \
+3. Wat is uw leeftijd? \
+4. Wat is uw religieuze overtuiging? \
 5. In welke provincie heeft u het grootste deel van uw jeugd doorgebracht? \
 
 **Multiple choice vragen:** \
 1. Vindt u dat iemand zelf moet kunnen kiezen of die een abortus wil?\
-2. Indien u bij de vorige vraag 'Nee' heeft ingevuld; \
-3. Vindt u dat er uitzonderingen zijn waarin iemand dit wel zelf moet kunnen kiezen?\
+2. Indien u bij de vorige vraag 'Nee' heeft ingevuld: \
+3. Vindt u dat er uitzonderingen zijn waarin iemand dit wel zelf moet kunnen kiezen? \
 4. Vindt u dat er voor abortus gekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen?\
 5. Vindt u dat iemand een abortus mag als de zwangerschap een gevolg is van verkrachting?\
 6. Vindt u dat een minderjarig kind de keuze moet hebben om voor een abortus te kiezen? \
-9. Moet het wettelijk verplicht worden voor vrouwen die een abortus willen om een echo van de 10. foetus te zien voordat een abortus toegestaan is?\
-11. Vindt u dat de wettelijke bedenktijd moet terugkomen?\
-12. Vindt u dat adoptie een alternatief is voor abortus?\
-13. Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus? \
+7. Moet het wettelijk verplicht worden voor vrouwen die een abortus willen om een echo van de foetus te zien voordat een abortus toegestaan is?\
+8. Vindt u dat de wettelijke bedenktijd moet terugkomen? \
+9. Vindt u dat adoptie een alternatief is voor abortus? \
+10. Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus? \
 
 **Schaal zeer oneens tot zeer eens vragen:** \
 1. Hoe goed kunt u zichzelf vinden in de volgende stellingen:?
-
 2. Het leven van de vrouw in gevaar is. \
-
 3. Het kind met een geestelijke handicap geboren kan worden.
-
 4. Het kind met een levensbedreigende ziekte geboren kan worden.
-
 5. De zwangerschap veroorzaakt is door verkrachting.
-
 6. De vrouw het kind niet wil houden om niet gespecificeerde redenen.
-
 7. De vrouw niet in staat is voor het kind te zorgen vanwege financiële beperkingen.
 
 
@@ -256,7 +250,7 @@ ggridges: 0.5.6 \
 pwr: 1.3.0 \
 gridExtra: 2.3 \
 
-**Het verspreiden van de enquête:**\
+**Het verspreiden van de enquête:** \
 De weblink die verkregen was van Microsoft Forms, is middels digitale communicatie zoals: E-mail, whatsapp, discord etc. verspreid. 
 
 De makers van deze enquête hebben hem naar klasgenoten, familieleden en vrienden gestuurd met de instructie om hem door te sturen naar andere Familie, kennissen en vrienden. Op deze manier zijn er in totaal 114 respondenten geweest die hem ingevuld hebben.
@@ -264,7 +258,7 @@ De makers van deze enquête hebben hem naar klasgenoten, familieleden en vriende
 Voor alle vragen van de enquête zijn hypotheses opgesteld om de onderzoeksvraag te beantwoorden, deze onderzoeksvraag is: Is er een verschil tussen de ethiek gerelateerde meningen van mensen van andere leeftijden, geslachten, opleidingsniveaus en geloven?
 De onderstaande H0 en H1 hypotheses zijn er voor elke onafhankelijke variabele, hier zijn ze voor geslacht ingevuld maar deze zelfde vraagstelling is ook voor: leeftijd, opleidingsniveau en geloof gebruikt. 
 
-**Vraag:** Vindt u dat er voor abortus gekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen? <br>
+**Vraag:** Vindt u dat er voor abortus gekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen? \
 H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of een vrouw een abortus mag hebben wanneer haar leven in gevaar is. \
 H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of een vrouw een abortus mag hebben wanneer haar leven in gevaar is. \
 
@@ -573,7 +567,7 @@ abortus_zeggenschap_ouders_01 <- table(df$geslacht, df$ouders)
 # Chi-square test:
 chi_abortus_zeggenschap_ouders <- chisq.test(abortus_zeggenschap_ouders_01, correct = T)
 #df_chi_geslacht_test <- data.frame(c(chi_ja_abortus[3],chi_abortus_als_gevolg_van[3]))
-abortus_echo_01 <- table(df$geslacht, df$minderjarig)
+abortus_echo_01 <- table(df$geslacht, df$echo)
 # Chi-square test:
 chi_abortus_echo <- chisq.test(abortus_echo_01, correct = T)
 abortus_bedenktijd_01 <- table(df$geslacht, df$bedenktijd)
@@ -674,26 +668,20 @@ df_chi_leeftijd %>%
   pivot_longer(cols = c(1:8)) -> df_chi_leeftijd
 
 ggplot(data = df_chi_leeftijd, mapping = aes(x = name , y = value)) +
-  geom_bar(stat = "identity",, fill = "blue", alpha = 0.5) +
+  geom_bar(stat = "identity",, fill = "blue", alpha = 0.5, color = "black") +
   geom_hline(yintercept=0.05, linetype="dashed", color = "red") +
   geom_label_repel(position = position_nudge_repel(y = -0.07),aes(label = round(value,digits = 3)) ) +
   ylab("P-waarde Chi-square test:") +
   xlab(" ") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.6))
-```
 
-```{r data inlezen}
-
-# file <- "dataset.csv"
-# data <- readr::read_csv(file)
-#data <- read.csv(file)
-data <- read.csv('../analysis/abortus_dataset.csv')
-# head(data)
 ```
+In tegenstelling tot geslacht heeft leeftijd geen significante invloed op de beslissing of de biologische vader zeggenschap zou moeten hebben over de abortus maar is het zeggenschap van de ouders wel significant. Voor deze test zijn de leeftijden van alle respondenten verdeelt in twee groepen, iedereen onder 25 en iedereen er boven. Hier is voor gekozen omdat er twee grote pieken zijn in de leeftijdsverdeling, deze twee categorien zorgen er voor dat deze pieken elk in een andere categorie vallen, daarnaast is het menselijk brein nog niet uitontwikkeld onder de 25 jaar oud, dit kan ook een factor zijn bij het maken van beslissingen. De p-waarde van de Chi-square test van de vraag: Moeten de ouders zeggenschap hebben over de abortus van hun kind.
+
 
 ```{r data renamed}
-library(dplyr)
+data <- read.csv('../analysis/abortus_dataset.csv')
 data_renamed <- data %>%
     rename(
         Eindtijd = Tijd.van.voltooien,
