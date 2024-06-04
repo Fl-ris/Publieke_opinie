@@ -176,11 +176,11 @@ vrouw_leeftijd <- (df_test[df_test$geslacht == 'Vrouw',]$Wat.is.uw.leeftijd.)
 
 Vragen over het abortus beleid zijn polariserende ethische kwesties. In ons onderzoek trachten we correlaties te vinden tussen verschillende variabelen zoals: leeftijd, geslacht, opleidingsniveau, geloof en de ideologische verschillen in mening tussen deze mensen.  
 
-In de literatuur was al bekend dat jongere mensen vaak geneigd zijn voorstanders te zijn van de keuzevrijheid om voor een abortus te kiezen en oudere mensen hier vaker tegen zijn. (bron: https://www.emerald.com/insight/content/doi/10.1108/01443339810788533/full/html), ook is er een positieve correlatie gevonden tussen hoogopgeleiden en de mening dat abortus een eigen keuze moet zijn. (bron: https://www.emerald.com/insight/content/doi/10.1108/01443339810788533/full/html)
+In de literatuur was al bekend dat jongere mensen vaak geneigd zijn voorstanders te zijn van de keuzevrijheid om voor een abortus te kiezen en oudere mensen hier vaker tegen zijn. (Effect_of_age_gender_and_race_on_abortion_attitude) Ook is er een positieve correlatie gevonden tussen hoogopgeleiden en de mening dat abortus een eigen keuze moet zijn. (Effect_of_age_gender_and_race_on_abortion_attitude)
 
-In tegenstelling tot het verschil in mening tussen mannen en vrouwen over andere politieke vraagstukken (bron: https://doi.org/10.1093/sp/jxs005)
-Is er, mits er rekening wordt gehouden met verschillen in religieuze overtuiging, het geslacht geen significant bijdragende factor is voor de beslissing om  voor- of tegenstander te zijn van abortus (bron:  https://doi.org/10.1111/pops.12803)
-Ondanks dat deze kwestie vooral betrekking heeft op vrouwen is er nog meer bestaand onderzoek beschikbaar dat verder bevestigd dat er weinig verschil is tussen de meningen van de verschillende geslachten. (bron: https://link.springer.com/article/10.1023/a:1021427014047)
+In tegenstelling tot het verschil in mening tussen mannen en vrouwen over andere politieke vraagstukken (bron: The_Gender_Gap_in_Political_Preferences:_An_Empirical_Test_of_a_Political_Economy_Explanation)
+Is er, mits er rekening wordt gehouden met verschillen in religieuze overtuiging, het geslacht geen significant bijdragende factor is voor de beslissing om  voor- of tegenstander te zijn van abortus (bron: The_Gender_Gap_in_Political_Preferences:_An_Empirical_Test_of_a_Political_Economy_Explanation)
+Ondanks dat deze kwestie vooral betrekking heeft op vrouwen is er nog meer bestaand onderzoek beschikbaar dat verder bevestigd dat er weinig verschil is tussen de meningen van de verschillende geslachten. (bron: GenderEmployment_Status_and_Abortion:_A_Longitudinal_Analysis )
 
 Deze bovenstaande onderzoeken zijn gebaseerd op data van Noorwegen en Amerika, voor dit onderzoek is de grote meerderheid van de data verkregen van Nederlandse inwoners die ook in Nederland zijn opgegroeid. 
 
@@ -354,7 +354,7 @@ afkomst_leeftijd <- ggplot(df, aes(y=afkomst,
     theme_minimal()
 
 
-ggarrange(afkomst_leeftijd, geloof_leeftijd)
+#ggarrange(afkomst_leeftijd, geloof_leeftijd)
 ```
 
 Deze grafieken zijn nog niet klaar.... later nog aanpassen.
@@ -575,12 +575,12 @@ Op figuur 3 zijn de p-waarden van enkele vragen vergeleken. Wanneer de waarde on
 ```{r chi-sq, warning=FALSE, fig.cap='P-waarde score voor de enquete vragen en het effect dat leeftijd heeft op de keuze.'}
 #chi square testen maar dan op de twee leeftijd verschillen 
 abortus_aangpast <- abortus %>%
-    mutate(leeftijd_boven_onder_24 = ifelse(leeftijd > 25, "boven", "onder"))
+    mutate(leeftijd_boven_onder_24 = ifelse(Wat.is.uw.leeftijd. > 25, "boven", "onder"))
 
-Boven_onder_Ouderzegschap <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$ouderszegenschap)
+Boven_onder_Ouderzegschap <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.de.ouders.zeggenschap.moeten.hebben.over.of.hun.minderjarige.kind.wel.of.niet.voor.abortus.mag.kiezen...)
 chi_leeftijd_Ouderzegschap <-chisq.test(Boven_onder_Ouderzegschap, correct = T)
 
-Boven_onder_kidskeuze <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Kindskeuze)
+Boven_onder_kidskeuze <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.een.minderjarig.kind.de.keuze.moet.hebben.om.voor.een.abortus.te.kiezen.....)
 chi_leeftijd_kids_eigen_keuze<-chisq.test(Boven_onder_kidskeuze, correct = T)
 
 Boven_onder_Wel_geen <-table(abortus_aangpast$leeftijd_boven_onder_24, abortus_aangpast$Vindt.u.dat.iemand.zelf.moet.kunnen.kiezen.of.die.een.abortus.wil.)
