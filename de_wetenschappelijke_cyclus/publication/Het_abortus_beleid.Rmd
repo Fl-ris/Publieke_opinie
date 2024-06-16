@@ -237,17 +237,21 @@ Microsoft Forms is gebruikt om een enquête te maken die deze bovenstaande vrage
 
 Voor de dataverwerking, zoals beschreven is in de drie logboeken: Logboek_Iris, Logboek_Jasper en Logboek_Floris. \
 **Hiervoor zijn de volgende software versies gebruikt:** \
-R version 4.4.0 (2024-04-24) \
-ggraph: 2.2.1 \
-tidyverse: 2.0.0 \
-viridis: 0.6.5 \
-ggplot2: 3.5.1 \
-dplyr: 1.1.4 \
-rgexf: 0.16.2 \
-ggrepel: 0.9.5 \
-ggridges: 0.5.6 \
-pwr: 1.3.0 \
-gridExtra: 2.3 \
+
+
+| Library naam: | Versie | Gebruikt voor: |
+| --- | --- | --- |
+| R | 4.4.0 (2024-04-24) | Visualisatie van hiërarchische data |
+| ggraph | 2.2.1 | Circular packing grafieken |
+| tidyverse | 2.0.0 | "%>% operator" |
+| viridis | 0.6.5 | Kleur thema |
+| ggplot2 | 3.5.1 | Alle ggplot grafieken |
+| dplyr | 1.1.4 | Mutate(), select() en filter() |
+| ggrepel | 0.9.5 | Pie-chart labels |
+| ggridges | 0.5.6 | Ggridge density plot |
+| pwr | 1.3.0 | Power analyse |
+| gridExtra | 2.3 | Meerdere grafieken in een grid |
+
 
 **Het verspreiden van de enquête:** \
 De weblink die verkregen was van Microsoft Forms, is middels digitale communicatiemiddelen zoals: E-mail, whatsapp, discord etc. verspreid. 
