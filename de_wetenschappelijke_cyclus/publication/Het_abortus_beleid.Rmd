@@ -1,5 +1,5 @@
 ---
-title: Invloed van leeftijd, geslacht en opleidingsniveau op abortus gerelateerde ideologische verschillen in mening.  # Geef je paper een naam die prikkelt, informatief is, en zo kort mogelijk
+title: Invloed van leeftijd, geslacht en opleidingsniveau op abortus gerelateerde ideologische verschillen in mening.
 
 author: |
   | Iris Ineke $^1$, Jasper Jonker $^1$, Floris Menninga $^1$
@@ -8,8 +8,7 @@ author: |
 lang: nl # dit zorgt er voor dat "abstract" "samenvatting" gaat heten
 
 abstract: |
-    In dit verslag kunt u lezen over het onderzoek dat gedaan is voor het schoolvak de wetenschappelijke cyclus. Hiervoor moest een onderzoek gedaan worden naar een onderwerp naar keuze zodat we ervaring opdoen over het uitvoeren van wetenschappelijke onderzoek. Wij hebben gekozen om onderzoek te doen met behulp van een enquête of de mening over ethische vraagstukken te peilen en na te gaan of deze veranderd wanneer factoren zoals leeftijd, geslacht en opleidingsniveau verschillen. Na het uitvoeren van een Chi-square test was duidelijk geworden dat geslacht wel een significant bijdragende factor is bij de vraag of de biologische vader zeggenschap zou moeten hebben over de abortus, deze significantie van het geslacht was echter beperkt tot deze vraag. 
-    
+    Met behulp van een enquete is de mening over abortus gepeild onder een diverse groep mensen. Met de verkregen gegevens zijn verschillende analyses uitgevoerd om te achterhalen of factoren zoals: leeftijd, geslacht, geloof en opleidingsniveau leiden tot een andere mening over de abortus kwestie. Zoals in de bestaande literatuur al laten zien had, is er hier ook een significant verschil op te merken tussen de verschillende geslachten wanneer de vraag het zeggenschap van de biologische vader betreft. Het verschil tussen de geslachten was echter beperkt tot deze vraag. 
 
 bibliography: Het_abortus_beleid.bib # naam van je .bib file. Deze moet hetzelfde zijn als je Rmd bestandsnaam
 link-citations: true
@@ -217,13 +216,13 @@ De enquête bestaat uit de volgende vragen: \
 10. Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus? \
 
 **Schaal zeer oneens tot zeer eens vragen:** \
-1. Hoe goed kunt u zichzelf vinden in de volgende stellingen:?
+1. Hoe goed kunt u zichzelf vinden in de volgende stellingen:? \
 2. Het leven van de vrouw in gevaar is. \
-3. Het kind met een geestelijke handicap geboren kan worden.
-4. Het kind met een levensbedreigende ziekte geboren kan worden.
-5. De zwangerschap veroorzaakt is door verkrachting.
-6. De vrouw het kind niet wil houden om niet gespecificeerde redenen.
-7. De vrouw niet in staat is voor het kind te zorgen vanwege financiële beperkingen.
+3. Het kind met een geestelijke handicap geboren kan worden. \
+4. Het kind met een levensbedreigende ziekte geboren kan worden. \
+5. De zwangerschap veroorzaakt is door verkrachting. \
+6. De vrouw het kind niet wil houden om niet gespecificeerde redenen. \
+7. De vrouw niet in staat is voor het kind te zorgen vanwege financiële beperkingen. \
 
 
 De vraag: Vindt u dat de wettelijke bedenktijd moet terugkomen? Werd aangevuld met de volgende informatie: 
@@ -239,18 +238,18 @@ Voor de dataverwerking, zoals beschreven is in de drie logboeken: Logboek_Iris, 
 **Hiervoor zijn de volgende software versies gebruikt:** \
 
 
-| Library naam: | Versie | Gebruikt voor: |
-| --- | --- | --- |
-| R | 4.4.0 (2024-04-24) | Visualisatie van hiërarchische data |
-| ggraph | 2.2.1 | Circular packing grafieken |
-| tidyverse | 2.0.0 | "%>% operator" |
-| viridis | 0.6.5 | Kleur thema |
-| ggplot2 | 3.5.1 | Alle ggplot grafieken |
-| dplyr | 1.1.4 | Mutate(), select() en filter() |
-| ggrepel | 0.9.5 | Pie-chart labels |
-| ggridges | 0.5.6 | Ggridge density plot |
-| pwr | 1.3.0 | Power analyse |
-| gridExtra | 2.3 | Meerdere grafieken in een grid |
+| Library naam: | Versie | Gebruikt voor: | Referentie: |
+| --- | --- | --- | --- |
+| R | 4.4.0 (2024-04-24) | Visualisatie van hiërarchische data | https://www.r-project.org/ |
+| ggraph | 2.2.1 | Circular packing grafieken | https://cran.r-project.org/web/packages/ggraph/ |
+| tidyverse | 2.0.0 | "%>% operator" | https://www.tidyverse.org/ |
+| viridis | 0.6.5 | Kleur thema | https://cran.r-project.org/web/packages/viridis/ |
+| ggplot2 | 3.5.1 | Alle ggplot grafieken | https://ggplot2.tidyverse.org/ |
+| dplyr | 1.1.4 | Mutate(), select() en filter() | https://dplyr.tidyverse.org/ |
+| ggrepel | 0.9.5 | Pie-chart labels | https://cran.r-project.org/web/packages/ggrepel/ |
+| ggridges | 0.5.6 | Ggridge density plot | https://cran.r-project.org/web/packages/ggridges/ |
+| pwr | 1.3.0 | Power analyse | https://cran.r-project.org/web/packages/pwr/ |
+| gridExtra | 2.3 | Meerdere grafieken in een grid | https://cran.r-project.org/web/packages/gridExtra/ |
 
 
 **Het verspreiden van de enquête:** \
@@ -292,6 +291,9 @@ H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuz
 **Vraag:** Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus? \
 H0: Het geslacht van het persoon dat de enquete invult heeft geen invloed op hun keuze of de biologische vader zeggenschap moet hebben over de beslissing voor een abortus.
 H1: Het geslacht van het persoon dat de enquete invult heeft invloed op hun keuze of de biologische vader zeggenschap moet hebben over de beslissing voor een abortus.
+
+Alle gebruikte data en de scripts om deze data te verwerken zijn aanwezig in deze Github repository: \ https://github.com/Fl-ris/Publieke_opinie
+
 
 
 # Resultaten
@@ -398,9 +400,9 @@ grid.arrange(p2, p3)
 
 
 
-### Resultaten van de enquetevragen: ###
+## Resultaten van de enquetevragen: ##
 
-```{r, warning=FALSE, message=FALSE, fig.cap='Vindt u dat adoptie een alternatief is voor abortus?', fig.asp=.75, out.width='70%', fig.align='center'}
+```{r, eval=FALSE, warning=FALSE, message=FALSE, fig.cap='Vindt u dat adoptie een alternatief is voor abortus?', fig.asp=.75, out.width='70%', fig.align='center'}
 x1 <- table(df$adoptie, df$geslacht)
 adoptie_plot_data <- data.frame(x1)
 adoptie_plot_data$fraction = adoptie_plot_data$Freq / sum(adoptie_plot_data$Freq)
@@ -418,7 +420,7 @@ geom_label_repel(position = position_dodge(width = 1), min.segment.length = 0,ae
 
 ```
 
-```{r vader, warning=FALSE, message=FALSE, fig.cap='Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?', fig.asp=.75, out.width='70%', fig.align='center'}
+```{r vader, eval=FALSE, warning=FALSE, message=FALSE, fig.cap='Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?', fig.asp=.75, out.width='70%', fig.align='center'}
 #Vindt u dat er voor abortus gekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen?
 x2 <- table(df$vader, df$geslacht)
 vader_plot_data <- data.frame(x2)
@@ -443,7 +445,7 @@ ggplot(data = vader_plot_data, mapping = aes(x = percentage, y = Var1, fill = Va
 
 
 
-```{r gezondheid, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag: Vindt u dat er voor abortusgekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen?', fig.asp=.75, out.width='70%', fig.align='center'}
+```{r gezondheid, eval=FALSE, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag: Vindt u dat er voor abortusgekozen mag worden als de gezondheid van de vrouw door de zwangerschap in gevaar kan komen?', fig.asp=.75, out.width='70%', fig.align='center'}
 
 x3 <- table(df$gezondheid_vrouw, df$geslacht)
 gezondheid_vrouw_plot_data <- data.frame(x3)
@@ -462,7 +464,7 @@ ggplot(data = gezondheid_vrouw_plot_data, mapping = aes(x = percentage, y = Var1
   ylab("Antwoorden ") +
   theme_minimal()
 ```
-```{r bedenktijd, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag: Vindt u dat de wettelijke bedenktijd moet terugkomen?', fig.asp=.75, out.width='70%', fig.align='center'}
+```{r bedenktijd, eval=FALSE, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag: Vindt u dat de wettelijke bedenktijd moet terugkomen?', fig.asp=.75, out.width='70%', fig.align='center'}
 
 
 x4 <- table(df$bedenktijd, df$geslacht)
@@ -479,10 +481,10 @@ ggplot(data = bedenktijd_plot_data, mapping = aes(x = percentage, y = Var1, fill
   ylab("Antwoorden ") +
   theme_minimal()
 ```
-### Vragen op een schaal van "zeer oneens" tot "zeer eens" ###
+```{r levensgevaar, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag: Vindt u dat er voor abortus gekozen mag worden als het leven van de vrouw in gevaar is?'}
 
 
-```{r echo, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag:Vindt u dat er voor abortus gekozen mag worden als de vrouw niet in staat is voor het kind te zorgen vanwege financile beperkingen?'}
+
 x5 <- table(df$levensgevaar_vrouw_o, df$geslacht)
 vrouw_0_plot_data <- data.frame(x5)
 vrouw_0_plot_data$fraction = vrouw_0_plot_data$Freq / sum(vrouw_0_plot_data$Freq)
@@ -497,10 +499,10 @@ ggplot(data = vrouw_0_plot_data, mapping = aes(x = percentage, y =Var1)) +
   ylab(" ") + 
    theme_minimal()
 ```
+Zoals op figuur 5 afgebeeld is neigen mensen eerder naar het toestaan van een abortus wanneer het leven van de vrouw in gevaar is. Dit is veel minder het geval wanneer het om een niet levensbedreigende reden gaat zoals op figuur 7 zichtbaar is. 
 
 
-
-```{r abortus, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag: Vindt u dat iemand een abortus mag als de zwangerschap een gevolg is van verkrachting?'}
+```{r abortus, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag:  Vindt u dat iemand een abortus mag als de zwangerschap een gevolg is van verkrachting?'}
 
 x6 <- table(df$veroorzaakt_o, df$geslacht)
 veroorzaakt_o_plot_data<- data.frame(x6)
@@ -515,8 +517,8 @@ ggplot(data = veroorzaakt_o_plot_data, mapping = aes(x = percentage, y =Var1)) +
   ylab(" ") + 
   theme_minimal()
 ```
-
-```{r levensgevaar, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag: Vindt u dat er voor abortus gekozen mag worden als de vrouw niet in staat is voor het kind te zorgen vanwege financiële beperkingen?'}
+Vergelijkbaar met de vraag of de abortus toegestaan zou moeten worden wanneer het leven van de vrouw in gevaar is kiezen mensen eerder voor de mogelijkheid om voor een abortus te kiezen.   
+```{r echo, warning=FALSE, message=F, fig.cap='Antwoorden op de vraag:Vindt u dat er voor abortus gekozen mag worden als de vrouw niet in staat is voor het kind te zorgen vanwege financiele beperkingen?'}
 
 x7 <- table(df$financiele_beperkingen, df$geslacht)
 financieel_o_plot_data<- data.frame(x7)
@@ -757,7 +759,7 @@ as.data.frame(x)%>%
     #theme(plot.caption = element_text(hjust = 0, face = "italic")) +
     theme_minimal()
 ```
-In de bovenstaande plot is de verdeling weergegeven van mensen die wel geloven en niet geloven en wat deze hebben geantwoord op de vraag of mensen zelf mogen kiezen of ze een abortus willen.
+In het bovenstaande plot is de verdeling weergegeven van mensen die wel geloven en niet geloven en wat deze hebben geantwoord op de vraag of mensen zelf mogen kiezen of ze een abortus willen.
 
 Ook weergeeft het plot hierboven dat alle mensen die hebben aangegeven niet gelovig te zijn bij vraag 6 hebben aangegeven dat iemand zelf moet kunnen kiezen of die een abortus wil. Bij de mensen die hebben ingevuld wel gelovig te zijn, is er een deel dat heeft aangegeven dat iemand niet zelf moet kunnen kiezen of die een abortus wil.
 Uit de Chi-square test komt dan ook dat er een significant verschil zit tussen mensen die wel aangeven een religieuze overtuiging te hebben en mensen die aangeven dat niet te hebben. De p-waarde die hieruit kwam is '0.0002855' en dit ligt onder de '0.05'.
@@ -790,7 +792,7 @@ PieDonut(data_donut, aes(religieuze_overtuiging, antwoord_vraag, count=Freq),
          )
     
 ```
-In de bovenstaande plot wordt er in de binnenste plot weergegeven hoeveel procent van de respondenten welke religieuze overtuigingen hebben. 81.58% van de respondenten geeft aan niet een religieuze overtuiging te hebben. Verder geeft 9.65% aan in het christendom te geloven, 1.75% in de islam, 0.88% in het boeddhisme en 6.14% geeft aan een religieuze overtuiging te hebben die als optie op de enquête beschikbaar was. 
+In het bovenstaande plot wordt er in de binnenste plot weergegeven hoeveel procent van de respondenten welke religieuze overtuigingen hebben. 81.58% van de respondenten geeft aan niet een religieuze overtuiging te hebben. Verder geeft 9.65% aan in het christendom te geloven, 1.75% in de islam, 0.88% in het boeddhisme en 6.14% geeft aan een religieuze overtuiging te hebben die als optie op de enquête beschikbaar was. 
 Vervolgens wordt er in de buitenste ring weergegeven of de respondenten voor of tegen de eigen keuze over abortus zijn per geloof. Dus van de 81.58% mensen die niet een religieuze overtuiging hebben is 100% voor de eigen keuze over abortus.
 Verder is van de Christelijke respondenten 73% voor de eigen keuze over abortus en 27% tegen abortus. Van de islamitische en de Boeddhistische respondenten is 100% voor de eigen mening over abortus. En van de respondenten die aangaven ergens anders in te geloven is er 86% voor de eigen keuze van abortus en 14% tegen.
 
@@ -859,9 +861,8 @@ lr_man_vrouw_gezondheid_ouders <- glm(df_logistische_regressie$ouders ~ leeftijd
 
 
 
-## Visualisatie van de logistische regressie: ##
 
-```{r VisualizatieLR, warning=FALSE,results = "hide", fig.cap='Logistische regressie visualisatie voor de vraag: Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?'}
+```{r VisualizatieLR, warning=FALSE,results = "hide", eval=FALSE, fig.cap='Logistische regressie visualisatie voor de vraag: Moet de biologische vader zeggenschap hebben over de beslissing voor een abortus?'}
 # Lr
 lr_man_vader <- glm(vader ~ Wat.is.uw.leeftijd. + gelovig_01 + Wat.is.het.hoogste.onderwijsniveau.dat.u.heeft.afgerond., data = df_man, family = binomial)
 
@@ -879,10 +880,9 @@ ggplot(data = lr_voorspelling_vader, aes(x = rank, y = lr_man_vader.fitted.value
   ylab("Waarschijnlijkheid (tussen 0 en 1)") +
   theme_minimal()
 ```
-Op figuur 16 zijn de met de logistische regressie berekende waarden laten zien voor elk persoon dat de vragen ingevuld heeft samen met de keuze die dit persoon gemaakt heeft (Ja/Nee/Weet ik niet). De uitkomst van deze logistische regressie is dat leeftijd een significante factor is (p-waarde: 0.00153), geloof bijna met een p-waarde van: 0.05366. \
-
-De trend in leeftijd is ook zichtbaar op de bovenstaande visualisatie, de leeftijd van de mensen wordt weergeven met punt grootte. De "index" betekend dat de uitkomsten van de LR gesorteerd zijn van klein naar groot, daarna wordt met behulp van punt kleur weergeven wat de respondent daadwerkelijk gekozen heeft.
-De visualisaties van de andere logistische regressies zijn weergeven in het volgende logboek: Logboek_Floris.
+De uitkomst van de logistische regressie is dat leeftijd een significante factor is (p-waarde: 0.00153), geloof bijna met een p-waarde van: 0.05366. \
+De trend in leeftijd is ook zichtbaar op de visualisatie in het logboek, de leeftijd van de mensen wordt weergeven met punt grootte. De "index" betekend dat de uitkomsten van de LR gesorteerd zijn van klein naar groot, daarna wordt met behulp van punt kleur weergeven wat de respondent daadwerkelijk gekozen heeft.
+De visualisaties van de logistische regressies zijn weergeven in het volgende logboek: Logboek_Floris.
 ```{r}
 #(summary(lr_man_vrouw_echo)) # Geloof significant
 ```
